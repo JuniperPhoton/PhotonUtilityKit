@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension URL {
+public extension URL {
     var isDir: Bool {
         (try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
     }

@@ -9,11 +9,16 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct PressActions: ViewModifier {
-    var onPress: () -> Void
-    var onRelease: () -> Void
+public struct PressActions: ViewModifier {
+    public var onPress: () -> Void
+    public var onRelease: () -> Void
     
-    func body(content: Content) -> some View {
+    public init(onPress: @escaping () -> Void, onRelease: @escaping () -> Void) {
+        self.onPress = onPress
+        self.onRelease = onRelease
+    }
+    
+    public func body(content: Content) -> some View {
         content
             .simultaneousGesture(
                 DragGesture(minimumDistance: 0)
@@ -27,18 +32,24 @@ struct PressActions: ViewModifier {
     }
 }
 
-struct MatchParent: ViewModifier {
-    let matchWidth: Bool
-    let matchHeight: Bool
-    let alignment: Alignment
+public struct MatchParent: ViewModifier {
+    public let matchWidth: Bool
+    public let matchHeight: Bool
+    public let alignment: Alignment
     
-    func body(content: Content) -> some View {
+    public init(matchWidth: Bool, matchHeight: Bool, alignment: Alignment) {
+        self.matchWidth = matchWidth
+        self.matchHeight = matchHeight
+        self.alignment = alignment
+    }
+    
+    public func body(content: Content) -> some View {
         content.frame(maxWidth: matchWidth ? .infinity : nil,
                       maxHeight: matchHeight ? .infinity : nil, alignment: alignment)
     }
 }
 
-extension Color {
+public extension Color {
     init(hex: UInt, alpha: Double = 1) {
         self.init(
             .sRGB,
@@ -50,13 +61,13 @@ extension Color {
     }
 }
 
-extension View {
+public extension View {
     func assist() -> some View {
         self.background(Color.blue)
     }
 }
 
-extension View {
+public extension View {
     func addShadow() -> some View {
         self.shadow(color: Color.black.opacity(0.1), radius: 3, x: 3, y: 3)
     }
@@ -87,7 +98,7 @@ extension View {
     }
 }
 
-extension EdgeInsets {
+public extension EdgeInsets {
     static func createUnified(inset: CGFloat) -> EdgeInsets {
         return EdgeInsets(top: inset, leading: inset, bottom: inset, trailing: inset)
     }
@@ -118,7 +129,7 @@ extension ProposedViewSize: CustomStringConvertible {
     }
 }
 
-extension View {
+public extension View {
     func importFolderOrFiles(isPresented: Binding<Bool>, types: [UTType],
                              allowsMultipleSelection: Bool, onSucess: @escaping ([URL])->Void) -> some View {
         return self.fileImporter(isPresented: isPresented, allowedContentTypes: types,

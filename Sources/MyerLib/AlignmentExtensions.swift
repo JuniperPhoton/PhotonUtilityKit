@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension HorizontalAlignment {
+public extension HorizontalAlignment {
     private struct CustomHorizontalAlignment: AlignmentID {
         static func defaultValue(in context: ViewDimensions) -> CGFloat {
             // Default to bottom alignment if no guides are set.
@@ -21,7 +21,7 @@ extension HorizontalAlignment {
     )
 }
 
-extension VerticalAlignment {
+public extension VerticalAlignment {
     private struct CustomVerticalAlignment: AlignmentID {
         static func defaultValue(in context: ViewDimensions) -> CGFloat {
             // Default to bottom alignment if no guides are set.

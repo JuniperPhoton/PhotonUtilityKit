@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension Collection {
+public extension Collection {
     func any(check: (Element) -> Bool) -> Bool {
         for e in self {
             if !check(e) {

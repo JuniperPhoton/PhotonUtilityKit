@@ -1,7 +1,7 @@
 import SwiftUI
 
 @available(iOS 15.0, macOS 10.15, *)
-protocol AppColorScheme {
+public protocol AppColorScheme {
     func getBackgroundColor() -> Color
     
     func getSurfaceColor() -> Color

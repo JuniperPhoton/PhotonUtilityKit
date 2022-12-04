@@ -7,13 +7,13 @@
 
 import Foundation
 
-extension Int {
+public extension Int {
     func secToNanoSec() -> UInt64 {
         return UInt64(self * 1000 * 1000 * 1000)
     }
 }
 
-extension Double {
+public extension Double {
     func secToNanoSec() -> UInt64 {
         return UInt64(self * 1000 * 1000 * 1000)
     }

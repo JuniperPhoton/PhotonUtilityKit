@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "MyerLib",
     platforms: [
-        .iOS(.v15),
+        .iOS(.v14),
         .macOS(.v11)
     ],
     products: [
