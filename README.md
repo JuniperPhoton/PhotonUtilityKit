@@ -1,3 +1,3 @@
 # MyerLib
 
-A description of this package.
+A Swift Package used among all my Apple apps.
