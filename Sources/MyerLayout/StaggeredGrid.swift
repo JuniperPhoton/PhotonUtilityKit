@@ -8,6 +8,19 @@
 import Foundation
 import SwiftUI
 
+/// A view to layout children staggeredly like this:
+///
+/// With enough space:
+///  [View1] [View2] [View3]
+///  [View4]
+///
+/// With not enought space:
+///  [View1] [View2]
+///  [View3] [View4]
+///
+/// When the width changes, it would apply animation automatically.
+///
+/// Currently not support spacing feature, and you would like to apply padding to your views.
 @available(iOS 16.0, macOS 13.0, *)
 public struct StaggeredGrid<Content: View>: View {
     @State var width: CGFloat? = nil

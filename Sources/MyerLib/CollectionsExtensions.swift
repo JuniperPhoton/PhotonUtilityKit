@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 public extension Collection {
+    /// Return true if at least onf of elements in this collection satisfly the condition.
     func any(check: (Element) -> Bool) -> Bool {
         for e in self {
             if !check(e) {
@@ -18,6 +19,7 @@ public extension Collection {
         return true
     }
     
+    /// Return the count of the element satisfly the condition.
     func countOf(check: (Element) -> Bool) -> Int {
         var count = 0
         forEach { e in
@@ -28,6 +30,7 @@ public extension Collection {
         return count
     }
     
+    /// Same as forEach but you can access the index in it.
     func forEachIndexed(_ body: ((Element, Int) -> Void)) {
         var index = 0
         forEach { e in
@@ -36,6 +39,7 @@ public extension Collection {
         }
     }
     
+    /// Same as filter but you can access the index in it.
     func filterIndexed(_ isIncluded: ((Element, Int) -> Bool)) -> [Element] {
         var result: [Element] = []
         
@@ -50,6 +54,7 @@ public extension Collection {
         return result
     }
     
+    /// Join the element to a string with separator and custom toString.
     func joinToString(sepatator: String = "_",
                       toString: (Element) -> String) -> String {
         var output = ""
