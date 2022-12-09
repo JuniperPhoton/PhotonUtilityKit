@@ -13,7 +13,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "MyerLib",
-            targets: ["MyerLib", "MyerLayout"]),
+            targets: ["MyerLib", "MyerLayout", "MyerView"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -27,7 +27,10 @@ let package = Package(
             dependencies: []),
         .target(
             name: "MyerLayout",
-            dependencies: []),
+            dependencies: ["MyerLib"]),
+        .target(
+            name: "MyerView",
+            dependencies: ["MyerLib"]),
         .testTarget(
             name: "MyerLibTests",
             dependencies: ["MyerLib"]),
