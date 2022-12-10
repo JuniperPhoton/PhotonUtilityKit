@@ -23,11 +23,13 @@ import SwiftUI
 /// Currently not support spacing feature, and you would like to apply padding to your views.
 @available(iOS 16.0, macOS 13.0, *)
 public struct StaggeredGrid<Content: View>: View {
+    let animated: Bool
     @State var width: CGFloat? = nil
         
     var content: () -> Content
     
-    public init(@ViewBuilder content: @escaping () -> Content) {
+    public init(animated: Bool = true, @ViewBuilder content: @escaping () -> Content) {
+        self.animated = animated
         self.content = content
     }
     
@@ -35,7 +37,11 @@ public struct StaggeredGrid<Content: View>: View {
         VStack(alignment: .leading) {
             GeometryReader { proxy in
                 Color.clear.onChange(of: proxy.size.width) { newValue in
-                    withAnimation {
+                    if animated {
+                        withAnimation {
+                            self.width = newValue
+                        }
+                    } else {
                         self.width = newValue
                     }
                 }
