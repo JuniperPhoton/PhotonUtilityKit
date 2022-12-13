@@ -55,8 +55,8 @@ public struct ActionButton: View {
                     .lineLimit(1)
                     .applyEffect(effect: frameConfigration.geoEffect)
             }
-        }.padding(15)
-            .frame(minWidth: 50, minHeight: 50)
+        }.padding(12)
+            .frame(minHeight: 30)
             .modifier(frameConfigration.stretchToWidth ? MatchParent(matchWidth: true, matchHeight: false, alignment: .center)
                       : MatchParent(matchWidth: false, matchHeight: false, alignment: .center))
             .background(RoundedRectangle(cornerRadius: 8, style: .continuous)

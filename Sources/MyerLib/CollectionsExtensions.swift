@@ -69,3 +69,22 @@ public extension Collection {
         return output
     }
 }
+
+public extension Collection {
+    /// Mapping this collection to another collection which has s grouping key and an array of corresponding items.
+    /// This method is used to list with section enabled.
+    func groupInto<K: Hashable, T>(getGroupKey: (Element) -> K,
+                                   getGroupValue: (K, [Element]) -> T) -> [T] {
+        var result:[T] = []
+        
+        let dictionary = Dictionary(grouping: self) { e in
+            getGroupKey(e)
+        }
+        
+        dictionary.forEach { (key, elements) in
+            result.append(getGroupValue(key, elements))
+        }
+        
+        return result
+    }
+}

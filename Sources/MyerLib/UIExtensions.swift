@@ -96,6 +96,20 @@ public extension View {
                      alignment: Alignment = .center) -> some View {
         self.modifier(MatchParent(matchWidth: matchWidth, matchHeight: matchHeight, alignment: alignment))
     }
+    
+    @ViewBuilder
+    func matchParent(axis: MatchParentAxis = .widthHeight,
+                     alignment: Alignment = .center) -> some View {
+        self.modifier(MatchParent(matchWidth: axis == .widthHeight || axis == .width,
+                                  matchHeight: axis == .widthHeight || axis == .height,
+                                  alignment: alignment))
+    }
+}
+
+public enum MatchParentAxis {
+    case widthHeight
+    case width
+    case height
 }
 
 public extension EdgeInsets {
