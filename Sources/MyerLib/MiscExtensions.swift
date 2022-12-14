@@ -25,6 +25,12 @@ public extension String? {
     }
 }
 
+public extension String {
+    func localized(withComment: String = "") -> String {
+        return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: withComment)
+    }
+}
+
 public extension Comparable {
     func clamp(to range: ClosedRange<Self>) -> Self {
         if self < range.lowerBound {

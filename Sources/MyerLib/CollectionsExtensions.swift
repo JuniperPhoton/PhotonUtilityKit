@@ -9,8 +9,18 @@ import Foundation
 import SwiftUI
 
 public extension Collection {
-    /// Return true if at least onf of elements in this collection satisfly the condition.
+    /// Return true if at least one element in this collection satisfly the condition.
     func any(check: (Element) -> Bool) -> Bool {
+        for e in self {
+            if check(e) {
+               return true
+            }
+        }
+        return false
+    }
+    
+    /// Return true if all of elements in this collection satisfly the condition.
+    func all(check: (Element) -> Bool) -> Bool {
         for e in self {
             if !check(e) {
                 return false
