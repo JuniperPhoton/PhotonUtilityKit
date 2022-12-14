@@ -24,3 +24,15 @@ public extension String? {
         return self != nil && self?.isEmpty == false
     }
 }
+
+public extension Comparable {
+    func clamp(to range: ClosedRange<Self>) -> Self {
+        if self < range.lowerBound {
+            return range.lowerBound
+        }
+        if self > range.upperBound {
+            return range.upperBound
+        }
+        return self
+    }
+}
