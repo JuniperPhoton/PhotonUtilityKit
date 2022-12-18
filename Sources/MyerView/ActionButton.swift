@@ -120,7 +120,7 @@ public struct ActionButton: View {
 /// Typically you use ``MatchedGeometryEffect(id:namespace:)`` to animate view's frame or position between layouts.
 public enum Effect {
     case none
-    case MatchedGeometryEffect(id: String, namespace: Namespace.ID)
+    case MatchedGeometryEffect(id: String, namespace: Namespace.ID, property: MatchedGeometryProperties)
 }
 
 /// Controls how the button will layout in parent and specifiy some geo effects.
@@ -156,8 +156,8 @@ fileprivate extension View {
     @ViewBuilder
     func applyEffect(effect: Effect) -> some View {
         switch effect {
-        case .MatchedGeometryEffect(let id, let namespace):
-            self.matchedGeometryEffect(id: id, in: namespace)
+        case .MatchedGeometryEffect(let id, let namespace, let properties):
+            self.matchedGeometryEffect(id: id, in: namespace, properties: properties)
         default:
             self
         }
