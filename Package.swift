@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "MyerLib",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v14),
         .macOS(.v11)
@@ -30,7 +31,11 @@ let package = Package(
             dependencies: ["MyerLib"]),
         .target(
             name: "MyerView",
-            dependencies: ["MyerLib"]),
+            dependencies: ["MyerLib"],
+            resources: [
+                .process("Resources"),
+            ]
+        ),
         .testTarget(
             name: "MyerLibTests",
             dependencies: ["MyerLib"]),
