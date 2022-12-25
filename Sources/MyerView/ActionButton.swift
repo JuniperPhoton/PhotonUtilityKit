@@ -26,10 +26,13 @@ public struct ActionButton: View {
     @State var isHovered = false
     @State var isTapped = false
     
+    var isLoading: Binding<Bool>
+    
     public let onClick: () -> Void
     
     public init(title: LocalizedStringKey? = nil,
                 icon: String? = nil,
+                isLoading: Binding<Bool> = .constant(false),
                 style: ActionButtonStyle,
                 frameConfigration: FrameConfiguration = FrameConfiguration(),
                 onClick: @escaping () -> Void) {
@@ -38,10 +41,15 @@ public struct ActionButton: View {
         self.style = style
         self.frameConfigration = frameConfigration
         self.onClick = onClick
+        self.isLoading = isLoading
     }
     
     public var body: some View {
         HStack(spacing: 12) {
+            if isLoading.wrappedValue {
+                ProgressView()
+            }
+            
             if (icon != nil) {
                 Image(systemName: icon!)
                     .renderingMode(.template)
@@ -82,6 +90,7 @@ public struct ActionButton: View {
                 }
             }
         #endif
+            .disabled(isLoading.wrappedValue)
     }
     
     private func getOpacityOnViewState() -> Double {

@@ -166,3 +166,13 @@ public extension View {
         #endif
     }
 }
+
+public extension View {
+    func hoverEffectCompact() -> some View {
+        #if os(iOS)
+        self.hoverEffect(.automatic)
+        #else
+        self
+        #endif
+    }
+}
