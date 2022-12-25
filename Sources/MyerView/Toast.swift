@@ -10,8 +10,10 @@ import SwiftUI
 import MyerLib
 
 /// A controller that manage toast, coorporated with ``ToastView``.
+///
+/// # Overview
 /// You call the object like a function to perform toast showing like:
-/// ```
+/// ```swift
 /// var showToast: AppToast
 ///
 /// showToast("Your localized toast string")
@@ -19,13 +21,13 @@ import MyerLib
 ///
 /// It's recommended for you to pass the ``AppToast`` object as environment object so you can access it from your views.
 ///
-/// ```
+/// ```swift
 /// view.environmentObject(appToast)
 /// ```
 ///
-/// Alternately, you can use the ``toast`` modifier to bind a text as toast:
+/// Alternately, you can use the ``View/toast(text:)`` modifier to bind a text as toast:
 ///
-/// ```
+/// ```swift
 /// view.toast($toastContent)
 /// ```
 @MainActor
@@ -114,8 +116,9 @@ fileprivate struct ToastContentView: View {
 }
 
 public extension View {
-    /// Show toast of ``text``.
+    /// Show toast of text.
     /// To use this modifier, the attached view should have environment object of ``AppToast``.
+    /// - Parameter text: a binding to a toast string. Set this to a non empty value to present a toast.
     func toast(text: Binding<String>) -> some View {
         self.modifier(ToastModifier(toast: text))
     }
