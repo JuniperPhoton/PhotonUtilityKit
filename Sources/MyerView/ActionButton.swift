@@ -15,6 +15,8 @@ import MyerLib
 /// Use ``style`` to specify the color scheme of this button.
 /// Use ``frameConfigration`` to specifiy how the button will layout in parent and specifiy some geo effects.
 ///
+/// If this action supports loading, passing binding ``isLoading``. If it's in loading state, the button would be disabled and show a progress view.
+///
 /// You must set the ``onClick`` to response the tap gesture.
 public struct ActionButton: View {
     public let title: LocalizedStringKey?
@@ -26,7 +28,7 @@ public struct ActionButton: View {
     @State var isHovered = false
     @State var isTapped = false
     
-    var isLoading: Binding<Bool>
+    public var isLoading: Binding<Bool>
     
     public let onClick: () -> Void
     

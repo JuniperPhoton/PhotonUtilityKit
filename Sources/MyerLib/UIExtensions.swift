@@ -168,6 +168,8 @@ public extension View {
 }
 
 public extension View {
+    /// Compact version of ``hoverEffect``.
+    /// It's available for iPad only.
     func hoverEffectCompact() -> some View {
         #if os(iOS)
         self.hoverEffect(.automatic)
