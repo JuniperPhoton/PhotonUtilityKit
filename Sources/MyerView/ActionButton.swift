@@ -75,11 +75,13 @@ public struct ActionButton: View {
                     isHovered = false
                 }
             }))
+        #if !os(watchOS)
             .onHover { hover in
                 withAnimation {
                     isHovered = hover
                 }
             }
+        #endif
     }
     
     private func getOpacityOnViewState() -> Double {

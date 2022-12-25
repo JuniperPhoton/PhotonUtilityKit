@@ -178,7 +178,7 @@ struct AppView: View {
         }
         .frame(maxWidth: 400, maxHeight: .infinity, alignment: .leading)
         .padding(12)
-        .background(RoundedRectangle(cornerRadius: 12).fill(app.backgroundColor))
+        .background(RoundedRectangle(cornerRadius: 12).fill(app.themeColor.opacity(0.02)))
         .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(app.themeColor.opacity(1.0), lineWidth: 1.5))
         .onTapGesture {
             openURL(app.storeLink)
