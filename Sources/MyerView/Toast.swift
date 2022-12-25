@@ -28,6 +28,7 @@ import MyerLib
 /// ```
 /// view.toast($toastContent)
 /// ```
+@MainActor
 public class AppToast: ObservableObject {
     @Published var toast: String = ""
     
