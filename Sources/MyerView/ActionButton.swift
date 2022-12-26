@@ -67,8 +67,7 @@ public struct ActionButton: View {
             }
         }.padding(12)
             .frame(minHeight: 30)
-            .modifier(frameConfigration.stretchToWidth ? MatchParent(matchWidth: true, matchHeight: false, alignment: .center)
-                      : MatchParent(matchWidth: false, matchHeight: false, alignment: .center))
+            .matchParent(axis: frameConfigration.stretchToWidth ? .width : .none, alignment: .center)
             .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(style.backgroundColor).opacity(getOpacityOnViewState()))
             .onTapGesture {

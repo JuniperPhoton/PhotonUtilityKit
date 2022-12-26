@@ -32,20 +32,47 @@ public struct PressActions: ViewModifier {
     }
 }
 
-public struct MatchParent: ViewModifier {
-    public let matchWidth: Bool
-    public let matchHeight: Bool
-    public let alignment: Alignment
+struct MatchParent: ViewModifier {
+    let matchWidth: Bool
+    let matchHeight: Bool
+    let alignment: Alignment
     
-    public init(matchWidth: Bool, matchHeight: Bool, alignment: Alignment) {
+    init(matchWidth: Bool, matchHeight: Bool, alignment: Alignment) {
         self.matchWidth = matchWidth
         self.matchHeight = matchHeight
         self.alignment = alignment
     }
     
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         content.frame(maxWidth: matchWidth ? .infinity : nil,
                       maxHeight: matchHeight ? .infinity : nil, alignment: alignment)
+    }
+}
+
+/// Axis to match parent in ``MatchParent``.
+/// You pass this enum to ``View/matchParent(axis:alignment)`` to indicate which axis to be matched parent.
+public enum MatchParentAxis {
+    /// Both with and height
+    case widthHeight
+    /// Width only
+    case width
+    /// Height only
+    case height
+    /// None
+    case none
+}
+
+public extension View {
+    /// Wrap this view into a frame, which size is defined by axis parameter.
+    ///
+    /// - Parameter axis: the axis to match parent. See the ``MatchParent`` enum.
+    /// - Parameter alignment: how the original view is aligned in the new frame, default to ``Alignment/Center``.
+    @ViewBuilder
+    func matchParent(axis: MatchParentAxis = .widthHeight,
+                     alignment: Alignment = .center) -> some View {
+        self.modifier(MatchParent(matchWidth: axis == .widthHeight || axis == .width,
+                                  matchHeight: axis == .widthHeight || axis == .height,
+                                  alignment: alignment))
     }
 }
 
@@ -89,27 +116,6 @@ public extension View {
             self
         }
     }
-    
-    @ViewBuilder
-    func matchParent(matchWidth: Bool = true,
-                     matchHeight: Bool = true,
-                     alignment: Alignment = .center) -> some View {
-        self.modifier(MatchParent(matchWidth: matchWidth, matchHeight: matchHeight, alignment: alignment))
-    }
-    
-    @ViewBuilder
-    func matchParent(axis: MatchParentAxis = .widthHeight,
-                     alignment: Alignment = .center) -> some View {
-        self.modifier(MatchParent(matchWidth: axis == .widthHeight || axis == .width,
-                                  matchHeight: axis == .widthHeight || axis == .height,
-                                  alignment: alignment))
-    }
-}
-
-public enum MatchParentAxis {
-    case widthHeight
-    case width
-    case height
 }
 
 public extension EdgeInsets {
