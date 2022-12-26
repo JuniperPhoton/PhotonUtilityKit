@@ -40,6 +40,10 @@ public class AppToast: ObservableObject {
         // empty
     }
     
+    public func showToast(_ notification: String) {
+        callAsFunction(Binding.constant(notification))
+    }
+    
     public func callAsFunction(_ notification: Binding<String>) {
         withEastOutAnimation {
             self.toast = notification.wrappedValue
