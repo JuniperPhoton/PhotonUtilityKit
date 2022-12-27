@@ -89,8 +89,9 @@ public extension Color {
 }
 
 public extension View {
+    /// Add background to this view to help assit layout issue.
     func assist() -> some View {
-        self.background(Color.blue)
+        self.background(Color.red)
     }
 }
 
@@ -99,6 +100,8 @@ public extension View {
         self.shadow(color: Color.black.opacity(0.1), radius: 3, x: 3, y: 3)
     }
     
+    /// Set this view to hidden if condition is meet.
+    /// - Parameter condition: condition to check if this view should be hidden
     @ViewBuilder
     func hiddenIf(condition: Bool) -> some View {
         if (condition) {
@@ -108,6 +111,9 @@ public extension View {
         }
     }
     
+    /// Run the block if condition is meet.
+    /// - Parameter condition: the condition to check
+    /// - Parameter block: the block to be executed if the condition is meet. This block capture the current view and should return some View.
     @ViewBuilder
     func runIf(condition: Bool, block: (Self) -> some View) -> some View {
         if (condition) {
@@ -115,6 +121,90 @@ public extension View {
         } else {
             self
         }
+    }
+}
+
+public extension View {
+    /// Listen the width changed of this view.
+    /// - Parameter onWidthChanged: invoked on width changed
+    func listenWidthChanged(onWidthChanged: @escaping (CGFloat) -> Void) -> some View {
+        self.overlay(GeometryReader(content: { proxy in
+            Color.clear.onChange(of: proxy.size.width) { newValue in
+                onWidthChanged(newValue)
+            }
+        }))
+    }
+}
+
+/// A modifier to support swipe to dismiss of a view.
+struct SwipeToDismiss: ViewModifier {
+    var thresholdToDismiss: CGFloat
+    var onDismiss: () -> Void
+    var onTranslationXChanged: ((CGFloat) -> Void)? = nil
+    
+    @State private var translateX: CGFloat = 0 {
+        didSet {
+            onTranslationXChanged?(translateX)
+        }
+    }
+    
+    @State private var viewWidth: CGFloat = 0
+    @State private var showDeleteButton = false
+    
+    private var gesture = DragGesture(minimumDistance: 1)
+    
+    /// Init this view with:
+    /// - Parameter thresholdToDismiss: the distance in points to trigger the dismiss block
+    /// - Parameter onTranslationXChanged: the block to be invoked on the translation x of the view is changed
+    /// - Parameter onDismiss: the block to be invoked when the swipe translation is greater than the thresholdToDismiss in points.
+    init(thresholdToDismiss: CGFloat,
+         onTranslationXChanged: ((CGFloat) -> Void)? = nil,
+         onDismiss: @escaping () -> Void) {
+        self.thresholdToDismiss = thresholdToDismiss
+        self.onDismiss = onDismiss
+        self.onTranslationXChanged = onTranslationXChanged
+    }
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+                .offset(x: translateX)
+                .listenWidthChanged(onWidthChanged: { width in
+                    self.viewWidth = width
+                })
+                .gesture(gesture.onChanged({ t in
+                    if t.translation.width > 0 {
+                        self.translateX = t.translation.width
+                        self.showDeleteButton = self.translateX > 10
+                    }
+                }).onEnded({ t in
+                    if self.translateX > thresholdToDismiss {
+                        withAnimation {
+                            self.translateX = self.viewWidth
+                        }
+                        onDismiss()
+                    } else {
+                        withAnimation {
+                            self.translateX = 0
+                        }
+                    }
+                }), including: .gesture)
+                .matchParent(axis: .width, alignment: .leading)
+        }
+    }
+}
+
+public extension View {
+    /// Apply swipe to dismiss effect to this view.
+    /// - Parameter thresholdToDismiss: the distance in points to trigger the dismiss block. Defaults to 100 points.
+    /// - Parameter onTranslationXChanged: the block to be invoked on the translation x of the view is changed
+    /// - Parameter onDismiss: the block to be invoked when the swipe translation is greater than the thresholdToDismiss in points.
+    func swipeToDismiss(thresholdToDismiss: CGFloat = 100,
+                        onTranslationXChanged: ((CGFloat) -> Void)? = nil,
+                        onDismiss: @escaping () -> Void) -> some View {
+        self.modifier(SwipeToDismiss(thresholdToDismiss: thresholdToDismiss,
+                                     onTranslationXChanged: onTranslationXChanged,
+                                     onDismiss: onDismiss))
     }
 }
 

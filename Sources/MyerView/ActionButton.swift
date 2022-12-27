@@ -30,14 +30,14 @@ public struct ActionButton: View {
     
     public var isLoading: Binding<Bool>
     
-    public let onClick: () -> Void
+    public let onClick: (() -> Void)?
     
     public init(title: LocalizedStringKey? = nil,
                 icon: String? = nil,
                 isLoading: Binding<Bool> = .constant(false),
                 style: ActionButtonStyle,
                 frameConfigration: FrameConfiguration = FrameConfiguration(),
-                onClick: @escaping () -> Void) {
+                onClick: (() -> Void)? = nil) {
         self.title = title
         self.icon = icon
         self.style = style
@@ -70,20 +70,12 @@ public struct ActionButton: View {
             .matchParent(axis: frameConfigration.stretchToWidth ? .width : .none, alignment: .center)
             .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(style.backgroundColor).opacity(getOpacityOnViewState()))
-            .onTapGesture {
-                isHovered = false
-                onClick()
-            }
-            .modifier(PressActions(onPress: {
-                withAnimation {
-                    isTapped = true
-                }
-            }, onRelease: {
-                withAnimation {
-                    isTapped = false
+            .runIf(condition: onClick != nil, block: { v in
+                v.onTapGesture {
                     isHovered = false
+                    onClick?()
                 }
-            }))
+            })
         #if !os(watchOS)
             .onHover { hover in
                 withAnimation {

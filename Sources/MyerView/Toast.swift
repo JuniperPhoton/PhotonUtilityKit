@@ -47,12 +47,14 @@ public class AppToast: ObservableObject {
     public func callAsFunction(_ notification: Binding<String>) {
         withEastOutAnimation {
             self.toast = notification.wrappedValue
+            print("dwccc show toast \(self.toast)")
         }
         
         pendingWorkItem?.cancel()
         pendingWorkItem = DispatchWorkItem(block: {
             withEastOutAnimation {
                 self.toast = ""
+                print("dwccc clear toast \(self.toast)")
                 notification.wrappedValue = ""
             }
         })
