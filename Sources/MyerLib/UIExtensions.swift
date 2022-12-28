@@ -141,6 +141,7 @@ struct SwipeToDismiss: ViewModifier {
     var thresholdToDismiss: CGFloat
     var onDismiss: () -> Void
     var onTranslationXChanged: ((CGFloat) -> Void)? = nil
+    var onEnd: (() -> Void)? = nil
     
     @State private var translateX: CGFloat = 0 {
         didSet {
@@ -157,12 +158,15 @@ struct SwipeToDismiss: ViewModifier {
     /// - Parameter thresholdToDismiss: the distance in points to trigger the dismiss block
     /// - Parameter onTranslationXChanged: the block to be invoked on the translation x of the view is changed
     /// - Parameter onDismiss: the block to be invoked when the swipe translation is greater than the thresholdToDismiss in points.
+    /// - Parameter onEnd: the block to be invoked when the gesture is ended
     init(thresholdToDismiss: CGFloat,
          onTranslationXChanged: ((CGFloat) -> Void)? = nil,
-         onDismiss: @escaping () -> Void) {
+         onDismiss: @escaping () -> Void,
+         onEnd: (() -> Void)? = nil) {
         self.thresholdToDismiss = thresholdToDismiss
         self.onDismiss = onDismiss
         self.onTranslationXChanged = onTranslationXChanged
+        self.onEnd = onEnd
     }
     
     func body(content: Content) -> some View {
@@ -188,6 +192,7 @@ struct SwipeToDismiss: ViewModifier {
                             self.translateX = 0
                         }
                     }
+                    onEnd?()
                 }), including: .gesture)
                 .matchParent(axis: .width, alignment: .leading)
         }
@@ -199,12 +204,14 @@ public extension View {
     /// - Parameter thresholdToDismiss: the distance in points to trigger the dismiss block. Defaults to 100 points.
     /// - Parameter onTranslationXChanged: the block to be invoked on the translation x of the view is changed
     /// - Parameter onDismiss: the block to be invoked when the swipe translation is greater than the thresholdToDismiss in points.
+    /// - Parameter onEnd: the block to be invoked when the gesture is ended
     func swipeToDismiss(thresholdToDismiss: CGFloat = 100,
                         onTranslationXChanged: ((CGFloat) -> Void)? = nil,
+                        onEnd: (() -> Void)? = nil,
                         onDismiss: @escaping () -> Void) -> some View {
         self.modifier(SwipeToDismiss(thresholdToDismiss: thresholdToDismiss,
                                      onTranslationXChanged: onTranslationXChanged,
-                                     onDismiss: onDismiss))
+                                     onDismiss: onDismiss, onEnd: onEnd))
     }
 }
 
