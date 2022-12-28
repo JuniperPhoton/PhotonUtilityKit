@@ -131,6 +131,8 @@ public extension View {
         self.overlay(GeometryReader(content: { proxy in
             Color.clear.onChange(of: proxy.size.width) { newValue in
                 onWidthChanged(newValue)
+            }.onAppear {
+                onWidthChanged(proxy.size.width)
             }
         }))
     }
@@ -143,17 +145,14 @@ struct SwipeToDismiss: ViewModifier {
     var onTranslationXChanged: ((CGFloat) -> Void)? = nil
     var onEnd: (() -> Void)? = nil
     
-    @State private var translateX: CGFloat = 0 {
+    @State private var viewWidth: CGFloat = 0
+    @State private var translationX: CGFloat = 0 {
         didSet {
-            onTranslationXChanged?(translateX)
+            onTranslationXChanged?(translationX)
         }
     }
-    
-    @State private var viewWidth: CGFloat = 0
-    @State private var showDeleteButton = false
-    
-    private var gesture = DragGesture(minimumDistance: 1)
-    
+    @GestureState private var dragStateOffsetX: CGFloat = 0
+
     /// Init this view with:
     /// - Parameter thresholdToDismiss: the distance in points to trigger the dismiss block
     /// - Parameter onTranslationXChanged: the block to be invoked on the translation x of the view is changed
@@ -172,30 +171,41 @@ struct SwipeToDismiss: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
             content
-                .offset(x: translateX)
+                .offset(x: translationX)
                 .listenWidthChanged(onWidthChanged: { width in
                     self.viewWidth = width
                 })
-                .gesture(gesture.onChanged({ t in
-                    if t.translation.width > 0 {
-                        self.translateX = t.translation.width
-                        self.showDeleteButton = self.translateX > 10
-                    }
-                }).onEnded({ t in
-                    if self.translateX > thresholdToDismiss {
-                        withAnimation {
-                            self.translateX = self.viewWidth
-                        }
-                        onDismiss()
-                    } else {
-                        withAnimation {
-                            self.translateX = 0
-                        }
-                    }
-                    onEnd?()
-                }), including: .gesture)
+                .gesture(DragGesture().updating($dragStateOffsetX) { value, state, transaction in
+                    // Updating method would always be invoked even is cancelled by system.
+                    // We depend the state here to update the translationX state
+                    state = value.translation.width
+                }, including: .gesture)
                 .matchParent(axis: .width, alignment: .leading)
+                .onChange(of: dragStateOffsetX) { newValue in
+                    // If the value is changed to zero, then trigger the end of gesture
+                    if newValue == 0 {
+                        triggerEnd()
+                    } else if newValue > 0 {
+                        translationX = newValue
+                    }
+                }
         }
+    }
+    
+    private func triggerEnd() {
+        if translationX >= thresholdToDismiss {
+            withAnimation(Animation.easeOut(duration: 0.3)) {
+                translationX = self.viewWidth
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                onDismiss()
+            }
+        } else {
+            withAnimation(Animation.easeOut) {
+                translationX = 0
+            }
+        }
+        onEnd?()
     }
 }
 
