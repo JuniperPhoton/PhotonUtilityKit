@@ -9,29 +9,6 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
-public struct PressActions: ViewModifier {
-    public var onPress: () -> Void
-    public var onRelease: () -> Void
-    
-    public init(onPress: @escaping () -> Void, onRelease: @escaping () -> Void) {
-        self.onPress = onPress
-        self.onRelease = onRelease
-    }
-    
-    public func body(content: Content) -> some View {
-        content
-            .simultaneousGesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged({ _ in
-                        onPress()
-                    })
-                    .onEnded({ _ in
-                        onRelease()
-                    })
-            )
-    }
-}
-
 struct MatchParent: ViewModifier {
     let matchWidth: Bool
     let matchHeight: Bool
