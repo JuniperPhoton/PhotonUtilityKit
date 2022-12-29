@@ -50,6 +50,7 @@ public struct ActionButton: View {
         HStack(spacing: 12) {
             if isLoading.wrappedValue {
                 ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: style.foregroundColor))
             }
             
             if (icon != nil) {
@@ -84,6 +85,7 @@ public struct ActionButton: View {
             }
         #endif
             .disabled(isLoading.wrappedValue)
+            .opacity(isLoading.wrappedValue ? 0.5 : 1.0)
     }
     
     private func getOpacityOnViewState() -> Double {
