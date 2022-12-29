@@ -77,13 +77,6 @@ public struct ActionButton: View {
                     onClick?()
                 }
             })
-        #if !os(watchOS)
-            .onHover { hover in
-                withAnimation {
-                    isHovered = hover
-                }
-            }
-        #endif
             .disabled(isLoading.wrappedValue)
             .opacity(isLoading.wrappedValue ? 0.5 : 1.0)
     }
