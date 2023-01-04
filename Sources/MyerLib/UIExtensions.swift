@@ -113,6 +113,26 @@ public extension View {
             }
         }))
     }
+    
+    func listenHeightChanged(onWidthChanged: @escaping (CGFloat) -> Void) -> some View {
+        self.overlay(GeometryReader(content: { proxy in
+            Color.clear.onChange(of: proxy.size.height) { newValue in
+                onWidthChanged(newValue)
+            }.onAppear {
+                onWidthChanged(proxy.size.height)
+            }
+        }))
+    }
+    
+    func listenSizeChanged(onWidthChanged: @escaping (CGSize) -> Void) -> some View {
+        self.overlay(GeometryReader(content: { proxy in
+            Color.clear.onChange(of: proxy.size) { newValue in
+                onWidthChanged(newValue)
+            }.onAppear {
+                onWidthChanged(proxy.size)
+            }
+        }))
+    }
 }
 
 public extension EdgeInsets {
