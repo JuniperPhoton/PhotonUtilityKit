@@ -166,6 +166,44 @@ extension ProposedViewSize: CustomStringConvertible {
     }
 }
 
+/// Represents a selected ``parent`` URL with its content ``files``.
+/// To access the ``files``, you must access them within``tryAccess(block:)``.
+///
+/// Note that the ``startAccessingSecurityScopedResource`` method should be invoked by the root folder the user selected, not the contents of dir.
+public struct ScopedURLContent: CustomStringConvertible {
+    public let parent: URL?
+    public let files: [URL]
+    
+    public var description: String {
+        return "parent \(String(describing: parent)), files count \(files.count)"
+    }
+    
+    public var isEmpty: Bool {
+        return files.isEmpty
+    }
+    
+    public var count: Int {
+        return files.count
+    }
+    
+    public init(parent: URL?, files: [URL]) {
+        self.parent = parent
+        self.files = files
+    }
+    
+    public func tryAccess<T>(block: () -> T) -> T {
+        let access = parent?.startAccessingSecurityScopedResource() ?? false
+        
+        defer {
+            if access {
+                parent?.stopAccessingSecurityScopedResource()
+            }
+        }
+        
+        return block()
+    }
+}
+
 public extension View {
     @available(iOS 15.0, macOS 12.0, *)
     func importFolderOrFiles(isPresented: Binding<Bool>, types: [UTType],
