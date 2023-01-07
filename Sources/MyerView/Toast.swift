@@ -99,8 +99,6 @@ public struct ToastView: View {
 }
 
 fileprivate struct ToastContentView: View {
-    @Environment(\.colorScheme) var colorScheme
-    
     @State var showBellAnimation = false
     
     let toast: String
@@ -108,11 +106,14 @@ fileprivate struct ToastContentView: View {
     var body: some View {
         HStack {
             Image(systemName: "bell")
+                .renderingMode(.template)
+                .foregroundColor(Color.black)
                 .rotationEffect(Angle(degrees: showBellAnimation ? 10 : -10))
                 .animation(.default.repeatForever(), value: showBellAnimation)
             Text(LocalizedStringKey(toast))
+                .foregroundColor(Color.black)
         }.padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
-            .background(Capsule().fill(colorScheme == .light ? Color.white : Color.black).addShadow())
+            .background(Capsule().fill(Color.white).addShadow())
             .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
             .transition(.move(edge: .top).combined(with: .opacity))
             .onAppear {
