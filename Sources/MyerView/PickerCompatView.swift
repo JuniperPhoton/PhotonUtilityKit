@@ -13,9 +13,12 @@ import SwiftUI
 /// This view wrap the ``content`` to a HStack which has a trailing Image displaying a symbol.
 @available(iOS 15.0, *)
 public struct PickerCompatView<Content: View>: View {
+    let foregroundColor: Color
     let content: () -> Content
     
-    public init(content: @escaping () -> Content) {
+    public init(foregroundColor: Color = .accentColor,
+                content: @escaping () -> Content) {
+        self.foregroundColor = foregroundColor
         self.content = content
     }
     
@@ -30,8 +33,18 @@ public struct PickerCompatView<Content: View>: View {
                     .renderingMode(.template)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .foregroundColor(foregroundColor)
                     .frame(width: 14, height: 14)
             }
+        }
+    }
+}
+
+public extension Picker {
+    @available(iOS 15.0, *)
+    func compat(foregroundColor: Color = Color.accentColor) -> some View {
+        PickerCompatView(foregroundColor: foregroundColor) {
+            self
         }
     }
 }
