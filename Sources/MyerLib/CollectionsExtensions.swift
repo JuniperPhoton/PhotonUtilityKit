@@ -80,6 +80,15 @@ public extension Collection {
     }
 }
 
+public extension Collection where Element: CustomStringConvertible {
+    /// Join the element that conforms to ``CustomStringConvertible`` protocol to a string with separator.
+    func joinToString(_ sepatator: String = "_") -> String {
+        return joinToString(sepatator: sepatator) { e in
+            e.description
+        }
+    }
+}
+
 public extension Collection {
     /// Mapping this collection to another collection which has s grouping key and an array of corresponding items.
     /// This method is used to list with section enabled.
