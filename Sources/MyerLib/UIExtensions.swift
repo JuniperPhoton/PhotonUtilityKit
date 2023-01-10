@@ -133,6 +133,17 @@ public extension View {
             }
         }))
     }
+    
+    func listenFrameChanged(coordinateSpace: CoordinateSpace = .global,
+                            onFrameChanged: @escaping (CGRect) -> Void) -> some View {
+        self.overlay(GeometryReader(content: { proxy in
+            Color.clear.onChange(of: proxy.frame(in: coordinateSpace)) { newValue in
+                onFrameChanged(newValue)
+            }.onAppear {
+                onFrameChanged(proxy.frame(in: coordinateSpace))
+            }
+        }))
+    }
 }
 
 public extension EdgeInsets {
