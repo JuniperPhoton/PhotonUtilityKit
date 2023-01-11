@@ -66,6 +66,16 @@ public class AppToast: ObservableObject {
     }
 }
 
+public struct ToastColor {
+    let foregroundColor: Color
+    let backgroundColor: Color
+    
+    public init(foregroundColor: Color = .black, backgroundColor: Color = .white) {
+        self.foregroundColor = foregroundColor
+        self.backgroundColor = backgroundColor
+    }
+}
+
 /// A view to show toast managed by ``AppToast``.
 /// Place this view into your fullscreen root view and that's it.
 ///
@@ -73,19 +83,21 @@ public class AppToast: ObservableObject {
 /// See ``AppToast`` for more details.
 public struct ToastView: View {
     @ObservedObject var appToast: AppToast
+    let colors: ToastColor
     
     private let dragGesture = DragGesture()
     
     @State var dragYOffset: CGFloat = 0
     
-    public init(appToast: AppToast) {
+    public init(appToast: AppToast, colors: ToastColor = .init()) {
         self.appToast = appToast
+        self.colors = colors
     }
     
     public var body: some View {
         ZStack(alignment: .top) {
             if !appToast.toast.isEmpty {
-                ToastContentView(toast: appToast.toast)
+                ToastContentView(toast: appToast.toast, colors: colors)
                     .offset(y: dragYOffset)
                     .gesture(dragGesture.onChanged({ v in
                         dragYOffset = v.translation.height
@@ -102,18 +114,19 @@ fileprivate struct ToastContentView: View {
     @State var showBellAnimation = false
     
     let toast: String
+    let colors: ToastColor
     
     var body: some View {
         HStack {
             Image(systemName: "bell")
                 .renderingMode(.template)
-                .foregroundColor(Color.black)
+                .foregroundColor(colors.foregroundColor)
                 .rotationEffect(Angle(degrees: showBellAnimation ? 10 : -10))
                 .animation(.default.repeatForever(), value: showBellAnimation)
             Text(LocalizedStringKey(toast))
-                .foregroundColor(Color.black)
+                .foregroundColor(colors.foregroundColor)
         }.padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
-            .background(Capsule().fill(Color.white).addShadow())
+            .background(Capsule().fill(colors.backgroundColor).addShadow())
             .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
             .transition(.move(edge: .top).combined(with: .opacity))
             .onAppear {
