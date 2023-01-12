@@ -114,22 +114,22 @@ public extension View {
         }))
     }
     
-    func listenHeightChanged(onWidthChanged: @escaping (CGFloat) -> Void) -> some View {
+    func listenHeightChanged(onHeightChanged: @escaping (CGFloat) -> Void) -> some View {
         self.overlay(GeometryReader(content: { proxy in
             Color.clear.onChange(of: proxy.size.height) { newValue in
-                onWidthChanged(newValue)
+                onHeightChanged(newValue)
             }.onAppear {
-                onWidthChanged(proxy.size.height)
+                onHeightChanged(proxy.size.height)
             }
         }))
     }
     
-    func listenSizeChanged(onWidthChanged: @escaping (CGSize) -> Void) -> some View {
+    func listenSizeChanged(onSizeChanged: @escaping (CGSize) -> Void) -> some View {
         self.overlay(GeometryReader(content: { proxy in
             Color.clear.onChange(of: proxy.size) { newValue in
-                onWidthChanged(newValue)
+                onSizeChanged(newValue)
             }.onAppear {
-                onWidthChanged(proxy.size)
+                onSizeChanged(proxy.size)
             }
         }))
     }
