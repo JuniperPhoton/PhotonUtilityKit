@@ -47,6 +47,14 @@ public struct ActionButton: View {
     }
     
     public var body: some View {
+        Button {
+            onClick?()
+        } label: {
+            content
+        }.buttonStyle(.plain)
+    }
+    
+    private var content: some View {
         HStack(spacing: 12) {
             if isLoading.wrappedValue {
                 if #available(iOS 15.0, *) {
@@ -77,12 +85,6 @@ public struct ActionButton: View {
             .matchParent(axis: frameConfigration.stretchToWidth ? .width : .none, alignment: .center)
             .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(style.backgroundColor).opacity(getOpacityOnViewState()))
-            .runIf(condition: onClick != nil, block: { v in
-                v.onTapGesture {
-                    isHovered = false
-                    onClick?()
-                }
-            })
             .disabled(isLoading.wrappedValue)
             .opacity(isLoading.wrappedValue ? 0.5 : 1.0)
     }
