@@ -49,8 +49,14 @@ public struct ActionButton: View {
     public var body: some View {
         HStack(spacing: 12) {
             if isLoading.wrappedValue {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: style.foregroundColor))
+                if #available(iOS 15.0, *) {
+                    ProgressView()
+                        .controlSize(.small)
+                        .progressViewStyle(CircularProgressViewStyle(tint: style.foregroundColor))
+                } else {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: style.foregroundColor))
+                }
             }
             
             if (icon != nil) {
