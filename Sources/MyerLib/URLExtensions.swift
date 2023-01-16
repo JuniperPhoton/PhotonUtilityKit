@@ -13,29 +13,55 @@ public extension URL {
         (try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
     }
     
+    func getExtension() -> String {
+        return NSString(string: self.absoluteString).pathExtension
+    }
+    
+    func getNameWithoutExtension() -> String {
+        let string = NSString(string: self.absoluteString).deletingPathExtension
+        guard let url = URL(string: string) else {
+            return ""
+        }
+        return url.lastPathComponent
+    }
+    
+    func replaceExtension(extensions: String) -> String {
+        let path = getNameWithoutExtension()
+        if path.isEmpty {
+            return ""
+        }
+        return "\(path).\(extensions)"
+    }
+    
+    func getUTType() -> UTType? {
+        guard let typeID = try? self.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier else {
+            return nil
+        }
+        
+        return UTType(typeID)
+    }
+    
     func isImage() -> Bool {
         guard let typeID = try? self.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier else {
             return false
         }
         
-        let utType = UTType(typeID)
-        
-        if let supertypes = utType?.supertypes {
-            if supertypes.contains(.image) {
-                return true
-            }
-        }
-        
-        // We check the UTType of the content to avoid loading data for non-image file
-        if utType != .tiff
-            && utType != .jpeg
-            && utType != .png
-            && utType != .heic
-            && utType != .rawImage
-            && utType?.identifier != "com.adobe.raw-image" {
+        guard let utType = UTType(typeID) else {
             return false
         }
         
-        return true
+        return utType.isImage()
+    }
+    
+    func isRawImage() -> Bool {
+        guard let typeID = try? self.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier else {
+            return false
+        }
+        
+        guard let utType = UTType(typeID) else {
+            return false
+        }
+        
+        return utType.isRawImage()
     }
 }
