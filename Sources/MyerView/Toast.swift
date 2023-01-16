@@ -100,7 +100,9 @@ public struct ToastView: View {
                 ToastContentView(toast: appToast.toast, colors: colors)
                     .offset(y: dragYOffset)
                     .gesture(dragGesture.onChanged({ v in
-                        dragYOffset = v.translation.height
+                        if v.translation.height <= 0 {
+                            dragYOffset = v.translation.height
+                        }
                     }).onEnded({ v in
                         self.appToast.clear()
                         self.dragYOffset = 0
