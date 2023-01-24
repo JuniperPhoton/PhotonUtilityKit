@@ -73,8 +73,9 @@ public extension View {
 }
 
 public extension View {
-    func addShadow() -> some View {
-        self.shadow(color: Color.black.opacity(0.1), radius: 3, x: 3, y: 3)
+    func addShadow(color: Color = Color.black.opacity(0.1),
+                   x: CGFloat = 3.0, y: CGFloat = 3.0) -> some View {
+        self.shadow(color: color, radius: 3, x: x, y: y)
     }
     
     /// Set this view to hidden if condition is meet.

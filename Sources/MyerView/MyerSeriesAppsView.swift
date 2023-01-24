@@ -108,7 +108,6 @@ public struct MyerSeriesAppsView: View {
     }
     
     public var body: some View {
-        
         VStack {
             VStack {
                 Image(systemName: "xmark")
@@ -131,6 +130,7 @@ public struct MyerSeriesAppsView: View {
 
             ScrollView {
                 VStack(spacing: 20) {
+                    Spacer().frame(height: 4)
                     ForEach(apps, id: \.title) { app in
                         AppView(app: app).padding(.horizontal)
                     }
@@ -141,12 +141,13 @@ public struct MyerSeriesAppsView: View {
         #if os(macOS)
         .frame(minWidth: 500, minHeight: 500)
         #endif
-        .background(Image(packageResource: colorScheme == .light ? "background_light" : "background_dark", ofType: "png"))
     }
 }
 
 struct AppView: View {
     @Environment(\.openURL) var openURL
+    @Environment(\.colorScheme) var colorScheme
+    
     let app: MyerSeriesApp
     
     var body: some View {
@@ -154,32 +155,21 @@ struct AppView: View {
             Image(packageResource: app.icon, ofType: "png")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 60)
+                .frame(width: 30)
             
             VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text(app.title)
-                        .foregroundColor(app.themeColor)
-                        .font(.title2.bold())
-                    
-                    Spacer()
-                    
-                    Image(packageResource: "apple_b", ofType: "png")
-                        .resizable()
-                        .renderingMode(.template)
-                        .foregroundColor(app.themeColor)
-                        .frame(width: 20, height: 20)
-                }
+                Text(app.title)
+                    .font(.title2.bold())
                 
                 Text(LocalizedStringKey(app.description), bundle: .module)
-                    .foregroundColor(app.themeColor)
                     .lineLimit(10)
+                    .opacity(0.8)
             }
         }
         .frame(maxWidth: 400, maxHeight: .infinity, alignment: .leading)
         .padding(12)
-        .background(RoundedRectangle(cornerRadius: 12).fill(app.themeColor.opacity(0.02)))
-        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(app.themeColor.opacity(1.0), lineWidth: 1.5))
+        .background(RoundedRectangle(cornerRadius: 20).fill(colorScheme == .light ? .white : Color(hex: 0x2d2d2e))
+            .addShadow(x: 0, y: 0))
         .onTapGesture {
             openURL(app.storeLink)
         }
