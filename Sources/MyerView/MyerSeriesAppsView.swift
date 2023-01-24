@@ -155,7 +155,7 @@ struct AppView: View {
             Image(packageResource: app.icon, ofType: "png")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 30)
+                .frame(width: 40)
             
             VStack(alignment: .leading, spacing: 8) {
                 Text(app.title)
