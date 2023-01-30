@@ -54,7 +54,7 @@ public struct ActionButton: View {
         }.buttonStyle(.plain)
     }
     
-    private var content: some View {
+    public var content: some View {
         HStack(spacing: 12) {
             if isLoading.wrappedValue {
                 if #available(iOS 15.0, *) {
@@ -80,7 +80,12 @@ public struct ActionButton: View {
                     .lineLimit(1)
                     .applyEffect(effect: frameConfigration.geoEffect)
             }
-        }.padding(12)
+        }
+        #if os(macOS)
+            .padding(10)
+        #else
+            .padding(12)
+        #endif
             .frame(minHeight: 30)
             .matchParent(axis: frameConfigration.stretchToWidth ? .width : .none, alignment: .center)
             .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
