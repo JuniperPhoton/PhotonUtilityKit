@@ -24,6 +24,14 @@ public class DeviceCompat {
 #endif
     }
     
+    public static func isiPad() -> Bool {
+#if os(iOS)
+        return UIDevice.current.userInterfaceIdiom == .pad
+#else
+        return false
+#endif
+    }
+    
     public static func isiOS() -> Bool {
 #if os(iOS)
         return true
