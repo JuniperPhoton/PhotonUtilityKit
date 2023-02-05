@@ -16,6 +16,16 @@ public class DeviceCompat {
         // private
     }
     
+    public static func isMac() -> Bool {
+#if os(iOS)
+        return false
+#elseif os(macOS)
+        return true
+#else
+        return false
+#endif
+    }
+    
     public static func isOnPhoneOnly() -> Bool {
 #if os(iOS)
         return UIDevice.current.userInterfaceIdiom == .phone
