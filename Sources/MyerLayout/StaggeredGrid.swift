@@ -21,7 +21,7 @@ import SwiftUI
 /// When the width changes, it would apply animation automatically.
 ///
 /// Currently not support spacing feature, and you would like to apply padding to your views.
-@available(iOS 16.0, macOS 13.0, watchOS 9.0, *)
+@available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
 public struct StaggeredGrid<Content: View>: View {
     let animated: Bool
     @State var width: CGFloat? = nil
@@ -54,7 +54,7 @@ public struct StaggeredGrid<Content: View>: View {
     }
 }
 
-@available(iOS 16.0, macOS 13.0, watchOS 9.0, *)
+@available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
 fileprivate struct StaggeredGridLayout: Layout {
     static var layoutProperties: LayoutProperties {
         var properties = LayoutProperties()

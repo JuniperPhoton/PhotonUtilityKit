@@ -85,8 +85,6 @@ public struct ToastView: View {
     @ObservedObject var appToast: AppToast
     let colors: ToastColor
     
-    private let dragGesture = DragGesture()
-    
     @State var dragYOffset: CGFloat = 0
     
     public init(appToast: AppToast, colors: ToastColor = .init()) {
@@ -99,7 +97,8 @@ public struct ToastView: View {
             if !appToast.toast.isEmpty {
                 ToastContentView(toast: appToast.toast, colors: colors)
                     .offset(y: dragYOffset)
-                    .gesture(dragGesture.onChanged({ v in
+#if !os(tvOS)
+                    .gesture(DragGesture().onChanged({ v in
                         if v.translation.height <= 0 {
                             dragYOffset = v.translation.height
                         }
@@ -107,6 +106,7 @@ public struct ToastView: View {
                         self.appToast.clear()
                         self.dragYOffset = 0
                     }))
+#endif
             }
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }

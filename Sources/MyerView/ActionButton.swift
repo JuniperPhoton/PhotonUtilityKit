@@ -59,7 +59,9 @@ public struct ActionButton: View {
             if isLoading.wrappedValue {
                 if #available(iOS 15.0, *) {
                     ProgressView()
+                    #if !os(tvOS)
                         .controlSize(.small)
+                    #endif
                         .progressViewStyle(CircularProgressViewStyle(tint: style.foregroundColor))
                 } else {
                     ProgressView()

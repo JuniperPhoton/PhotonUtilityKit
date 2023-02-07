@@ -55,11 +55,13 @@ public struct SwipeToAction: ViewModifier {
                 .listenWidthChanged(onWidthChanged: { width in
                     self.viewWidth = width
                 })
+            #if !os(tvOS)
                 .gesture(DragGesture().updating($dragStateOffsetX) { value, state, transaction in
                     // Updating method would always be invoked even is cancelled by system.
                     // We depend the state here to update the translationX state
                     state = value.translation.width
                 }, including: .all)
+            #endif
                 .matchParent(axis: .width, alignment: .leading)
                 .onChange(of: dragStateOffsetX) { newValue in
                     // If the value is changed to zero, then trigger the end of gesture

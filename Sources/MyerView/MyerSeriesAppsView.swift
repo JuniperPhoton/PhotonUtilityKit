@@ -94,6 +94,7 @@ struct MyerSplashApp: MyerSeriesApp {
     }
 }
 
+@available(iOS 15.0, macOS 12.0, watchOS 8.0, tvOS 16.0, *)
 public struct MyerSeriesAppsView: View {
     @Environment(\.colorScheme) var colorScheme
     
@@ -170,9 +171,11 @@ struct AppView: View {
         .padding(12)
         .background(RoundedRectangle(cornerRadius: 20).fill(colorScheme == .light ? .white : Color(hex: 0x2d2d2e))
             .addShadow(x: 0, y: 0))
+        #if !os(tvOS)
         .onTapGesture {
             openURL(app.storeLink)
         }
+        #endif
     }
 }
 

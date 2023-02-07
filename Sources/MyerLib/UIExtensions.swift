@@ -203,7 +203,7 @@ extension CGSize: CustomStringConvertible {
     }
 }
 
-@available(iOS 16.0, macOS 13.0, watchOS 9.0, *)
+@available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
 extension ProposedViewSize: CustomStringConvertible {
     public var description: String {
         return "\(String(describing: self.width)) x \(String(describing: self.height))"
@@ -252,7 +252,7 @@ public extension View {
     @available(iOS 15.0, macOS 12.0, *)
     func importFolderOrFiles(isPresented: Binding<Bool>, types: [UTType],
                              allowsMultipleSelection: Bool, onSucess: @escaping ([URL])->Void) -> some View {
-        #if !os(watchOS)
+        #if !os(tvOS)
         return self.fileImporter(isPresented: isPresented, allowedContentTypes: types,
                                  allowsMultipleSelection: allowsMultipleSelection) { result in
             defer {
