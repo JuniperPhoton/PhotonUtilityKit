@@ -94,12 +94,38 @@ struct MyerSplashApp: MyerSeriesApp {
     }
 }
 
+struct MyerSplash2App: MyerSeriesApp {
+    var title: String {
+        return "MyerSplash 2"
+    }
+    
+    var description: String {
+        return "MyerSplash2Desc"
+    }
+    
+    var icon: String {
+        return "myersplash2"
+    }
+    
+    var themeColor: Color {
+        return Color(hex: 0xFFFFFF)
+    }
+    
+    var backgroundColor: Color {
+        return Color(hex: 0x000000)
+    }
+    
+    var storeLink: URL {
+        return URL(string: "https://apps.apple.com/us/app/myersplash-2/id1670114025")!
+    }
+}
+
 @available(iOS 15.0, macOS 12.0, watchOS 8.0, tvOS 16.0, *)
 public struct MyerSeriesAppsView: View {
     @Environment(\.colorScheme) var colorScheme
     
     private let apps: [any MyerSeriesApp] = [
-        MyerSplashApp(), MyerTidyApp(), MyerListApp()
+        MyerSplashApp(), MyerSplash2App(), MyerTidyApp(), MyerListApp()
     ]
     
     var showView: Binding<Bool>
