@@ -26,6 +26,14 @@ public class DeviceCompat {
 #endif
     }
     
+    public static func isTV() -> Bool {
+#if os(tvOS)
+        return true
+#else
+        return false
+#endif
+    }
+    
     public static func isOnPhoneOnly() -> Bool {
 #if os(iOS)
         return UIDevice.current.userInterfaceIdiom == .phone
