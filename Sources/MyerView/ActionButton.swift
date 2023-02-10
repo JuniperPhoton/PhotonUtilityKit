@@ -9,6 +9,14 @@ import Foundation
 import SwiftUI
 import MyerLib
 
+fileprivate struct ActionButtonCustomStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .brightness(configuration.isPressed ? 0.2 : 0.0)
+            .saturation(configuration.isPressed ? 0.4 : 1.0)
+    }
+}
+
 /// A button with default style.
 ///
 /// Use ``title`` and ``icon`` to specifiy the element in this button. Note that either of them can be nil.
@@ -51,7 +59,7 @@ public struct ActionButton: View {
             onClick?()
         } label: {
             content
-        }.buttonStyle(.plain)
+        }.buttonStyle(ActionButtonCustomStyle())
     }
     
     public var content: some View {
