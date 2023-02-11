@@ -163,7 +163,7 @@ public struct MyerSeriesAppsView: View {
                 VStack(spacing: 20) {
                     Spacer().frame(height: 4)
                     ForEach(apps, id: \.title) { app in
-                        AppView(app: app).padding(.horizontal)
+                        AppView(app: app)
                         if apps.firstIndex(where: { $0.title == app.title}) != apps.count - 1 {
                             Divider()
                                 .frame(maxWidth: 400)
@@ -173,7 +173,8 @@ public struct MyerSeriesAppsView: View {
                 Spacer().frame(height: 20)
             }
             
-        }.padding(0)
+        }
+        .padding(20)
         #if os(macOS)
         .frame(minWidth: 500, minHeight: 600)
         #endif
@@ -206,9 +207,6 @@ struct AppView: View {
                 }
             }
             .frame(maxWidth: 400, maxHeight: .infinity, alignment: .leading)
-//            .padding(12)
-//            .background(RoundedRectangle(cornerRadius: 12).fill(colorScheme == .light ? .white : Color(hex: 0x2d2d2e))
-//                .addShadow(x: 0, y: 0))
         }.buttonStyle(.plain)
     }
 }
