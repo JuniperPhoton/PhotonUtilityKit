@@ -128,6 +128,8 @@ public struct MyerSeriesAppsView: View {
         MyerSplashApp(), MyerSplash2App(), MyerTidyApp(), MyerListApp()
     ]
     
+    private let fontName = "DIN Condensed"
+
     var showView: Binding<Bool>
     
     public init(showView: Binding<Bool>) {
@@ -146,12 +148,14 @@ public struct MyerSeriesAppsView: View {
                     }
             }.matchParent(axis: .width, alignment: .topTrailing)
             
-            Text(LocalizedStringKey("MyerSeries apps"), bundle: .module)
-                .font(.largeTitle.bold())
-            
-            Text("by JuniperPhoton")
-                .padding(0)
-                .font(.body)
+            VStack(alignment: .leading) {
+                Text(LocalizedStringKey("MyerSeries apps"), bundle: .module)
+                    .font(.custom(fontName, size: 50, relativeTo: .title).bold())
+                
+                Text("by JuniperPhoton")
+                    .padding(0)
+                    .font(.custom(fontName, size: 20, relativeTo: .body))
+            }.matchParent(axis: .width, alignment: .leading).frame(maxWidth: 400)
             
             Spacer().frame(height: 20)
 
@@ -160,13 +164,18 @@ public struct MyerSeriesAppsView: View {
                     Spacer().frame(height: 4)
                     ForEach(apps, id: \.title) { app in
                         AppView(app: app).padding(.horizontal)
+                        if apps.firstIndex(where: { $0.title == app.title}) != apps.count - 1 {
+                            Divider()
+                                .frame(maxWidth: 400)
+                        }
                     }
                 }
+                Spacer().frame(height: 20)
             }
             
         }.padding(0)
         #if os(macOS)
-        .frame(minWidth: 500, minHeight: 500)
+        .frame(minWidth: 500, minHeight: 600)
         #endif
     }
 }
@@ -178,30 +187,29 @@ struct AppView: View {
     let app: MyerSeriesApp
     
     var body: some View {
-        HStack {
-            Image(packageResource: app.icon, ofType: "png")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 40)
-            
-            VStack(alignment: .leading, spacing: 8) {
-                Text(app.title)
-                    .font(.title2.bold())
-                
-                Text(LocalizedStringKey(app.description), bundle: .module)
-                    .lineLimit(10)
-                    .opacity(0.8)
-            }
-        }
-        .frame(maxWidth: 400, maxHeight: .infinity, alignment: .leading)
-        .padding(12)
-        .background(RoundedRectangle(cornerRadius: 20).fill(colorScheme == .light ? .white : Color(hex: 0x2d2d2e))
-            .addShadow(x: 0, y: 0))
-        #if !os(tvOS)
-        .onTapGesture {
+        Button {
             openURL(app.storeLink)
-        }
-        #endif
+        } label: {
+            HStack {
+                Image(packageResource: app.icon, ofType: "png")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 40)
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(app.title)
+                        .font(.title2.bold())
+                    
+                    Text(LocalizedStringKey(app.description), bundle: .module)
+                        .lineLimit(10)
+                        .opacity(0.8)
+                }
+            }
+            .frame(maxWidth: 400, maxHeight: .infinity, alignment: .leading)
+//            .padding(12)
+//            .background(RoundedRectangle(cornerRadius: 12).fill(colorScheme == .light ? .white : Color(hex: 0x2d2d2e))
+//                .addShadow(x: 0, y: 0))
+        }.buttonStyle(.plain)
     }
 }
 
