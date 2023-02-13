@@ -7,8 +7,8 @@ let package = Package(
     name: "MyerLib",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v14),
-        .macOS(.v11),
+        .iOS(.v15),
+        .macOS(.v12),
         .watchOS(.v8),
         .tvOS(.v15)
     ],

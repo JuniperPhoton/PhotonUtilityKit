@@ -57,4 +57,14 @@ public class DeviceCompat {
         return false
 #endif
     }
+    
+#if os(iOS)
+    private static let impact = UIImpactFeedbackGenerator(style: .light)
+#endif
+    
+    public static func triggerVibrationFeedback() {
+#if os(iOS)
+        impact.impactOccurred()
+#endif
+    }
 }
