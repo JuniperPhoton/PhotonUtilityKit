@@ -12,8 +12,7 @@ import MyerLib
 fileprivate struct ActionButtonCustomStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .brightness(configuration.isPressed ? 0.2 : 0.0)
-            .saturation(configuration.isPressed ? 0.4 : 1.0)
+            .brightness(configuration.isPressed ? 0.3 : 0.0)
     }
 }
 
@@ -32,9 +31,6 @@ public struct ActionButton: View {
     
     public let style: ActionButtonStyle
     public let frameConfigration: FrameConfiguration
-            
-    @State var isHovered = false
-    @State var isTapped = false
     
     public var isLoading: Binding<Bool>
     
@@ -99,21 +95,9 @@ public struct ActionButton: View {
             .frame(minHeight: 30)
             .matchParent(axis: frameConfigration.stretchToWidth ? .width : .none, alignment: .center)
             .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(style.backgroundColor).opacity(getOpacityOnViewState()))
+                .fill(style.backgroundColor))
             .disabled(isLoading.wrappedValue)
             .opacity(isLoading.wrappedValue ? 0.5 : 1.0)
-    }
-    
-    private func getOpacityOnViewState() -> Double {
-        if (isHovered) {
-            return 0.7
-        }
-        
-        if (isTapped) {
-            return 0.6
-        }
-        
-        return 1.0
     }
     
 #if os(iOS)
@@ -154,7 +138,7 @@ public struct FrameConfiguration {
     public let adaptOnUISizeClassChanged: Bool
     public let geoEffect: Effect
     
-    public init(stretchToWidth: Bool = false,
+    public init(_ stretchToWidth: Bool = false,
                 adaptOnUISizeClassChanged: Bool = false,
                 geoEffect: Effect = .none) {
         self.stretchToWidth = stretchToWidth
