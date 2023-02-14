@@ -143,7 +143,7 @@ public struct MyerSeriesAppsView: View {
                     .renderingMode(.template)
                     .padding(20)
                     .contentShape(Rectangle())
-                    .onTapGesture {
+                    .asPlainButton {
                         showView.wrappedValue.toggle()
                     }
             }.matchParent(axis: .width, alignment: .topTrailing)
