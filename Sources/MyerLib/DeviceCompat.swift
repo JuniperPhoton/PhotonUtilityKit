@@ -72,4 +72,12 @@ public class DeviceCompat {
         impact.impactOccurred()
 #endif
     }
+    
+    /// Check if current os version is released in 2022.
+    public static func isOS2022AndAbove() -> Bool {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+            return true
+        }
+        return false
+    }
 }
