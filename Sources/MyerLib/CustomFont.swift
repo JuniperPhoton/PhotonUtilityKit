@@ -9,10 +9,10 @@ import SwiftUI
 
 let fontName = "DIN Condensed"
 
-/// Check if is in Chinese local environment.
-public func isChineseLocalEnvironment() -> Bool {
+/// Check if is NOT in Chinese local environment.
+public func isNotChineseLocalEnvironment() -> Bool {
     let localized = NSLocalizedString("TestLocal", tableName: nil, bundle: Bundle.module, value: "", comment: "")
-    return localized == "ChineseLocal"
+    return localized == "EnglishLocal"
 }
 
 /// A ViewModifier to apply to a ``Text`` to use a custom font.
@@ -34,16 +34,14 @@ public struct CustomFont: ViewModifier {
         self.size = size
         self.relativeTo = relativeTo
     }
-    
-    private let identifiers = ["zh_CN", "zh-Hans", "zh-Hant"]
-    
+        
     public func body(content: Content) -> some View {
-        let useChinese = isChineseLocalEnvironment() && !fixedEnglishFont
-        if useChinese {
-            content.font(.system(size: size - 10).bold())
-        } else {
+        let useEnglish = isNotChineseLocalEnvironment() || fixedEnglishFont
+        if useEnglish {
             content.font(.custom(fontName, size: size, relativeTo: relativeTo))
                 .fixCondensedOffset()
+        } else {
+            content.font(.system(size: size - 10).bold())
         }
     }
 }
