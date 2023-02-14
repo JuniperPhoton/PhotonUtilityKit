@@ -207,6 +207,7 @@ struct AppView: View {
                 }
             }
             .frame(maxWidth: 400, maxHeight: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
         }.buttonStyle(.plain)
     }
 }
