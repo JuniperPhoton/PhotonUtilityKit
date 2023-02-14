@@ -26,17 +26,30 @@ public extension String? {
 }
 
 public extension String {
+    /// Get a localized string.
     func localized(withComment: String = "") -> String {
         return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: withComment)
     }
 }
 
 public extension Comparable {
+    /// Clamp this to the closed ``range``.
     func clamp(to range: ClosedRange<Self>) -> Self {
         if self < range.lowerBound {
             return range.lowerBound
         }
         if self > range.upperBound {
+            return range.upperBound
+        }
+        return self
+    }
+    
+    /// Clamp this to the  half-open ``range``.
+    func clamp(to range: Range<Self>) -> Self {
+        if self < range.lowerBound {
+            return range.lowerBound
+        }
+        if self >= range.upperBound {
             return range.upperBound
         }
         return self

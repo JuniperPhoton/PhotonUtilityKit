@@ -9,6 +9,7 @@ import Foundation
 import UniformTypeIdentifiers
 
 public extension UTType {
+    /// Check if this UTType is an image type.
     func isImage() -> Bool {
         let imageSuperTypes = [UTType.rawImage, UTType.image]
         let imageTypes = [
@@ -22,6 +23,7 @@ public extension UTType {
         return isTypeFor(superTypes: imageSuperTypes, orSubTypes: imageTypes)
     }
     
+    /// Check if this UTType is a RAW image type.
     func isRawImage() -> Bool {
         return isTypeFor(superTypes: [UTType.rawImage], orSubTypes: [UTType.rawImage])
     }

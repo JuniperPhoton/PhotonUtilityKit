@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 extension ScenePhase: CustomDebugStringConvertible {
+    /// Provide a  debugDescription for a``ScenePhase``.
     public var debugDescription: String {
         switch self {
         case .active: return "active"

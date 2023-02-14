@@ -9,6 +9,7 @@ import Foundation
 #if os(macOS)
 import AppKit
 
+@available(*, deprecated, message: "Use the system environment value openURL instead.")
 public class URILauncher {
     public static let shared = URILauncher()
     
@@ -24,6 +25,7 @@ public class URILauncher {
 #elseif os(iOS)
 import UIKit
 
+@available(*, deprecated, message: "Use the system environment value openURL instead.")
 public class URILauncher {
     public static let shared = URILauncher()
     

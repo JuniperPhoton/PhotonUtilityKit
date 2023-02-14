@@ -16,6 +16,7 @@ public class DeviceCompat {
         // private
     }
     
+    /// Check if it's running on a Mac.
     public static func isMac() -> Bool {
 #if os(iOS)
         return false
@@ -26,6 +27,7 @@ public class DeviceCompat {
 #endif
     }
     
+    /// Check if it's running on a Apple TV.
     public static func isTV() -> Bool {
 #if os(tvOS)
         return true
@@ -34,6 +36,7 @@ public class DeviceCompat {
 #endif
     }
     
+    /// Check if it's running on a iPhone.
     public static func isOnPhoneOnly() -> Bool {
 #if os(iOS)
         return UIDevice.current.userInterfaceIdiom == .phone
@@ -42,6 +45,7 @@ public class DeviceCompat {
 #endif
     }
     
+    /// Check if it's running on a iPad.
     public static func isiPad() -> Bool {
 #if os(iOS)
         return UIDevice.current.userInterfaceIdiom == .pad
@@ -50,6 +54,7 @@ public class DeviceCompat {
 #endif
     }
     
+    /// Check if it's running on a iOS device, including iPhone and iPad.
     public static func isiOS() -> Bool {
 #if os(iOS)
         return true

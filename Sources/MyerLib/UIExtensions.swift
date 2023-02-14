@@ -51,9 +51,21 @@ public extension View {
                                   matchHeight: axis == .widthHeight || axis == .height,
                                   alignment: alignment))
     }
+    
+    /// Make this view's width infinity.
+    func matchWidth(_ alignment: Alignment = .center) -> some View {
+        self.matchParent(axis: .width, alignment: alignment)
+    }
+    
+    /// Make this view's height infinity.
+    func matchHeight(_ alignment: Alignment = .center) -> some View {
+        self.matchParent(axis: .height, alignment: alignment)
+    }
 }
 
 public extension Color {
+    /// Init a ``Color`` with a hex string.
+    /// - parameter hexString: a hex string starts with `#` and has this format: #AARRGGBB or #RRGGBB
     init?(hexString: String?) {
         guard let hexString = hexString else {
             return nil

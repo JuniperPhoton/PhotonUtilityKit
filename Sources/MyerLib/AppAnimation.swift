@@ -8,6 +8,13 @@
 import Foundation
 import SwiftUI
 
+public extension Binding {
+    /// Apply ``withEastOutAnimation(duration:_:onEnd:onEndDelay:_:)`` to a ``Binding``.
+    func easeOutAnimation() -> Binding {
+        self.animation(.easeOut)
+    }
+}
+
 /// Returns the result of recomputing the view's body with the provided
 /// animation.
 ///

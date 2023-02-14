@@ -9,14 +9,17 @@ import Foundation
 import UniformTypeIdentifiers
 
 public extension URL {
+    /// Check if t his URL represents a dir.
     var isDir: Bool {
         (try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
     }
     
+    /// Get the file extension from this URL. Return empty if not found.
     func getExtension() -> String {
         return NSString(string: self.absoluteString).pathExtension
     }
     
+    /// Get the file name with extension.
     func getNameWithoutExtension() -> String {
         let string = NSString(string: self.absoluteString).deletingPathExtension
         guard let url = URL(string: string) else {
@@ -25,6 +28,8 @@ public extension URL {
         return url.lastPathComponent
     }
     
+    /// Replace the extension to the URL.
+    /// - parameter extensions: extension to replace. Do not starting with `.`.
     func replaceExtension(extensions: String) -> String {
         let path = getNameWithoutExtension()
         if path.isEmpty {
@@ -33,6 +38,7 @@ public extension URL {
         return "\(path).\(extensions)"
     }
     
+    /// Get the ``UTType`` from this URL.
     func getUTType() -> UTType? {
         guard let typeID = try? self.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier else {
             return nil
@@ -41,24 +47,18 @@ public extension URL {
         return UTType(typeID)
     }
     
+    /// Check if this URL represents an image type.
     func isImage() -> Bool {
-        guard let typeID = try? self.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier else {
-            return false
-        }
-        
-        guard let utType = UTType(typeID) else {
+        guard let utType = getUTType() else {
             return false
         }
         
         return utType.isImage()
     }
     
+    /// Check if this URL represents a RAW image type.
     func isRawImage() -> Bool {
-        guard let typeID = try? self.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier else {
-            return false
-        }
-        
-        guard let utType = UTType(typeID) else {
+        guard let utType = getUTType() else {
             return false
         }
         
