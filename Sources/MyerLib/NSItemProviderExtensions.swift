@@ -20,6 +20,8 @@ public extension NSItemProvider {
         return await loadAsUIImage()?.cgImage
 #elseif os(macOS)
         return await loadAsNSImage()?.cgImage(forProposedRect: nil, context: nil, hints: nil)
+#else
+        return nil
 #endif
     }
     

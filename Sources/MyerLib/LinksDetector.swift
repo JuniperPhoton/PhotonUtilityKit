@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import MyerLib
 
 public class LinksDetector {
     public static let shared = LinksDetector()

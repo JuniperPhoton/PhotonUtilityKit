@@ -28,11 +28,13 @@ public struct IndicatorView: View {
                         Circle().fill(selectedIndex.wrappedValue == page ? foregroundColor : Color.clear)
                     )
                     .contentShape(Circle())
+#if !os(tvOS)
                     .onTapGesture {
                         withEastOutAnimation {
                             selectedIndex.wrappedValue = page
                         }
                     }
+#endif
             }
         }.padding(.vertical, 8)
     }

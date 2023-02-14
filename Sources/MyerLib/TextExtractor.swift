@@ -56,7 +56,7 @@ public class TextExtractor {
                 continuation.resume(returning: result)
             })
             
-            if #available(iOS 16.0, macOS 13.0, *) {
+            if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
                 request.automaticallyDetectsLanguage = true
             } else {
                 request.recognitionLanguages = ["zh-cn", "en-us"]

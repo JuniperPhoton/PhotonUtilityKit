@@ -26,7 +26,7 @@ public class AppPasteboard {
 #if os(macOS)
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(string, forType: .string)
-#else
+#elseif os(iOS)
         UIPasteboard.general.setValue(string,
                                       forPasteboardType: UTType.plainText.identifier)
 #endif
