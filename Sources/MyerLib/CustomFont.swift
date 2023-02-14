@@ -52,7 +52,7 @@ public extension View {
     /// For a condensed font, move the baseline down by 2pt to make it look better.
     @ViewBuilder
     func fixCondensedOffset() -> some View {
-        if #available(iOS 16.0, macOS 13.0, *) {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
             self.baselineOffset(-2)
         } else {
             self
@@ -76,5 +76,23 @@ public extension Text {
     func applyCustomSubTitleFont(fixedEnglishFont: Bool) -> some View {
         self.bold().modifier(CustomFont(fixedEnglishFont: fixedEnglishFont,
                                         size: DeviceCompat.isTV() ? 80 : 40, relativeTo: .title))
+    }
+}
+
+public struct FocusStyleForTV: ViewModifier {
+    @Environment(\.isFocused) var isFocused
+    
+    var onFocusChanged: ((Bool) -> Void)? = nil
+    
+    public func body(content: Content) -> some View {
+        Group {
+            if isFocused {
+                content.colorMultiply(Color.black)
+            } else {
+                content
+            }
+        }.onChange(of: isFocused) { newValue in
+            onFocusChanged?(newValue)
+        }
     }
 }

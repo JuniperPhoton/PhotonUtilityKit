@@ -77,13 +77,17 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                         Capsule().fill(foregroundColor)
                             .matchedGeometryEffect(id: "capsule", in: namespace)
                     }
-                }.onTapGesture {
+                }
+                #if !os(tvOS)
+                .onTapGesture {
                     DeviceCompat.triggerVibrationFeedback()
                     
                     withEastOutAnimation {
                         selection.wrappedValue = item
                     }
-                }.id(item)
+                }
+                #endif
+                .id(item)
             }
         }.padding(3).background(Capsule().fill(backgroundColor))
     }
