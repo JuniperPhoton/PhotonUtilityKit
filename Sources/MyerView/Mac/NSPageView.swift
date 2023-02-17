@@ -68,7 +68,23 @@ public struct NSPageView<T, V>: NSViewControllerRepresentable where V: View {
     }
 }
 
-class NSPageViewContainerController: NSPageController, NSPageControllerDelegate, NSWindowDelegate {
+/// A NSView to exposure the ``onStartLiveResize`` and ``onEndLiveResize`` event.
+public class ResizeAwareNSView: NSView {
+    public var onEndLiveResize: (() -> Void)? = nil
+    public var onStartLiveResize: (() -> Void)? = nil
+    
+    public override func viewDidEndLiveResize() {
+        super.viewDidEndLiveResize()
+        onEndLiveResize?()
+    }
+    
+    public override func viewWillStartLiveResize() {
+        super.viewWillStartLiveResize()
+        onStartLiveResize?()
+    }
+}
+
+class NSPageViewContainerController: NSPageController, NSPageControllerDelegate {
     var pageObjects: [Any] = []
     
     var idFromObject: ((Any) -> String)? = nil
@@ -87,7 +103,14 @@ class NSPageViewContainerController: NSPageController, NSPageControllerDelegate,
     }
     
     override func loadView() {
-        self.view = NSView()
+        let view = ResizeAwareNSView()
+        view.onStartLiveResize = { [weak self] in
+            self?.completeTransition()
+        }
+        view.onEndLiveResize = { [weak self] in
+            self?.completeTransition()
+        }
+        self.view = view
     }
     
     override func viewDidLoad() {
@@ -101,11 +124,6 @@ class NSPageViewContainerController: NSPageController, NSPageControllerDelegate,
         self.view.subviews.forEach { v in
             v.frame = self.view.bounds
         }
-    }
-    
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        self.view.window?.delegate = self
     }
     
     func updateSelectedIndex(_ index: Int) {
@@ -128,18 +146,6 @@ class NSPageViewContainerController: NSPageController, NSPageControllerDelegate,
         controller.content = objectToView
         controller.object = object
         return controller
-    }
-    
-    func windowDidResize(_ notification: Notification) {
-        self.completeTransition()
-    }
-    
-    func windowDidExitFullScreen(_ notification: Notification) {
-        self.completeTransition()
-    }
-    
-    func windowDidEnterFullScreen(_ notification: Notification) {
-        self.completeTransition()
     }
 }
 
