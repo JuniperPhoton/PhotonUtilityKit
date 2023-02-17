@@ -301,7 +301,7 @@ public extension View {
     func asPlainButton(action: @escaping () -> Void) -> some View {
         Button(action: action) {
             self
-        }.buttonStyle(CustomPlainButtonSytle())
+        }.buttonStyle(.plain)
     }
 }
 
