@@ -41,7 +41,7 @@ public extension NSItemProvider {
 #endif
     
 #if os(macOS)
-    public func loadAsNSImage() async -> NSImage? {
+    func loadAsNSImage() async -> NSImage? {
         return await withCheckedContinuation { continuation in
             if #available(macOS 13.0, *) {
                 if !self.canLoadObject(ofClass: NSImage.self) {
