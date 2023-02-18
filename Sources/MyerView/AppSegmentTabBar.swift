@@ -13,15 +13,18 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
     let sources: [T]
     let scrollable: Bool
     var foregroundColor: Color
+    var selectedForegroundColor: Color
     var backgroundColor: Color
     let textKeyPath: KeyPath<T, String>
     
     public init(selection: Binding<T>, sources: [T], scrollable: Bool,
-         foregroundColor: Color, backgroundColor: Color, textKeyPath: KeyPath<T, String>) {
+                foregroundColor: Color, selectedForegroundColor: Color = .white,
+                backgroundColor: Color, textKeyPath: KeyPath<T, String>) {
         self.selection = selection
         self.sources = sources
         self.scrollable = scrollable
         self.foregroundColor = foregroundColor
+        self.selectedForegroundColor = selectedForegroundColor
         self.backgroundColor = backgroundColor
         self.textKeyPath = textKeyPath
     }
@@ -34,7 +37,7 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
                          backgroundColor: backgroundColor) { item in
             Text(LocalizedStringKey(item[keyPath: textKeyPath]))
                 .bold()
-                .foregroundColor(selection.wrappedValue == item ? Color.white : foregroundColor.opacity(0.7))
+                .foregroundColor(selection.wrappedValue == item ? selectedForegroundColor : foregroundColor.opacity(0.7))
                 .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
                 .lineLimit(1)
         }
