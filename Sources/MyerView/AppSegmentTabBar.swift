@@ -60,7 +60,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     content
                 }.onChange(of: selection.wrappedValue) { newValue in
-                    withEastOutAnimation {
+                    withEaseOutAnimation {
                         reader.scrollTo(newValue)
                     }
                 }
@@ -85,7 +85,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                 .onTapGesture {
                     DeviceCompat.triggerVibrationFeedback()
                     
-                    withEastOutAnimation {
+                    withEaseOutAnimation {
                         selection.wrappedValue = item
                     }
                 }

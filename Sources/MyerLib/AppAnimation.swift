@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 public extension Binding {
-    /// Apply ``withEastOutAnimation(duration:_:onEnd:onEndDelay:_:)`` to a ``Binding``.
+    /// Apply ``withEaseOutAnimation(duration:_:onEnd:onEndDelay:_:)`` to a ``Binding``.
     func easeOutAnimation() -> Binding {
         self.animation(.easeOut)
     }
@@ -23,7 +23,7 @@ public extension Binding {
 /// after the original animation started.
 ///
 /// If you want to animate value from one to other, then from the other to another one, you can use the ``animate(value:from:to:duration:_:interval:)`` for convenience.
-public func withEastOutAnimation<Result>(duration: TimeInterval = 0.3,
+public func withEaseOutAnimation<Result>(duration: TimeInterval = 0.3,
                                          _ delay: TimeInterval = 0.0,
                                          onEnd: (() -> Void)? = nil,
                                          onEndDelay: TimeInterval = 0.3,
@@ -49,7 +49,7 @@ public func animateBackForth<T>(value: Binding<T>,
                                 duration: TimeInterval = 0.3,
                                 _ delay: TimeInterval = 0.0,
                                 interval: TimeInterval = 1.0) {
-    withEastOutAnimation(duration: duration, delay, onEnd: {
+    withEaseOutAnimation(duration: duration, delay, onEnd: {
         if to != nil {
             value.wrappedValue = to!
         }

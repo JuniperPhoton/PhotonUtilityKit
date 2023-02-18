@@ -86,7 +86,7 @@ public struct SwipeToAction: ViewModifier {
     
     private func triggerEnd() {
         if abs(translationX) >= thresholdToAction {
-            withEastOutAnimation {
+            withEaseOutAnimation {
                 if currentAxis == .leadingToTrailing {
                     translationX = self.viewWidth
                 } else {
@@ -101,7 +101,7 @@ public struct SwipeToAction: ViewModifier {
                 }
             }
         } else {
-            withEastOutAnimation {
+            withEaseOutAnimation {
                 translationX = 0
             }
         }

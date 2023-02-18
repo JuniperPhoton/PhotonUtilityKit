@@ -30,7 +30,7 @@ public struct IndicatorView: View {
                     .contentShape(Circle())
 #if !os(tvOS)
                     .onTapGesture {
-                        withEastOutAnimation {
+                        withEaseOutAnimation {
                             selectedIndex.wrappedValue = page
                         }
                     }
