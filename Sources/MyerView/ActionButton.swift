@@ -12,7 +12,7 @@ import MyerLib
 fileprivate struct ActionButtonCustomStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .brightness(configuration.isPressed ? 0.3 : 0.0)
+            .brightness(configuration.isPressed ? -0.1 : 0.0)
     }
 }
 
