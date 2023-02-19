@@ -35,13 +35,13 @@ public struct NSPageView<T, V>: NSViewControllerRepresentable where V: View {
     }
     
     public func makeNSViewController(context: Context) -> some NSViewController {
-        let controller = NSPageViewContainerController()
+        let controller = NSPageViewContainerController<T, V>()
         controller.pageObjects = pageObjects
         controller.idFromObject = { object in
-            return (object as! T)[keyPath: idKeyPath]
+            return object[keyPath: idKeyPath]
         }
         controller.objectToView = { object in
-            return AnyView(contentView(object as! T))
+            return contentView(object)
         }
         controller.idToObject = { id in
             return pageObjects.first { page in
@@ -59,7 +59,7 @@ public struct NSPageView<T, V>: NSViewControllerRepresentable where V: View {
     }
     
     public func updateNSViewController(_ nsViewController: NSViewControllerType, context: Context) {
-        guard let pageViewController = nsViewController as? NSPageViewContainerController else {
+        guard let pageViewController = nsViewController as? NSPageViewContainerController<T, V> else {
             return
         }
         if pageViewController.selectedIndex != selection.wrappedValue {
@@ -84,12 +84,12 @@ public class ResizeAwareNSView: NSView {
     }
 }
 
-class NSPageViewContainerController: NSPageController, NSPageControllerDelegate {
-    var pageObjects: [Any] = []
+class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDelegate where V: View {
+    var pageObjects: [T] = []
     
-    var idFromObject: ((Any) -> String)? = nil
-    var idToObject: ((String) -> Any)? = nil
-    var objectToView: ((Any) -> AnyView)? = nil
+    var idFromObject: ((T) -> String)? = nil
+    var idToObject: ((String) -> T)? = nil
+    var objectToView: ((T) -> V)? = nil
     
     var onSelectedIndexChanged: ((Int) -> Void)? = nil
     
@@ -136,22 +136,22 @@ class NSPageViewContainerController: NSPageController, NSPageControllerDelegate 
     
     func pageController(_ pageController: NSPageController,
                         identifierFor object: Any) -> NSPageController.ObjectIdentifier {
-        return idFromObject?(object) ?? ""
+        return idFromObject?(object as! T) ?? ""
     }
     
     func pageController(_ pageController: NSPageController,
                         viewControllerForIdentifier identifier: NSPageController.ObjectIdentifier) -> NSViewController {
         let object = idToObject!(identifier)
-        let controller = NSPageViewContentController()
+        let controller = NSPageViewContentController<T, V>()
         controller.content = objectToView
         controller.object = object
         return controller
     }
 }
 
-class NSPageViewContentController: NSViewController {
-    var content: ((Any) -> AnyView)? = nil
-    var object: Any? = nil
+class NSPageViewContentController<T, V>: NSViewController where V: View {
+    var content: ((T) -> V)? = nil
+    var object: T? = nil
     
     private var hostingController: NSHostingController<AnyView>? = nil
     
@@ -171,7 +171,7 @@ class NSPageViewContentController: NSViewController {
             return
         }
         let view = content(object)
-        self.hostingController = NSHostingController(rootView: view)
+        self.hostingController = NSHostingController(rootView: AnyView(view))
         self.view.addSubview(self.hostingController!.view)
     }
 }
