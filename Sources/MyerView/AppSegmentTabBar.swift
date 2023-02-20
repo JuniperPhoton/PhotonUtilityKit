@@ -52,7 +52,37 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
     }
 }
 
+class FrameState<T: Hashable>: ObservableObject {
+    @Published var selectedCapsuleFrame: CGRect = .zero
+    
+    var relativeX: CGFloat {
+        return selectedCapsuleFrame.minX - contentFrame.minX
+    }
+    
+    var relativeY: CGFloat {
+        return selectedCapsuleFrame.minY - contentFrame.minY
+    }
+    
+    private var contentFrame: CGRect = .zero
+    private var itemFrames: [T: CGRect] = [:]
+    
+    func updateContentFrame(rect: CGRect) {
+        self.contentFrame = rect
+    }
+    
+    func updateItemFrame(item: T, frame: CGRect) {
+        self.itemFrames[item] = frame
+    }
+    
+    func updateSelectedFrame(item: T) {
+        let itemFrame = itemFrames[item]
+        self.selectedCapsuleFrame = itemFrame ?? .zero
+    }
+}
+
 public struct AppSegmentTabBar<T: Hashable, V: View>: View {
+    @StateObject private var frameState = FrameState<T>()
+    
     let selection: Binding<T>
     let sources: [T]
     let scrollable: Bool
@@ -60,9 +90,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
     var backgroundColor: Color
     var horizontalInset: CGFloat = 12
     let label: (T) -> V
-    
-    @Namespace var namespace
-    
+        
     public var body: some View {
         if scrollable {
             ScrollViewReader { reader in
@@ -83,23 +111,35 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
         HStack(spacing: 2) {
             Spacer().frame(width: horizontalInset)
             ForEach(sources, id: \.hashValue) { item in
-                label(item).contentShape(Rectangle()).background {
-                    if selection.wrappedValue == item {
-                        Capsule().fill(foregroundColor)
-                            .matchedGeometryEffect(id: "capsule", in: namespace)
+                label(item).contentShape(Rectangle())
+                    .asPlainButton {
+                        DeviceCompat.triggerVibrationFeedback()
+                        
+                        withEaseOutAnimation {
+                            selection.wrappedValue = item
+                            frameState.updateSelectedFrame(item: item)
+                        }
                     }
-                }
-                #if !os(tvOS)
-                .onTapGesture {
-                    DeviceCompat.triggerVibrationFeedback()
-                    
-                    withEaseOutAnimation {
-                        selection.wrappedValue = item
+                    .listenFrameChanged { rect in
+                        frameState.updateItemFrame(item: item, frame: rect)
+                        
+                        if selection.wrappedValue == item {
+                            frameState.updateSelectedFrame(item: item)
+                        }
                     }
-                }
-                #endif
             }
             Spacer().frame(width: horizontalInset)
-        }.padding(3).background(Capsule().fill(backgroundColor))
+        }.padding(3).background {
+            ZStack(alignment: .topLeading) {
+                Capsule().fill(backgroundColor)
+                Capsule().fill(foregroundColor)
+                    .frame(width: frameState.selectedCapsuleFrame.width,
+                           height: frameState.selectedCapsuleFrame.height)
+                    .offset(x: frameState.relativeX,
+                            y: frameState.relativeY)
+            }
+        }.listenFrameChanged { rect in
+            frameState.updateContentFrame(rect: rect)
+        }
     }
 }

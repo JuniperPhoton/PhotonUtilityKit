@@ -9,6 +9,6 @@ import Foundation
 
 public extension CGRect {
     func toString() -> String {
-        return "minX: \(minX), minY: \(minY), maxX: \(maxX), maxY: \(maxY)"
+        return "minX: \(minX), minY: \(minY), maxX: \(maxX), maxY: \(maxY), width: \(width), height: \(height)"
     }
 }
