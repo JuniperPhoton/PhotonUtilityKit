@@ -117,7 +117,6 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                         
                         withEaseOutAnimation {
                             selection.wrappedValue = item
-                            frameState.updateSelectedFrame(item: item)
                         }
                     }
                     .listenFrameChanged { rect in
@@ -125,6 +124,11 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                         
                         if selection.wrappedValue == item {
                             frameState.updateSelectedFrame(item: item)
+                        }
+                    }
+                    .onChange(of: selection.wrappedValue) { newValue in
+                        withEaseOutAnimation {
+                            frameState.updateSelectedFrame(item: newValue)
                         }
                     }
             }
