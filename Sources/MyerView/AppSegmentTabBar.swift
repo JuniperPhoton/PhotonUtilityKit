@@ -119,6 +119,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                             selection.wrappedValue = item
                         }
                     }
+                    .id(item)
                     .listenFrameChanged { rect in
                         frameState.updateItemFrame(item: item, frame: rect)
                         
