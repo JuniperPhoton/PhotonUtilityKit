@@ -15,17 +15,24 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
     var foregroundColor: Color
     var selectedForegroundColor: Color
     var backgroundColor: Color
+    var horizontalInset: CGFloat = 12
     let textKeyPath: KeyPath<T, String>
     
-    public init(selection: Binding<T>, sources: [T], scrollable: Bool,
-                foregroundColor: Color, selectedForegroundColor: Color = .white,
-                backgroundColor: Color, textKeyPath: KeyPath<T, String>) {
+    public init(selection: Binding<T>,
+                sources: [T],
+                scrollable: Bool,
+                foregroundColor: Color,
+                selectedForegroundColor: Color = .white,
+                backgroundColor: Color,
+                horizontalInset: CGFloat = 0,
+                textKeyPath: KeyPath<T, String>) {
         self.selection = selection
         self.sources = sources
         self.scrollable = scrollable
         self.foregroundColor = foregroundColor
         self.selectedForegroundColor = selectedForegroundColor
         self.backgroundColor = backgroundColor
+        self.horizontalInset = horizontalInset
         self.textKeyPath = textKeyPath
     }
     
@@ -34,7 +41,8 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
                          sources: sources,
                          scrollable: scrollable,
                          foregroundColor: foregroundColor,
-                         backgroundColor: backgroundColor) { item in
+                         backgroundColor: backgroundColor,
+                         horizontalInset: horizontalInset) { item in
             Text(LocalizedStringKey(item[keyPath: textKeyPath]))
                 .bold()
                 .foregroundColor(selection.wrappedValue == item ? selectedForegroundColor : foregroundColor.opacity(0.7))
@@ -50,6 +58,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
     let scrollable: Bool
     var foregroundColor: Color
     var backgroundColor: Color
+    var horizontalInset: CGFloat = 12
     let label: (T) -> V
     
     @Namespace var namespace
@@ -72,10 +81,9 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
     
     private var content: some View {
         HStack(spacing: 2) {
+            Spacer().frame(width: horizontalInset)
             ForEach(sources, id: \.hashValue) { item in
-                ZStack {
-                    label(item).contentShape(Rectangle())
-                }.background {
+                label(item).contentShape(Rectangle()).background {
                     if selection.wrappedValue == item {
                         Capsule().fill(foregroundColor)
                             .matchedGeometryEffect(id: "capsule", in: namespace)
@@ -90,8 +98,8 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                     }
                 }
                 #endif
-                .id(item)
             }
+            Spacer().frame(width: horizontalInset)
         }.padding(3).background(Capsule().fill(backgroundColor))
     }
 }
