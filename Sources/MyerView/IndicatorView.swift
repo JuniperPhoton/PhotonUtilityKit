@@ -12,11 +12,13 @@ public struct IndicatorView: View {
     let selectedIndex: Binding<Int>
     let count: Int
     let foregroundColor: Color
+    let tappable: Bool
     
-    public init(selectedIndex: Binding<Int>, count: Int, foregroundColor: Color) {
+    public init(selectedIndex: Binding<Int>, count: Int, foregroundColor: Color, tappable: Bool = true) {
         self.selectedIndex = selectedIndex
         self.count = count
         self.foregroundColor = foregroundColor
+        self.tappable = tappable
     }
     
     public var body: some View {
@@ -28,13 +30,17 @@ public struct IndicatorView: View {
                         Circle().fill(selectedIndex.wrappedValue == page ? foregroundColor : Color.clear)
                     )
                     .contentShape(Circle())
+                    .runIf(condition: tappable) { v in
 #if !os(tvOS)
-                    .onTapGesture {
-                        withEaseOutAnimation {
-                            selectedIndex.wrappedValue = page
+                        v.onTapGesture {
+                            withEaseOutAnimation {
+                                selectedIndex.wrappedValue = page
+                            }
                         }
-                    }
+#else
+                        v
 #endif
+                    }
             }
         }.padding(.vertical, 8)
     }
