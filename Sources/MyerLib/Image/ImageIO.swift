@@ -42,6 +42,34 @@ public actor ImageIO {
         return cgImage
     }
     
+    /// Save the image date to a file.
+    /// - parameter file: file URL  to be saved into
+    /// - parameter data: the data to be saved
+    /// - parameter utType: a ``UTType`` to identify the image format
+    public func saveToFile(file: URL, data: Data, utType: UTType) throws -> URL {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
+            throw ImageIOError()
+        }
+        
+        guard let cgImage = CGImageSourceCreateImageAtIndex(source, 0, nil) else {
+            throw ImageIOError()
+        }
+        
+        let metadata = CGImageSourceCopyPropertiesAtIndex(source, 0, nil)
+        guard let dest = CGImageDestinationCreateWithURL(file as CFURL,
+                                                         utType.identifier as CFString, 1, nil) else {
+            throw ImageIOError()
+        }
+        
+        CGImageDestinationAddImage(dest, cgImage, metadata)
+        
+        if CGImageDestinationFinalize(dest) {
+            return file
+        }
+        
+        throw ImageIOError()
+    }
+    
     /// Save the ``CGImage`` to a specified file, as a ``UTType``.
     /// - parameter file: file URL  to be saved into
     /// - parameter cgImage: the image to be saved
