@@ -105,4 +105,28 @@ public actor ImageIO {
         
         return mutableData as Data
     }
+    
+    /// Get the orientation from EXIF of the ``file``.
+    public func getExifOrientation(file: URL) -> CGImagePropertyOrientation {
+        let options: [String: Any] = [
+            kCGImageSourceShouldCacheImmediately as String: false,
+        ]
+        
+        guard let source = CGImageSourceCreateWithURL(file as CFURL, options as CFDictionary) else {
+            return .up
+        }
+        
+        guard let metadata = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) else {
+            return .up
+        }
+        
+        guard let map = metadata as? Dictionary<String, Any> else {
+            return .up
+        }
+        
+        guard let orientation = map["Orientation"] as? UInt32 else {
+            return .up
+        }
+        return .init(rawValue: orientation) ?? .up
+    }
 }
