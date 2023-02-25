@@ -137,11 +137,14 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
         }.padding(3).background {
             ZStack(alignment: .topLeading) {
                 Capsule().fill(backgroundColor)
-                Capsule().fill(foregroundColor)
-                    .frame(width: frameState.selectedCapsuleFrame.width,
-                           height: frameState.selectedCapsuleFrame.height)
-                    .offset(x: frameState.relativeX,
-                            y: frameState.relativeY)
+                
+                if !frameState.selectedCapsuleFrame.isEmpty {
+                    Capsule().fill(foregroundColor)
+                        .frame(width: frameState.selectedCapsuleFrame.width,
+                               height: frameState.selectedCapsuleFrame.height)
+                        .offset(x: frameState.relativeX,
+                                y: frameState.relativeY)
+                }
             }
         }.listenFrameChanged { rect in
             frameState.updateContentFrame(rect: rect)
