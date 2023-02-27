@@ -298,10 +298,17 @@ public extension View {
 
 public extension View {
     /// Wrap this view inside a plain button.
-    func asPlainButton(action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+    func asPlainButton(role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
+        Button(role: role, action: action) {
             self
         }.buttonStyle(CustomPlainButtonSytle())
+    }
+    
+    /// Wrap this view inside a button.
+    func asButton(role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
+        Button(role: role, action: action) {
+            self
+        }
     }
 }
 
