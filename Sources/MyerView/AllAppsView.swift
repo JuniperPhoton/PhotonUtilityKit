@@ -50,7 +50,7 @@ let myerSplash2App = App(title: "MyerSplash 2",
                          storeLink: URL(string: "https://apps.apple.com/us/app/myersplash-2/id1670114025")!)
 
 @available(iOS 15.0, macOS 12.0, watchOS 8.0, tvOS 16.0, *)
-public struct MyerSeriesAppsView: View {
+public struct AllAppsView: View {
     @Environment(\.colorScheme) var colorScheme
     
     private let apps: [App] = [
