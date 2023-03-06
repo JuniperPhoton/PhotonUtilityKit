@@ -7,125 +7,54 @@
 
 import SwiftUI
 
-protocol MyerSeriesApp {
-    var title: String { get }
-    var description: String { get }
-    var icon: String { get }
-    var themeColor: Color { get }
-    var backgroundColor: Color { get }
-    var storeLink: URL { get }
+struct App {
+    let title: String
+    let description: String
+    let icon: String
+    let themeColor: Color
+    let backgroundColor: Color
+    let storeLink: URL
 }
 
-struct MyerListApp: MyerSeriesApp {
-    var title: String {
-        return "MyerList"
-    }
-    
-    var description: String {
-        return "MyerListDesc"
-    }
-    
-    var icon: String {
-        return "myerlist"
-    }
-    
-    var themeColor: Color {
-        return Color(hex: 0x0060ff)
-    }
-    
-    var backgroundColor: Color {
-        return Color(hex: 0xfbfcff)
-    }
-    
-    var storeLink: URL {
-        return URL(string: "https://apps.apple.com/us/app/myerlist/id1659589940")!
-    }
-}
+let photonAIApp = App(title: "Photon AI Translator",
+                      description: "PhotonAIDesc",
+                      icon: "photonai",
+                      themeColor: Color(hex: 0xae481d),
+                      backgroundColor: Color(hex: 0xfefbfa),
+                      storeLink: URL(string: "https://apps.apple.com/us/app/photon-ai-translator/id6446066013")!)
+let myerListApp = App(title: "MyerList",
+                      description: "MyerListDesc",
+                      icon: "myerlist",
+                      themeColor: Color(hex: 0x0060ff),
+                      backgroundColor: Color(hex: 0xfbfcff), storeLink: URL(string: "https://apps.apple.com/us/app/myerlist/id1659589940")!)
 
-struct MyerTidyApp: MyerSeriesApp {
-    var title: String {
-        return "MyerTidy"
-    }
-    
-    var description: String {
-        return "MyerTidyDesc"
-    }
-    
-    var icon: String {
-        return "myertidy"
-    }
-    
-    var themeColor: Color {
-        return Color(hex: 0x894F16)
-    }
-    
-    var backgroundColor: Color {
-        return Color(hex: 0xfdfcfb)
-    }
-    
-    var storeLink: URL {
-        return URL(string: "https://apps.apple.com/us/app/myertidy/id1609860733")!
-    }
-}
+let myerTidyApp = App(title: "MyerTidy",
+                      description: "MyerTidyDesc",
+                      icon: "myertidy",
+                      themeColor: Color(hex: 0x894F16),
+                      backgroundColor: Color(hex: 0xfdfcfb),
+                      storeLink: URL(string: "https://apps.apple.com/us/app/myertidy/id1609860733")!)
 
-struct MyerSplashApp: MyerSeriesApp {
-    var title: String {
-        return "MyerSplash"
-    }
-    
-    var description: String {
-        return "MyerSplashDesc"
-    }
-    
-    var icon: String {
-        return "myersplash"
-    }
-    
-    var themeColor: Color {
-        return Color(hex: 0x2A8F9A)
-    }
-    
-    var backgroundColor: Color {
-        return Color(hex: 0xfcfdfd)
-    }
-    
-    var storeLink: URL {
-        return URL(string: "https://apps.apple.com/us/app/myersplash/id1486017120")!
-    }
-}
+let myerSplashApp = App(title: "MyerSplash",
+                        description: "MyerSplashDesc",
+                        icon: "myersplash",
+                        themeColor: Color(hex: 0x2A8F9A),
+                        backgroundColor: Color(hex: 0xfcfdfd),
+                        storeLink: URL(string: "https://apps.apple.com/us/app/myersplash/id1486017120")!)
 
-struct MyerSplash2App: MyerSeriesApp {
-    var title: String {
-        return "MyerSplash 2"
-    }
-    
-    var description: String {
-        return "MyerSplash2Desc"
-    }
-    
-    var icon: String {
-        return "myersplash2"
-    }
-    
-    var themeColor: Color {
-        return Color(hex: 0xFFFFFF)
-    }
-    
-    var backgroundColor: Color {
-        return Color(hex: 0x000000)
-    }
-    
-    var storeLink: URL {
-        return URL(string: "https://apps.apple.com/us/app/myersplash-2/id1670114025")!
-    }
-}
+let myerSplash2App = App(title: "MyerSplash 2",
+                         description: "MyerSplash2Desc",
+                         icon: "myersplash2",
+                         themeColor: Color(hex: 0xFFFFFF),
+                         backgroundColor: Color(hex: 0x000000),
+                         storeLink: URL(string: "https://apps.apple.com/us/app/myersplash-2/id1670114025")!)
 
 @available(iOS 15.0, macOS 12.0, watchOS 8.0, tvOS 16.0, *)
 public struct MyerSeriesAppsView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    private let apps: [any MyerSeriesApp] = [
-        MyerSplashApp(), MyerSplash2App(), MyerTidyApp(), MyerListApp()
+    private let apps: [App] = [
+        photonAIApp, myerSplash2App, myerListApp, myerTidyApp, myerSplashApp
     ]
     
     private let fontName = "DIN Condensed"
@@ -138,27 +67,29 @@ public struct MyerSeriesAppsView: View {
     
     public var body: some View {
         VStack {
-            VStack {
+            Spacer().frame(height: 20)
+            
+            HStack {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(LocalizedStringKey("All apps"), bundle: .module)
+                        .font(.largeTitle.bold())
+                    
+                    Text("by JuniperPhoton")
+                        .padding(0)
+                        .font(.custom(fontName, size: 16, relativeTo: .body))
+                }
+                
+                Spacer()
+                
                 Image(systemName: "xmark")
                     .renderingMode(.template)
-                    .padding(20)
+                    .padding(16)
                     .contentShape(Rectangle())
                     .asPlainButton {
                         showView.wrappedValue.toggle()
                     }
-            }.matchParent(axis: .width, alignment: .topTrailing)
-            
-            VStack(alignment: .leading) {
-                Text(LocalizedStringKey("MyerSeries apps"), bundle: .module)
-                    .font(.custom(fontName, size: 50, relativeTo: .title).bold())
-                
-                Text("by JuniperPhoton")
-                    .padding(0)
-                    .font(.custom(fontName, size: 20, relativeTo: .body))
-            }.matchParent(axis: .width, alignment: .leading).frame(maxWidth: 400)
-            
-            Spacer().frame(height: 20)
-
+            }.frame(maxWidth: 400)
+                        
             ScrollView {
                 VStack(spacing: 20) {
                     Spacer().frame(height: 4)
@@ -172,9 +103,8 @@ public struct MyerSeriesAppsView: View {
                 }
                 Spacer().frame(height: 20)
             }
-            
         }
-        .padding(20)
+        .padding()
         #if os(macOS)
         .frame(minWidth: 500, minHeight: 600)
         #endif
@@ -185,7 +115,7 @@ struct AppView: View {
     @Environment(\.openURL) var openURL
     @Environment(\.colorScheme) var colorScheme
     
-    let app: MyerSeriesApp
+    let app: App
     
     var body: some View {
         Button {
