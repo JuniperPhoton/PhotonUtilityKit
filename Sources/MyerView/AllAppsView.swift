@@ -58,6 +58,7 @@ public struct AllAppsView: View {
     ]
     
     private let fontName = "DIN Condensed"
+    private let maxWidth: CGFloat = 360
 
     var showView: Binding<Bool>
     
@@ -88,7 +89,7 @@ public struct AllAppsView: View {
                     .asPlainButton {
                         showView.wrappedValue.toggle()
                     }
-            }.frame(maxWidth: 400)
+            }.frame(maxWidth: maxWidth)
                         
             ScrollView {
                 VStack(spacing: 20) {
@@ -97,7 +98,7 @@ public struct AllAppsView: View {
                         AppView(app: app)
                         if apps.firstIndex(where: { $0.title == app.title}) != apps.count - 1 {
                             Divider()
-                                .frame(maxWidth: 400)
+                                .frame(maxWidth: maxWidth)
                         }
                     }
                 }
@@ -106,7 +107,7 @@ public struct AllAppsView: View {
         }
         .padding()
         #if os(macOS)
-        .frame(minWidth: 500, minHeight: 600)
+        .frame(minWidth: maxWidth, minHeight: 600)
         #endif
     }
 }
