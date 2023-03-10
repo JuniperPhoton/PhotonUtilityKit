@@ -17,6 +17,7 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
     var backgroundColor: Color
     var horizontalInset: CGFloat = 12
     let textKeyPath: KeyPath<T, String>
+    var keyboardShortcut: ((T) -> KeyEquivalent)?
     
     public init(selection: Binding<T>,
                 sources: [T],
@@ -25,7 +26,8 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
                 selectedForegroundColor: Color = .white,
                 backgroundColor: Color,
                 horizontalInset: CGFloat = 0,
-                textKeyPath: KeyPath<T, String>) {
+                textKeyPath: KeyPath<T, String>,
+                keyboardShortcut: ((T) -> KeyEquivalent)? = nil) {
         self.selection = selection
         self.sources = sources
         self.scrollable = scrollable
@@ -34,6 +36,7 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
         self.backgroundColor = backgroundColor
         self.horizontalInset = horizontalInset
         self.textKeyPath = textKeyPath
+        self.keyboardShortcut = keyboardShortcut
     }
     
     public var body: some View {
@@ -42,7 +45,8 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
                          scrollable: scrollable,
                          foregroundColor: foregroundColor,
                          backgroundColor: backgroundColor,
-                         horizontalInset: horizontalInset) { item in
+                         horizontalInset: horizontalInset,
+                         keyboardShortcut: keyboardShortcut) { item in
             Text(LocalizedStringKey(item[keyPath: textKeyPath]))
                 .bold()
                 .foregroundColor(selection.wrappedValue == item ? selectedForegroundColor : foregroundColor.opacity(0.7))
@@ -89,8 +93,9 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
     var foregroundColor: Color
     var backgroundColor: Color
     var horizontalInset: CGFloat = 12
+    var keyboardShortcut: ((T) -> KeyEquivalent)?
     let label: (T) -> V
-        
+
     public var body: some View {
         if scrollable {
             ScrollViewReader { reader in
@@ -118,6 +123,9 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                         withEaseOutAnimation {
                             selection.wrappedValue = item
                         }
+                    }
+                    .runIf(condition: keyboardShortcut != nil) { v in
+                        v.keyboardShortcut(keyboardShortcut!(item))
                     }
                     .id(item)
                     .listenFrameChanged { rect in
