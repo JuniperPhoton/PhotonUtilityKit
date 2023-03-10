@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import MyerLib
+import PhotonUtility
 
 public struct IndicatorView: View {
     let selectedIndex: Binding<Int>

@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import MyerLib
+import PhotonUtility
 
 /// A controller that manage toast, coorporated with ``ToastView``.
 ///

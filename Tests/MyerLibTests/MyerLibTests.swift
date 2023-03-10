@@ -1,5 +1,5 @@
 import XCTest
-@testable import MyerLib
+@testable import PhotonUtility
 
 final class MyerLibTests: XCTestCase {
     func testExample() throws {

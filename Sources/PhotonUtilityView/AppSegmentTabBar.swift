@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import MyerLib
+import PhotonUtility
 
 public struct TextAppSegmentTabBar<T: Hashable>: View {
     let selection: Binding<T>
