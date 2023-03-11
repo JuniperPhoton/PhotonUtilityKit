@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotonUtility
+import Introspect
 
 public struct TextAppSegmentTabBar<T: Hashable>: View {
     let selection: Binding<T>
@@ -95,15 +96,20 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
     var horizontalInset: CGFloat = 12
     var keyboardShortcut: ((T) -> KeyEquivalent)?
     let label: (T) -> V
+    
+    @State var autoScrollState = AutoScrollState<T>(value: nil)
 
     public var body: some View {
         if scrollable {
             ScrollViewReader { reader in
                 ScrollView(.horizontal, showsIndicators: false) {
                     content
-                }.onChange(of: selection.wrappedValue) { newValue in
-                    withEaseOutAnimation {
-                        reader.scrollTo(newValue)
+                }
+                .autoScrollOnChanged(state: autoScrollState)
+                .onChange(of: selection.wrappedValue) { newValue in
+                    DispatchQueue.main.async {
+                        self.autoScrollState.rect = frameState.selectedCapsuleFrame
+                        self.autoScrollState.value = newValue
                     }
                 }
             }
@@ -156,6 +162,52 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
             }
         }.listenFrameChanged { rect in
             frameState.updateContentFrame(rect: rect)
+        }
+    }
+}
+
+extension ScrollView {
+    func autoScrollOnChanged<T>(state: AutoScrollState<T>) -> some View where T: Equatable & Hashable {
+        self.modifier(ScrollViewViewAutoScrollViewModifier(state: state))
+    }
+}
+
+class AutoScrollState<T>: ObservableObject where T: Equatable & Hashable {
+    /// The value to trigger changed, normally the id of the view
+    @Published var value: T? = nil
+    
+    /// The visible rect to scroll to.
+    @Published var rect: CGRect
+    
+    init(value: T?) {
+        self.value = value
+        self.rect = .zero
+    }
+}
+
+struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable & Hashable {
+    @ObservedObject var state: AutoScrollState<T>
+    
+#if canImport(AppKit)
+    @State var nsScrollView: NSScrollView? = nil
+#endif
+    
+    func body(content: Content) -> some View {
+        ScrollViewReader { proxy in
+            content.onChange(of: state.value) { newValue in
+#if canImport(UIKit)
+                withEaseOutAnimation {
+                    proxy.scrollTo(state.value)
+                }
+#elseif canImport(AppKit)
+                self.nsScrollView?.scroll(toRect: state.rect)
+#endif
+            }
+#if canImport(AppKit)
+            .introspectScrollView { nsScrollView in
+                self.nsScrollView = nsScrollView
+            }
+#endif
         }
     }
 }
