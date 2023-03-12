@@ -185,29 +185,34 @@ class AutoScrollState<T>: ObservableObject where T: Equatable & Hashable {
     }
 }
 
+#if canImport(UIKit)
 struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable & Hashable {
     @ObservedObject var state: AutoScrollState<T>
-    
-#if canImport(AppKit)
-    @State var nsScrollView: NSScrollView? = nil
-#endif
     
     func body(content: Content) -> some View {
         ScrollViewReader { proxy in
             content.onChange(of: state.value) { newValue in
-#if canImport(UIKit)
                 withEaseOutAnimation {
                     proxy.scrollTo(state.value)
                 }
-#elseif canImport(AppKit)
-                self.nsScrollView?.scroll(toRect: state.rect)
-#endif
             }
-#if canImport(AppKit)
-            .introspectScrollView { nsScrollView in
-                self.nsScrollView = nsScrollView
-            }
-#endif
         }
     }
 }
+#elseif canImport(AppKit)
+struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable & Hashable {
+    @ObservedObject var state: AutoScrollState<T>
+    @State var nsScrollView: NSScrollView? = nil
+    
+    func body(content: Content) -> some View {
+        ScrollViewReader { proxy in
+            content.onChange(of: state.value) { newValue in
+                self.nsScrollView?.scroll(toRect: state.rect)
+            }
+            .introspectScrollView { nsScrollView in
+                self.nsScrollView = nsScrollView
+            }
+        }
+    }
+}
+#endif
