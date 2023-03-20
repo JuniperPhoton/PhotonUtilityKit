@@ -8,7 +8,7 @@
 import SwiftUI
 import PhotonUtility
 
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import AppKit
 
 /// A NSViewControllerRepresentable for showing NSPageController.
