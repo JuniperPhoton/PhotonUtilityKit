@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+public let allAppsURL = URL(string: "https://juniperphoton.dev/photonapps/")!
+
 struct App {
     let title: String
     let description: String
@@ -50,6 +52,7 @@ let myerSplash2App = App(title: "MyerSplash 2",
                          storeLink: URL(string: "https://apps.apple.com/us/app/myersplash-2/id1670114025")!)
 
 @available(iOS 15.0, macOS 12.0, watchOS 8.0, tvOS 16.0, *)
+@available(*, deprecated, message: "Use ``allAppsURL`` to jump to the website instead.")
 public struct AllAppsView: View {
     @Environment(\.colorScheme) var colorScheme
     
