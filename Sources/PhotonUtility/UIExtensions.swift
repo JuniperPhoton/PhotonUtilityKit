@@ -298,13 +298,22 @@ public extension View {
 
 public extension View {
     /// Wrap this view inside a plain button.
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     func asPlainButton(role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
         Button(role: role, action: action) {
             self
         }.buttonStyle(CustomPlainButtonSytle())
     }
     
+    /// Wrap this view inside a plain button.
+    func asPlainButton(action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            self
+        }.buttonStyle(CustomPlainButtonSytle())
+    }
+    
     /// Wrap this view inside a button.
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     func asButton(role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
         Button(role: role, action: action) {
             self
@@ -316,5 +325,28 @@ fileprivate struct CustomPlainButtonSytle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .brightness(configuration.isPressed ? -0.1 : 0.0)
+    }
+}
+
+public struct BorderedProminentButtonStyleCompact: ButtonStyle {
+    @Environment(\.controlSize) var controlSize
+    
+    public init() {
+        // empty
+    }
+    
+    public func makeBody(configuration: Configuration) -> some View {
+        return configuration.label.foregroundColor(.white)
+            .padding(EdgeInsets(top: useLargeControl() ? 8 : 2,
+                                leading: 8,
+                                bottom: useLargeControl() ? 8 : 2,
+                                trailing: 8))
+            .background(RoundedRectangle(cornerRadius: 6).fill(Color.accentColor)
+                .shadow(color: .black.opacity(0.01), radius: 2, x: 1, y: 1))
+            .brightness(configuration.isPressed ? -0.1 : 0.0)
+    }
+    
+    private func useLargeControl() -> Bool {
+        return controlSize == .large
     }
 }

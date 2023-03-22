@@ -188,8 +188,8 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                     }
             }
             Spacer().frame(width: horizontalInset)
-        }.padding(3).background {
-            ZStack(alignment: .topLeading) {
+        }.padding(3)
+            .background(ZStack(alignment: .topLeading) {
                 Capsule().fill(backgroundColor)
                 
                 if !frameState.selectedCapsuleFrame.isEmpty {
@@ -199,10 +199,9 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                         .offset(x: frameState.relativeX,
                                 y: frameState.relativeY)
                 }
+            }, alignment: .topLeading).listenFrameChanged { rect in
+                frameState.updateContentFrame(rect: rect)
             }
-        }.listenFrameChanged { rect in
-            frameState.updateContentFrame(rect: rect)
-        }
     }
 }
 
