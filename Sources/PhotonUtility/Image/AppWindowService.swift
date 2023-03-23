@@ -20,6 +20,17 @@ public class AppWindowService {
         // empty
     }
     
+    /// Checks whether the current process already has screen capture access
+    public func isScreenCaptureAccessEnabled() -> Bool {
+        return CGPreflightScreenCaptureAccess()
+    }
+    
+    /// Requests event listening access if absent, potentially prompting
+    @discardableResult
+    public func requestScreenCaptureAccess() -> Bool {
+        return CGRequestScreenCaptureAccess()
+    }
+    
     /// Take a Screenshot for the current screen and return the ``CGImage`` if it's available.
     /// Available for macOS only, if you call it in iOS, it simply returns nil.
     /// - parameter croppedTo: a ``CGRect`` representing the cropped area
