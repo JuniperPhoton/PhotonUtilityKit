@@ -22,13 +22,21 @@ public class AppWindowService {
     
     /// Checks whether the current process already has screen capture access
     public func isScreenCaptureAccessEnabled() -> Bool {
+#if canImport(AppKit)
         return CGPreflightScreenCaptureAccess()
+#else
+        return false
+#endif
     }
     
     /// Requests event listening access if absent, potentially prompting
     @discardableResult
     public func requestScreenCaptureAccess() -> Bool {
+#if canImport(AppKit)
         return CGRequestScreenCaptureAccess()
+#else
+        return false
+#endif
     }
     
     /// Take a Screenshot for the current screen and return the ``CGImage`` if it's available.
@@ -66,7 +74,11 @@ public class AppWindowService {
     }
     
     private func createScreenshot() -> CGImage? {
+#if canImport(AppKit)
         return CGWindowListCreateImage(.infinite, .optionOnScreenOnly,
                                        .zero, .nominalResolution)
+#else
+        return nil
+#endif
     }
 }
