@@ -42,6 +42,23 @@ public actor ImageIO {
         return cgImage
     }
     
+    /// Scale image to the specified factor.
+    public func scaleCGImage(image: CGImage, scaleFactor: CGFloat) -> CGImage? {
+        let rect = CGRect(x: 0, y: 0, width: CGFloat(image.width) * scaleFactor,
+                          height: CGFloat(image.height) * scaleFactor)
+        
+        guard let context = CGContext(data: nil, width: Int(rect.width), height: Int(rect.height),
+                                      bitsPerComponent: 8,
+                                      bytesPerRow: 0,
+                                      space: CGColorSpaceCreateDeviceRGB(),
+                                      bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue) else {
+            return nil
+        }
+        
+        context.draw(image, in: rect)
+        return context.makeImage()
+    }
+    
     /// Save the image date to a file.
     /// - parameter file: file URL  to be saved into
     /// - parameter data: the data to be saved

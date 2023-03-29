@@ -45,7 +45,7 @@ public class AppWindowService {
     @MainActor
     public func createScreenshot(croppedTo: CGRect?) async -> CGImage? {
 #if canImport(AppKit)
-        guard let cgImage = createScreenshot() else {
+        guard let cgImage = createScreenshot(bestResolution: false) else {
             return nil
         }
                 
@@ -73,10 +73,30 @@ public class AppWindowService {
 #endif
     }
     
-    private func createScreenshot() -> CGImage? {
+    /// Crop the original image to a specified ``CGRect``.
+    /// The original image should be the scaled size of the screen, not the original.
+    @MainActor
+    public func cropScreenshotSafeAreaAware(originalImage: CGImage,
+                                            croppedTo: CGRect) -> CGImage? {
+        guard let currentWindow = NSApplication.shared.currentEvent?.window else {
+            print("current event is nil")
+            return nil
+        }
+        
+        var croppedToFrame = croppedTo
+        croppedToFrame = croppedToFrame.offsetBy(dx: currentWindow.frame.minX,
+                                                 dy: -currentWindow.frame.minY)
+        
+        return originalImage.cropping(to: croppedToFrame)
+    }
+    
+    /// Create original screenshot.
+    /// - parameter bestResolution: true to return the best resolution, which should be the same pixel size of the screen.
+    public func createScreenshot(bestResolution: Bool) -> CGImage? {
 #if canImport(AppKit)
         return CGWindowListCreateImage(.infinite, .optionOnScreenOnly,
-                                       .zero, .nominalResolution)
+                                       .zero,
+                                       bestResolution ? .bestResolution : .nominalResolution)
 #else
         return nil
 #endif
