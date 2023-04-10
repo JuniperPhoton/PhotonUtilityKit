@@ -78,6 +78,7 @@ public class AppWindowService {
     @MainActor
     public func cropScreenshotSafeAreaAware(originalImage: CGImage,
                                             croppedTo: CGRect) -> CGImage? {
+        #if os(macOS)
         guard let currentWindow = NSApplication.shared.currentEvent?.window else {
             print("current event is nil")
             return nil
@@ -88,6 +89,9 @@ public class AppWindowService {
                                                  dy: -currentWindow.frame.minY)
         
         return originalImage.cropping(to: croppedToFrame)
+        #else
+        return nil
+        #endif
     }
     
     /// Create original screenshot.
