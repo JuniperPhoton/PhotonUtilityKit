@@ -48,7 +48,7 @@ public class TextExtractor {
                 
                 let recognizedStrings = observations.compactMap { observation in
                     // Return the string of the top VNRecognizedText instance.
-                    return observation.topCandidates(1).first?.string ?? "" + "\n"
+                    return (observation.topCandidates(1).first?.string ?? "") + "\n"
                 }
                 
                 let result = recognizedStrings.joined()
