@@ -9,17 +9,37 @@ import SwiftUI
 import PhotonUtility
 import Introspect
 
+/// A ``AppSegmentTabBar`` which use ``Text`` as content view.
 public struct TextAppSegmentTabBar<T: Hashable>: View {
+    /// Binding to the selected item. When an item is selected, the binding value will be changed.
     let selection: Binding<T>
+    
+    /// All available items of ``T``.
     let sources: [T]
+    
+    /// If the list is scrollable horizontally. If you know the texts are short then you can set this to false.
     let scrollable: Bool
+    
+    /// The foreground color of the selected background.
     var foregroundColor: Color
+    
+    /// The foreground color of the text when it's not selected.
     var selectedForegroundColor: Color
+    
+    /// The background color of the whole view.
     var backgroundColor: Color
+    
+    /// The horizontal inset of this view. Default to 12pt.
     var horizontalInset: CGFloat = 12
+    
+    /// Key path to find the text of a specified item.
     let textKeyPath: KeyPath<T, String>
     
+    /// A block to get the text showing on help tooltips from a specified item.
+    var helpTooltips: ((T) -> String)?
 #if !os(tvOS)
+    
+    /// A block to get the keyboard shortcut.
     var keyboardShortcut: ((T) -> KeyEquivalent)?
     
     public init(selection: Binding<T>,
@@ -30,6 +50,7 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
                 backgroundColor: Color,
                 horizontalInset: CGFloat = 0,
                 textKeyPath: KeyPath<T, String>,
+                helpTooltips: ((T) -> String)? = nil,
                 keyboardShortcut: ((T) -> KeyEquivalent)? = nil) {
         self.selection = selection
         self.sources = sources
@@ -39,6 +60,7 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
         self.backgroundColor = backgroundColor
         self.horizontalInset = horizontalInset
         self.textKeyPath = textKeyPath
+        self.helpTooltips = helpTooltips
         self.keyboardShortcut = keyboardShortcut
     }
     
@@ -90,6 +112,9 @@ public struct TextAppSegmentTabBar<T: Hashable>: View {
             .foregroundColor(selection.wrappedValue == item ? selectedForegroundColor : foregroundColor.opacity(0.7))
             .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
             .lineLimit(1)
+            .runIf(condition: helpTooltips != nil, block: { v in
+                v.help(LocalizedStringKey(helpTooltips!(item)))
+            })
     }
 }
 
