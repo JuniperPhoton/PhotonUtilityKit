@@ -52,8 +52,8 @@ public class FullscreenPresentation: ObservableObject {
     }
 }
 
-class BottomSheetController: ObservableObject {
-    @Published var showContent: Bool = false
+public class BottomSheetController: ObservableObject {
+    @Published public var showContent: Bool = false
     
     private var fullscreenPresentation: FullscreenPresentation? = nil
     
@@ -61,11 +61,11 @@ class BottomSheetController: ObservableObject {
         // empty
     }
     
-    func setup(fullscreenPresentation: FullscreenPresentation) {
+    public func setup(fullscreenPresentation: FullscreenPresentation) {
         self.fullscreenPresentation = fullscreenPresentation
     }
     
-    func dismiss(onEnd: (() -> Void)? = nil) {
+    public func dismiss(onEnd: (() -> Void)? = nil) {
         withEaseOutAnimation(duration: 0.2, onEnd: {
             self.fullscreenPresentation?.dismissAll()
             onEnd?()
