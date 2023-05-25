@@ -135,7 +135,7 @@ public struct BottomSheetView<Content: View>: View {
             .matchParent(axis: .widthHeight, alignment: .bottom)
 #endif
             .contentShape(Rectangle())
-            .background(.black.opacity(0.4))
+            .background(Color.black.opacity(0.4))
             .onAppear {
                 controller.setup(fullscreenPresentation: fullscreenPresentation)
                 withEaseOutAnimation {
