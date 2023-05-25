@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if canImport(AppKit)
 struct CustomInternalTextView: View {
     let text: String
     
@@ -96,3 +97,4 @@ public struct CustomTextView: View {
         }.matchWidth()
     }
 }
+#endif
