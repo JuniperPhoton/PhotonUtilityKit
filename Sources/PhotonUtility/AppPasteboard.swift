@@ -34,7 +34,7 @@ public class AppPasteboard {
     
     public func getPasteBoardTextString() -> String? {
 #if os(macOS)
-        return NSPasteboard.general.string
+        return NSPasteboard.general.string(forType: .string)
 #elseif os(iOS)
         return UIPasteboard.general.string
 #endif
