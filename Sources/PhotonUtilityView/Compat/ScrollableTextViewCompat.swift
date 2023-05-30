@@ -168,7 +168,12 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
         
         let attributedString = NSMutableAttributedString(string: self.text, attributes: attributes)
         attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
-                                      value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+                                      value: paragraphStyle, range: NSRange(location: 0,
+                                                                            length: attributedString.length))
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor,
+                                      value: UIColor(named: "BodyTextColor")!,
+                                      range: NSRange(location: 0,
+                                                     length: attributedString.length))
         textView.attributedText = attributedString
     }
 }
