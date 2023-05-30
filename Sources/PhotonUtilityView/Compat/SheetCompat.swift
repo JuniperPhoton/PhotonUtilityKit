@@ -12,6 +12,7 @@ fileprivate func shouldApplyCompat() -> Bool {
     return DeviceCompat.isOS2022AndAbove()
 }
 
+@available(iOS 15.0, macOS 12.0, *)
 struct SheetCompat<ViewContent: View, Item: Identifiable>: ViewModifier {
     @Environment(\.dismiss) var dismiss
     
@@ -39,6 +40,7 @@ struct SheetCompat<ViewContent: View, Item: Identifiable>: ViewModifier {
     }
 }
 
+@available(iOS 15.0, macOS 12.0, *)
 struct SheetCompatWithIsPrestented<ViewContent: View>: ViewModifier {
     @Environment(\.dismiss) var dismiss
     
@@ -66,6 +68,7 @@ struct SheetCompatWithIsPrestented<ViewContent: View>: ViewModifier {
     }
 }
 
+@available(iOS 15.0, macOS 12.0, *)
 extension View {
     public func sheetCompat<ViewContent: View, Item: Identifiable>(item: Binding<Item?>,
                                                                    onDismiss: (() -> Void)? = nil,
