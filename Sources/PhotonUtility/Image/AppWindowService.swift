@@ -98,9 +98,27 @@ public class AppWindowService {
     /// - parameter bestResolution: true to return the best resolution, which should be the same pixel size of the screen.
     public func createScreenshot(bestResolution: Bool) -> CGImage? {
 #if canImport(AppKit)
-        return CGWindowListCreateImage(.infinite, .optionOnScreenOnly,
-                                       .zero,
-                                       bestResolution ? .bestResolution : .nominalResolution)
+        let mainDisplay = NSScreen.screens[0]
+        
+        // Note that main NSScreen is the one with keyboard focused, and NSScreen.screens[0] should be the one as main display in macOS settings.
+        if let currentScreen = NSScreen.main {
+            let currentScreenRect = currentScreen.frame
+                        
+            let x = currentScreenRect.minX
+            let w = currentScreenRect.width
+            let h = currentScreenRect.height
+            
+            let y = -(currentScreenRect.minY - mainDisplay.frame.height) - currentScreenRect.height
+            let clipRect = CGRect(x: x, y: y, width: w, height: h)
+            
+            // The first parameter is screenBounds, which:
+            // - If it is `.infinity`, then CGWindowListCreateImage will return the image contains all screens in all displays
+            // - It's coordinate is the one with origin at the upper-left; y-value increasing downward
+            // - The NSScreen/frame is the one with origin at the bottom-left; y-value increasing upwawrd, so we need to transfer the coordinate
+            return CGWindowListCreateImage(clipRect, .optionOnScreenOnly, .zero, bestResolution ? .bestResolution : .nominalResolution)
+        } else {
+            return nil
+        }
 #else
         return nil
 #endif
