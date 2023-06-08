@@ -73,27 +73,6 @@ public class AppWindowService {
 #endif
     }
     
-    /// Crop the original image to a specified ``CGRect``.
-    /// The original image should be the scaled size of the screen, not the original.
-    @MainActor
-    public func cropScreenshotSafeAreaAware(originalImage: CGImage,
-                                            croppedTo: CGRect) -> CGImage? {
-        #if os(macOS)
-        guard let currentWindow = NSApplication.shared.currentEvent?.window else {
-            print("current event is nil")
-            return nil
-        }
-        
-        var croppedToFrame = croppedTo
-        croppedToFrame = croppedToFrame.offsetBy(dx: currentWindow.frame.minX,
-                                                 dy: -currentWindow.frame.minY)
-        
-        return originalImage.cropping(to: croppedToFrame)
-        #else
-        return nil
-        #endif
-    }
-    
     /// Create original screenshot.
     /// - parameter bestResolution: true to return the best resolution, which should be the same pixel size of the screen.
     public func createScreenshot(bestResolution: Bool) -> CGImage? {
