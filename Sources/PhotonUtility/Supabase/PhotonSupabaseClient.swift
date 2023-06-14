@@ -78,7 +78,7 @@ public class PhotonSupabaseClient {
         }
     }
     
-    private func checkResponse<T>(response: URLResponse, successBlock: () throws -> T) throws -> T{
+    private func checkResponse<T>(response: URLResponse, successBlock: () throws -> T) throws -> T {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError("Invalid response")
         }
@@ -122,7 +122,7 @@ public class PhotonSupabaseClient {
         queryItems.append(.init(name: "select", value: select))
         
         urlComponent.queryItems = queryItems
-          
+        
         return urlComponent.url
     }
 }
