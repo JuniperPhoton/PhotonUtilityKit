@@ -47,26 +47,66 @@ public class PhotonSupabaseClient {
     public func getResources<T: Decodable>(select: String = "*",
                                            filters: [String: String]) async throws -> T {
         guard let url = getURL(select: select, filters: filters) else {
-            throw APIError("URL failed")
+            throw APIError("URL failed to resolve")
         }
         
-        var request = URLRequest(url: url)
-        request.setValue(self.key, forHTTPHeaderField: "apikey")
-        request.setValue("Bearer \(self.key)", forHTTPHeaderField: "Authorization")
+        let request = getURLRequest(url: url, httpMethod: "GET")
         
         let session = self.session
         let (data, response) = try await session.data(for: request)
         
+        return try checkResponse(response: response) {
+            let decoder = JSONDecoder()
+            return try decoder.decode(T.self, from: data)
+        }
+    }
+    
+    public func postResource(resource: some Encodable) async throws {
+        guard let url = getURL() else {
+            throw APIError("URL failed to resolve")
+        }
+        
+        var request = getURLRequest(url: url, httpMethod: "POST")
+        let session = self.session
+        let requestData = try JSONEncoder().encode(resource)
+        request.httpBody = requestData
+        
+        let (_, response) = try await session.data(for: request)
+        
+        return try checkResponse(response: response) {
+            // ignored
+        }
+    }
+    
+    private func checkResponse<T>(response: URLResponse, successBlock: () throws -> T) throws -> T{
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError("Invalid response")
         }
         
         if (200...299).contains(httpResponse.statusCode) {
-            let decoder = JSONDecoder()
-            return try decoder.decode(T.self, from: data)
+            return try successBlock()
         } else {
             throw APIError("Request failed with status code: \(httpResponse.statusCode)")
         }
+    }
+    
+    private func getURLRequest(url: URL, httpMethod: String) -> URLRequest {
+        var request = URLRequest(url: url)
+        request.setValue(self.key, forHTTPHeaderField: "apikey")
+        request.setValue("Bearer \(self.key)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = httpMethod
+        return request
+    }
+    
+    private func getURL() -> URL? {
+        guard var urlComponent = URLComponents(string: baseURL.absoluteString) else {
+            return nil
+        }
+        
+        urlComponent.path += resource
+        
+        return urlComponent.url
     }
     
     private func getURL(select: String = "*", filters: [String: String]) -> URL? {
@@ -76,9 +116,10 @@ public class PhotonSupabaseClient {
         
         urlComponent.path += resource
         
-        let queryItems = filters.map { (k, v) in
+        var queryItems = filters.map { (k, v) in
             URLQueryItem(name: k, value: v)
         }
+        queryItems.append(.init(name: "select", value: select))
         
         urlComponent.queryItems = queryItems
           
