@@ -264,7 +264,7 @@ public extension View {
     @available(iOS 15.0, macOS 12.0, *)
     func importFolderOrFiles(isPresented: Binding<Bool>, types: [UTType],
                              allowsMultipleSelection: Bool, onSucess: @escaping ([URL])->Void) -> some View {
-        #if !os(tvOS)
+#if !os(tvOS)
         return self.fileImporter(isPresented: isPresented, allowedContentTypes: types,
                                  allowsMultipleSelection: allowsMultipleSelection) { result in
             defer {
@@ -278,9 +278,9 @@ public extension View {
                 break
             }
         }
-        #else
+#else
         return self
-        #endif
+#endif
     }
 }
 
@@ -288,11 +288,11 @@ public extension View {
     /// Compact version of ``hoverEffect``.
     /// It's available for iPad only.
     func hoverEffectCompact() -> some View {
-        #if os(iOS)
+#if os(iOS)
         self.hoverEffect(.automatic)
-        #else
+#else
         self
-        #endif
+#endif
     }
 }
 
@@ -329,7 +329,9 @@ fileprivate struct CustomPlainButtonSytle: ButtonStyle {
 }
 
 public struct BorderedProminentButtonStyleCompact: ButtonStyle {
+#if !os(tvOS)
     @Environment(\.controlSize) var controlSize
+#endif
     
     public init() {
         // empty
@@ -347,6 +349,10 @@ public struct BorderedProminentButtonStyleCompact: ButtonStyle {
     }
     
     private func useLargeControl() -> Bool {
+#if !os(tvOS)
         return controlSize == .large
+#else
+        return false
+#endif
     }
 }

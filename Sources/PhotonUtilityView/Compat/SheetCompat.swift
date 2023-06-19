@@ -23,7 +23,7 @@ struct SheetCompat<ViewContent: View, Item: Identifiable>: ViewModifier {
     func body(content: Content) -> some View {
         Group {
             if shouldApplyCompat() {
-                if #available(iOS 16.0, macOS 13.0, *) {
+                if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
                     content
                         .sheet(item: item, onDismiss: onDismiss, content: { item in
                             self.content(item).presentationDetents([.fraction(0.999)])
@@ -51,7 +51,7 @@ struct SheetCompatWithIsPrestented<ViewContent: View>: ViewModifier {
     func body(content: Content) -> some View {
         Group {
             if shouldApplyCompat() {
-                if #available(iOS 16.0, macOS 13.0, *) {
+                if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
                     content
                         .sheet(isPresented: isPresented, onDismiss: onDismiss) {
                             self.content().presentationDetents([.fraction(0.999)])

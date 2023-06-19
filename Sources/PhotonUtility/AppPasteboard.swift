@@ -37,6 +37,8 @@ public class AppPasteboard {
         return NSPasteboard.general.string(forType: .string)
 #elseif os(iOS)
         return UIPasteboard.general.string
+#else
+        return nil
 #endif
     }
 }

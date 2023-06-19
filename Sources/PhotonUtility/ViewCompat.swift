@@ -31,4 +31,12 @@ public extension View {
         self
 #endif
     }
+    
+    func onTapGestureCompact(perform: () -> Void) -> some View {
+        #if !os(tvOS)
+        self.onTapGesture(perform: block)
+        #else
+        self
+        #endif
+    }
 }

@@ -86,7 +86,7 @@ public struct BottomSheetView<Content: View>: View {
     private let content: () -> Content
     
     public init(backgroundColor: Color,
-         @ViewBuilder content: @escaping () -> Content) {
+                @ViewBuilder content: @escaping () -> Content) {
         self.content = content
         self.backgroundColor = backgroundColor
     }
@@ -124,7 +124,7 @@ public struct BottomSheetView<Content: View>: View {
                         }
                     })
 #endif
-                    .onTapGesture {
+                    .onTapGestureCompact {
                         // ignored
                     }
             }
@@ -142,7 +142,7 @@ public struct BottomSheetView<Content: View>: View {
                     controller.showContent = true
                 }
             }
-            .onTapGesture {
+            .onTapGestureCompact {
                 dismiss(animated: true)
             }
     }

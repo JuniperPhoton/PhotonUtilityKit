@@ -108,7 +108,7 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
         textStorage.addAttribute(.paragraphStyle, value: paragraphStyle, range: fullRange)
     }
 }
-#else
+#elseif os(iOS)
 /// A scrollable text view for iOS.
 /// Internally it wraps a ``UITextView``.
 /// See the comments above for more details.

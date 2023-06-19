@@ -31,15 +31,11 @@ public struct IndicatorView: View {
                     )
                     .contentShape(Circle())
                     .runIf(condition: tappable) { v in
-#if !os(tvOS)
-                        v.onTapGesture {
+                        v.onTapGestureCompact {
                             withEaseOutAnimation {
                                 selectedIndex.wrappedValue = page
                             }
                         }
-#else
-                        v
-#endif
                     }
             }
         }.padding(.vertical, 8)

@@ -161,7 +161,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
     let label: (T) -> V
     
     @State var autoScrollState = AutoScrollState<T>(value: nil)
-
+    
     public var body: some View {
         if scrollable {
             ScrollViewReader { reader in
