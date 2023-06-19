@@ -33,10 +33,10 @@ public extension View {
     }
     
     func onTapGestureCompact(perform: @escaping () -> Void) -> some View {
-        #if !os(tvOS)
+#if !os(tvOS)
         self.onTapGesture(perform: perform)
-        #else
+#else
         self
-        #endif
+#endif
     }
 }
