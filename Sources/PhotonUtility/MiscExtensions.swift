@@ -58,9 +58,9 @@ public extension Comparable {
 
 /// Check if it's in preview process.
 public var isInPreviewProcess: Bool {
-    #if DEBUG
+#if DEBUG
     return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
-    #else
+#else
     return false
-    #endif
+#endif
 }
