@@ -284,12 +284,32 @@ public extension View {
     }
 }
 
+@frozen
+public enum HoverEffectCompact {
+    case automatic
+    case highlight
+    case lift
+    
+    #if os(iOS)
+    var wrappedEffect: HoverEffect {
+        switch self {
+        case .automatic:
+            return HoverEffect.automatic
+        case .highlight:
+            return HoverEffect.highlight
+        case .lift:
+            return HoverEffect.lift
+        }
+    }
+    #endif
+}
+
 public extension View {
     /// Compact version of ``hoverEffect``.
     /// It's available for iPad only.
-    func hoverEffectCompact() -> some View {
+    func hoverEffectCompact(_ effect: HoverEffectCompact = .automatic) -> some View {
 #if os(iOS)
-        self.hoverEffect(.automatic)
+        self.hoverEffect(effect.wrappedEffect)
 #else
         self
 #endif
