@@ -134,6 +134,9 @@ public extension View {
     }
     
     /// Run the block if condition is meet.
+    /// 
+    /// Be aware that this may destroy the identity of the view. Don't use this if you can switch state using ViewModifier.
+    ///
     /// - Parameter condition: the condition to check
     /// - Parameter block: the block to be executed if the condition is meet. This block capture the current view and should return some View.
     @ViewBuilder
