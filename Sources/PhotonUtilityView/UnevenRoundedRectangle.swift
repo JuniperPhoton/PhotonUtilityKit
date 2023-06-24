@@ -8,17 +8,27 @@
 import Foundation
 import SwiftUI
 
+/// A SwiftUI shape that has uneven rounded radius.
 public struct UnevenRoundedRectangle: Shape {
-    var topLeftRadius: CGFloat
-    var topRightRadius: CGFloat
-    var bottomLeftRadius: CGFloat
-    var bottomRightRadius: CGFloat
+    var topLeft: CGFloat
+    var topRight: CGFloat
+    var bottomLeft: CGFloat
+    var bottomRight: CGFloat
     
-    public init(topLeftRadius: CGFloat, topRightRadius: CGFloat, bottomLeftRadius: CGFloat, bottomRightRadius: CGFloat) {
-        self.topLeftRadius = topLeftRadius
-        self.topRightRadius = topRightRadius
-        self.bottomLeftRadius = bottomLeftRadius
-        self.bottomRightRadius = bottomRightRadius
+    /// Initialize with all uneven rounded radius.
+    public init(topLeft: CGFloat,
+                topRight: CGFloat,
+                bottomLeft: CGFloat,
+                bottomRight: CGFloat) {
+        self.topLeft = topLeft
+        self.topRight = topRight
+        self.bottomLeft = bottomLeft
+        self.bottomRight = bottomRight
+    }
+    
+    /// Initialize with uneven rounded radius of top and bottom.
+    public init(top: CGFloat, bottom: CGFloat) {
+        self.init(topLeft: top, topRight: top, bottomLeft: bottom, bottomRight: bottom)
     }
     
     public func path(in rect: CGRect) -> Path {
@@ -29,15 +39,15 @@ public struct UnevenRoundedRectangle: Shape {
         let bl = CGPoint(x: rect.minX, y: rect.maxY)
         let br = CGPoint(x: rect.maxX, y: rect.maxY)
         
-        path.move(to: CGPoint(x: tl.x + topLeftRadius, y: tl.y))
-        path.addLine(to: CGPoint(x: tr.x - topRightRadius, y: tr.y))
-        path.addArc(center: CGPoint(x: tr.x - topRightRadius, y: tr.y + topRightRadius), radius: topRightRadius, startAngle: Angle(degrees: -90), endAngle: Angle(degrees: 0), clockwise: false)
-        path.addLine(to: CGPoint(x: br.x, y: br.y - bottomRightRadius))
-        path.addArc(center: CGPoint(x: br.x - bottomRightRadius, y: br.y - bottomRightRadius), radius: bottomRightRadius, startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 90), clockwise: false)
-        path.addLine(to: CGPoint(x: bl.x + bottomLeftRadius, y: bl.y))
-        path.addArc(center: CGPoint(x: bl.x + bottomLeftRadius, y: bl.y - bottomLeftRadius), radius: bottomLeftRadius, startAngle: Angle(degrees: 90), endAngle: Angle(degrees: 180), clockwise: false)
-        path.addLine(to: CGPoint(x: tl.x, y: tl.y + topLeftRadius))
-        path.addArc(center: CGPoint(x: tl.x + topLeftRadius, y: tl.y + topLeftRadius), radius: topLeftRadius, startAngle: Angle(degrees: 180), endAngle: Angle(degrees: 270), clockwise: false)
+        path.move(to: CGPoint(x: tl.x + topLeft, y: tl.y))
+        path.addLine(to: CGPoint(x: tr.x - topRight, y: tr.y))
+        path.addArc(center: CGPoint(x: tr.x - topRight, y: tr.y + topRight), radius: topRight, startAngle: Angle(degrees: -90), endAngle: Angle(degrees: 0), clockwise: false)
+        path.addLine(to: CGPoint(x: br.x, y: br.y - bottomRight))
+        path.addArc(center: CGPoint(x: br.x - bottomRight, y: br.y - bottomRight), radius: bottomRight, startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 90), clockwise: false)
+        path.addLine(to: CGPoint(x: bl.x + bottomLeft, y: bl.y))
+        path.addArc(center: CGPoint(x: bl.x + bottomLeft, y: bl.y - bottomLeft), radius: bottomLeft, startAngle: Angle(degrees: 90), endAngle: Angle(degrees: 180), clockwise: false)
+        path.addLine(to: CGPoint(x: tl.x, y: tl.y + topLeft))
+        path.addArc(center: CGPoint(x: tl.x + topLeft, y: tl.y + topLeft), radius: topLeft, startAngle: Angle(degrees: 180), endAngle: Angle(degrees: 270), clockwise: false)
         
         return path
     }
