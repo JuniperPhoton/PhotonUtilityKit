@@ -98,7 +98,8 @@ public struct BottomSheetView<Content: View>: View {
                     .environmentObject(controller)
                     .padding()
                     .frame(maxWidth: DeviceCompat.isOnPhoneOnly() ? .infinity : 600)
-                    .background(RoundedRectangle(cornerRadius: 12).fill(backgroundColor).ignoresSafeArea())
+                    .background(UnevenRoundedRectangle(top: 12, bottom: DeviceCompat.isMac() ? 12 : 0)
+                        .fill(backgroundColor).ignoresSafeArea())
                     .listenHeightChanged(onHeightChanged: { height in
                         self.contentHeight = height
                     })

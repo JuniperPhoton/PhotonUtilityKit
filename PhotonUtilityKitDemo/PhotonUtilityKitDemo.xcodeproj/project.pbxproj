@@ -1,0 +1,437 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		222FC6022A470EA400E32672 /* PhotonUtilityKitDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6012A470EA400E32672 /* PhotonUtilityKitDemoApp.swift */; };
+		222FC6042A470EA400E32672 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6032A470EA400E32672 /* ContentView.swift */; };
+		222FC6062A470EA400E32672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222FC6052A470EA400E32672 /* Assets.xcassets */; };
+		222FC60A2A470EA400E32672 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222FC6092A470EA400E32672 /* Preview Assets.xcassets */; };
+		222FC6132A470EF500E32672 /* PhotonUtilityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 222FC6122A470EF500E32672 /* PhotonUtilityKit */; };
+		222FC6172A47165200E32672 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6162A47165200E32672 /* MainViewModel.swift */; };
+		222FC6192A47168100E32672 /* DetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6182A47168100E32672 /* DetailPage.swift */; };
+		222FC61C2A471EC200E32672 /* Highlightr in Frameworks */ = {isa = PBXBuildFile; productRef = 222FC61B2A471EC200E32672 /* Highlightr */; };
+		222FC61E2A472A1800E32672 /* HighliableCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC61D2A472A1800E32672 /* HighliableCodeView.swift */; };
+		222FC6202A47311800E32672 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC61F2A47311800E32672 /* Styles.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		222FC5FE2A470EA400E32672 /* PhotonUtilityKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotonUtilityKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		222FC6012A470EA400E32672 /* PhotonUtilityKitDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotonUtilityKitDemoApp.swift; sourceTree = "<group>"; };
+		222FC6032A470EA400E32672 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		222FC6052A470EA400E32672 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		222FC6072A470EA400E32672 /* PhotonUtilityKitDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhotonUtilityKitDemo.entitlements; sourceTree = "<group>"; };
+		222FC6092A470EA400E32672 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		222FC6102A470EDC00E32672 /* PhotonUtilityKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PhotonUtilityKit; path = ..; sourceTree = "<group>"; };
+		222FC6162A47165200E32672 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		222FC6182A47168100E32672 /* DetailPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPage.swift; sourceTree = "<group>"; };
+		222FC61D2A472A1800E32672 /* HighliableCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighliableCodeView.swift; sourceTree = "<group>"; };
+		222FC61F2A47311800E32672 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		222FC5FB2A470EA400E32672 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				222FC61C2A471EC200E32672 /* Highlightr in Frameworks */,
+				222FC6132A470EF500E32672 /* PhotonUtilityKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		222FC5F52A470EA400E32672 = {
+			isa = PBXGroup;
+			children = (
+				222FC6102A470EDC00E32672 /* PhotonUtilityKit */,
+				222FC6002A470EA400E32672 /* PhotonUtilityKitDemo */,
+				222FC5FF2A470EA400E32672 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		222FC5FF2A470EA400E32672 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				222FC5FE2A470EA400E32672 /* PhotonUtilityKitDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		222FC6002A470EA400E32672 /* PhotonUtilityKitDemo */ = {
+			isa = PBXGroup;
+			children = (
+				222FC6152A47164800E32672 /* ViewModel */,
+				222FC6142A47164300E32672 /* View */,
+				222FC6012A470EA400E32672 /* PhotonUtilityKitDemoApp.swift */,
+				222FC6052A470EA400E32672 /* Assets.xcassets */,
+				222FC6072A470EA400E32672 /* PhotonUtilityKitDemo.entitlements */,
+				222FC6082A470EA400E32672 /* Preview Content */,
+			);
+			path = PhotonUtilityKitDemo;
+			sourceTree = "<group>";
+		};
+		222FC6082A470EA400E32672 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				222FC6092A470EA400E32672 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		222FC6142A47164300E32672 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				222FC6032A470EA400E32672 /* ContentView.swift */,
+				222FC6182A47168100E32672 /* DetailPage.swift */,
+				222FC61D2A472A1800E32672 /* HighliableCodeView.swift */,
+				222FC61F2A47311800E32672 /* Styles.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		222FC6152A47164800E32672 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				222FC6162A47165200E32672 /* MainViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		222FC5FD2A470EA400E32672 /* PhotonUtilityKitDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 222FC60D2A470EA400E32672 /* Build configuration list for PBXNativeTarget "PhotonUtilityKitDemo" */;
+			buildPhases = (
+				222FC5FA2A470EA400E32672 /* Sources */,
+				222FC5FB2A470EA400E32672 /* Frameworks */,
+				222FC5FC2A470EA400E32672 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PhotonUtilityKitDemo;
+			packageProductDependencies = (
+				222FC6122A470EF500E32672 /* PhotonUtilityKit */,
+				222FC61B2A471EC200E32672 /* Highlightr */,
+			);
+			productName = PhotonUtilityKitDemo;
+			productReference = 222FC5FE2A470EA400E32672 /* PhotonUtilityKitDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		222FC5F62A470EA400E32672 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					222FC5FD2A470EA400E32672 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 222FC5F92A470EA400E32672 /* Build configuration list for PBXProject "PhotonUtilityKitDemo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 222FC5F52A470EA400E32672;
+			packageReferences = (
+				222FC6112A470EF500E32672 /* XCRemoteSwiftPackageReference "PhotonUtilityKit" */,
+				222FC61A2A471EC200E32672 /* XCRemoteSwiftPackageReference "Highlightr" */,
+			);
+			productRefGroup = 222FC5FF2A470EA400E32672 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				222FC5FD2A470EA400E32672 /* PhotonUtilityKitDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		222FC5FC2A470EA400E32672 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				222FC60A2A470EA400E32672 /* Preview Assets.xcassets in Resources */,
+				222FC6062A470EA400E32672 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		222FC5FA2A470EA400E32672 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				222FC6042A470EA400E32672 /* ContentView.swift in Sources */,
+				222FC61E2A472A1800E32672 /* HighliableCodeView.swift in Sources */,
+				222FC6022A470EA400E32672 /* PhotonUtilityKitDemoApp.swift in Sources */,
+				222FC6202A47311800E32672 /* Styles.swift in Sources */,
+				222FC6172A47165200E32672 /* MainViewModel.swift in Sources */,
+				222FC6192A47168100E32672 /* DetailPage.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		222FC60B2A470EA400E32672 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		222FC60C2A470EA400E32672 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		222FC60E2A470EA400E32672 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PhotonUtilityKitDemo/PhotonUtilityKitDemo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"PhotonUtilityKitDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = 7GB9CHCB87;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.juniperphoton.PhotonUtilityKitDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		222FC60F2A470EA400E32672 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PhotonUtilityKitDemo/PhotonUtilityKitDemo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"PhotonUtilityKitDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = 7GB9CHCB87;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.juniperphoton.PhotonUtilityKitDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		222FC5F92A470EA400E32672 /* Build configuration list for PBXProject "PhotonUtilityKitDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				222FC60B2A470EA400E32672 /* Debug */,
+				222FC60C2A470EA400E32672 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		222FC60D2A470EA400E32672 /* Build configuration list for PBXNativeTarget "PhotonUtilityKitDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				222FC60E2A470EA400E32672 /* Debug */,
+				222FC60F2A470EA400E32672 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		222FC6112A470EF500E32672 /* XCRemoteSwiftPackageReference "PhotonUtilityKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JuniperPhoton/PhotonUtilityKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		222FC61A2A471EC200E32672 /* XCRemoteSwiftPackageReference "Highlightr" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/raspu/Highlightr";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		222FC6122A470EF500E32672 /* PhotonUtilityKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 222FC6112A470EF500E32672 /* XCRemoteSwiftPackageReference "PhotonUtilityKit" */;
+			productName = PhotonUtilityKit;
+		};
+		222FC61B2A471EC200E32672 /* Highlightr */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 222FC61A2A471EC200E32672 /* XCRemoteSwiftPackageReference "Highlightr" */;
+			productName = Highlightr;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 222FC5F62A470EA400E32672 /* Project object */;
+}
