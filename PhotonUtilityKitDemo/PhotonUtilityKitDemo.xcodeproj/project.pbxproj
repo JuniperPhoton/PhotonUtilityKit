@@ -12,6 +12,8 @@
 		222FC6062A470EA400E32672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222FC6052A470EA400E32672 /* Assets.xcassets */; };
 		222FC60A2A470EA400E32672 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222FC6092A470EA400E32672 /* Preview Assets.xcassets */; };
 		222FC6132A470EF500E32672 /* PhotonUtilityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 222FC6122A470EF500E32672 /* PhotonUtilityKit */; };
+		222FC6172A47165200E32672 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6162A47165200E32672 /* MainViewModel.swift */; };
+		222FC6192A47168100E32672 /* DetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6182A47168100E32672 /* DetailPage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		222FC6072A470EA400E32672 /* PhotonUtilityKitDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhotonUtilityKitDemo.entitlements; sourceTree = "<group>"; };
 		222FC6092A470EA400E32672 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		222FC6102A470EDC00E32672 /* PhotonUtilityKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PhotonUtilityKit; path = ..; sourceTree = "<group>"; };
+		222FC6162A47165200E32672 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		222FC6182A47168100E32672 /* DetailPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,8 +60,9 @@
 		222FC6002A470EA400E32672 /* PhotonUtilityKitDemo */ = {
 			isa = PBXGroup;
 			children = (
+				222FC6152A47164800E32672 /* ViewModel */,
+				222FC6142A47164300E32672 /* View */,
 				222FC6012A470EA400E32672 /* PhotonUtilityKitDemoApp.swift */,
-				222FC6032A470EA400E32672 /* ContentView.swift */,
 				222FC6052A470EA400E32672 /* Assets.xcassets */,
 				222FC6072A470EA400E32672 /* PhotonUtilityKitDemo.entitlements */,
 				222FC6082A470EA400E32672 /* Preview Content */,
@@ -71,6 +76,23 @@
 				222FC6092A470EA400E32672 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		222FC6142A47164300E32672 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				222FC6032A470EA400E32672 /* ContentView.swift */,
+				222FC6182A47168100E32672 /* DetailPage.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		222FC6152A47164800E32672 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				222FC6162A47165200E32672 /* MainViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,6 +173,8 @@
 			files = (
 				222FC6042A470EA400E32672 /* ContentView.swift in Sources */,
 				222FC6022A470EA400E32672 /* PhotonUtilityKitDemoApp.swift in Sources */,
+				222FC6172A47165200E32672 /* MainViewModel.swift in Sources */,
+				222FC6192A47168100E32672 /* DetailPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

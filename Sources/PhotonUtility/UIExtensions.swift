@@ -319,15 +319,24 @@ public extension View {
     }
 }
 
+@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 public extension View {
     /// Wrap this view inside a plain button.
-    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     func asPlainButton(role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
         Button(role: role, action: action) {
             self
         }.buttonStyle(CustomPlainButtonSytle())
     }
     
+    /// Wrap this view inside a button.
+    func asButton(role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
+        Button(role: role, action: action) {
+            self
+        }
+    }
+}
+
+public extension View {
     /// Wrap this view inside a plain button.
     func asPlainButton(action: @escaping () -> Void) -> some View {
         Button(action: action) {
@@ -336,9 +345,8 @@ public extension View {
     }
     
     /// Wrap this view inside a button.
-    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-    func asButton(role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
-        Button(role: role, action: action) {
+    func asButton(action: @escaping () -> Void) -> some View {
+        Button(action: action) {
             self
         }
     }

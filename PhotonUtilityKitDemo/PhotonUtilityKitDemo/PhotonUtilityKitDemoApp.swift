@@ -12,6 +12,12 @@ struct PhotonUtilityKitDemoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+#if os(macOS)
+                .frame(minWidth: 400, minHeight: 400)
+#endif
         }
+#if os(macOS)
+        .windowStyle(.hiddenTitleBar)
+#endif
     }
 }
