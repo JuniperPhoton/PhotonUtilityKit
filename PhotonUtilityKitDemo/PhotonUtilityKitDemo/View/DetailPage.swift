@@ -323,14 +323,21 @@ struct StaggeredGridDemoView: View {
 struct StaggeredGridContentView: View {
     let text: String
     
+    @State private var clicked = false
+    
     var body: some View {
-        Text("#\(text)")
+        Text("#\(text)\(clicked ? " Clicked!" : "")")
             .font(.title2.bold())
-            .foregroundColor(Color.accentColor)
+            .foregroundColor(clicked ? .white : Color.accentColor)
             .padding(.horizontal)
             .padding(.vertical, 8)
-            .background(Capsule().fill(Color.accentColor.opacity(0.1)))
+            .background(Capsule().fill(Color.accentColor.opacity(clicked ? 1.0 : 0.1)))
             .padding(.horizontal, 4)
             .padding(.vertical, 4)
+            .asPlainButton {
+                withAnimation {
+                    clicked.toggle()
+                }
+            }
     }
 }
