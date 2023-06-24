@@ -13,7 +13,7 @@ struct PhotonUtilityKitDemoApp: App {
         WindowGroup {
             ContentView()
 #if os(macOS)
-                .frame(minWidth: 400, minHeight: 400)
+                .frame(minWidth: 500, minHeight: 400)
 #endif
         }
 #if os(macOS)

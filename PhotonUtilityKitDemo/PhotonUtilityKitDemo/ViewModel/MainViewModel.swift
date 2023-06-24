@@ -9,6 +9,7 @@ import SwiftUI
 
 enum Catagory: String {
     case customUI = "Custom Views"
+    case customLayout = "Custom Layout"
     case handyExtension = "Handy Extensions"
 }
 
@@ -18,6 +19,7 @@ enum FeaturePage: String {
     case toast = "Toast"
     case appSegmentTabBar = "Tab bar"
     case fullscreenContent = "Fullscreen content"
+    case staggeredGrid = "Staggered Grid"
     
     var icon: String {
         switch self {
@@ -31,6 +33,8 @@ enum FeaturePage: String {
             return "menubar.rectangle"
         case .fullscreenContent:
             return "hammer"
+        case .staggeredGrid:
+            return "grid"
         }
     }
 }
@@ -50,12 +54,17 @@ class MainViewModel: ObservableObject {
     
     let allCatalogyPages: [CatalogyPage] = [
         CatalogyPage(cagatory: .customUI,
-                     pages: [.unevenedRoundedRectangle,
-                             .actionButton,
-                             .toast,
-                             .appSegmentTabBar,
-                             .fullscreenContent
-                     ])
+                     pages: [
+                        .unevenedRoundedRectangle,
+                        .actionButton,
+                        .toast,
+                        .appSegmentTabBar,
+                        .fullscreenContent
+                     ]),
+        CatalogyPage(cagatory: .customLayout,
+                     pages: [
+                        .staggeredGrid
+                     ]),
     ]
     
     init() {
