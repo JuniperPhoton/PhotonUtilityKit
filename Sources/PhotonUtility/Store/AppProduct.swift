@@ -120,7 +120,14 @@ public class AppProduct: ObservableObject {
                 isLoading = true
             }
             
-            let result = try await product.purchase(options: [])
+            let result: Product.PurchaseResult
+            #if os(xrOS)
+            let scenes = UIApplication.shared.connectedScenes
+            result = try await product.purchase(confirmIn: scenes.first!, options: [])
+            #else
+            result = try await product.purchase(options: [])
+            #endif
+            
             switch result {
             case .success(let verification):
                 //Check whether the transaction is verified. If it isn't,
