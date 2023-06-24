@@ -132,15 +132,18 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
     }
     
     let text: NSAttributedString
+    let foregroundColorName: String
     let autoScrollToBottom: Bool
     
-    public init(text: NSAttributedString, autoScrollToBottom: Bool) {
+    public init(text: NSAttributedString, foregroundColorName: String, autoScrollToBottom: Bool) {
         self.text = text
+        self.foregroundColorName = foregroundColorName
         self.autoScrollToBottom = autoScrollToBottom
     }
     
-    public init(text: String, autoScrollToBottom: Bool) {
+    public init(text: String, foregroundColorName: String, autoScrollToBottom: Bool) {
         self.text = NSAttributedString(string: text)
+        self.foregroundColorName = foregroundColorName
         self.autoScrollToBottom = autoScrollToBottom
     }
     
@@ -177,6 +180,9 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
 
         attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
                                       value: paragraphStyle,
+                                      range: fullRange)
+        
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor(named: foregroundColorName),
                                       range: fullRange)
         
         attributedString.addAttribute(NSAttributedString.Key.font,
