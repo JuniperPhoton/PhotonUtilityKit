@@ -10,7 +10,6 @@ import PhotonUtility
 import PhotonUtilityView
 
 struct ContentView: View {
-    @State private var colorScheme: ColorScheme = .light
     @StateObject private var viewModel = MainViewModel()
     
     var body: some View {
@@ -38,13 +37,6 @@ struct ContentView: View {
                 viewModel.refresh()
             }
             .listStyle(.sidebar)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Image(systemName: colorScheme == .light ? "moon" : "sun.max").asButton {
-                        colorScheme = colorScheme == .light ? .dark : .light
-                    }
-                }
-            }
             .navigationTitle("PhotonUtilityKit")
             
             VStack {
@@ -56,6 +48,5 @@ struct ContentView: View {
                 Text("Select a page in the sidebar to start")
             }
         }
-        .preferredColorScheme(colorScheme)
     }
 }
