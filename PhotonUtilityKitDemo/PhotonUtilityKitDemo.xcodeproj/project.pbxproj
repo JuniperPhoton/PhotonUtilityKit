@@ -14,6 +14,9 @@
 		222FC6132A470EF500E32672 /* PhotonUtilityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 222FC6122A470EF500E32672 /* PhotonUtilityKit */; };
 		222FC6172A47165200E32672 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6162A47165200E32672 /* MainViewModel.swift */; };
 		222FC6192A47168100E32672 /* DetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6182A47168100E32672 /* DetailPage.swift */; };
+		222FC61C2A471EC200E32672 /* Highlightr in Frameworks */ = {isa = PBXBuildFile; productRef = 222FC61B2A471EC200E32672 /* Highlightr */; };
+		222FC61E2A472A1800E32672 /* HighliableCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC61D2A472A1800E32672 /* HighliableCodeView.swift */; };
+		222FC6202A47311800E32672 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC61F2A47311800E32672 /* Styles.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,8 @@
 		222FC6102A470EDC00E32672 /* PhotonUtilityKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PhotonUtilityKit; path = ..; sourceTree = "<group>"; };
 		222FC6162A47165200E32672 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		222FC6182A47168100E32672 /* DetailPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPage.swift; sourceTree = "<group>"; };
+		222FC61D2A472A1800E32672 /* HighliableCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighliableCodeView.swift; sourceTree = "<group>"; };
+		222FC61F2A47311800E32672 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				222FC61C2A471EC200E32672 /* Highlightr in Frameworks */,
 				222FC6132A470EF500E32672 /* PhotonUtilityKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,6 +89,8 @@
 			children = (
 				222FC6032A470EA400E32672 /* ContentView.swift */,
 				222FC6182A47168100E32672 /* DetailPage.swift */,
+				222FC61D2A472A1800E32672 /* HighliableCodeView.swift */,
+				222FC61F2A47311800E32672 /* Styles.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -113,6 +121,7 @@
 			name = PhotonUtilityKitDemo;
 			packageProductDependencies = (
 				222FC6122A470EF500E32672 /* PhotonUtilityKit */,
+				222FC61B2A471EC200E32672 /* Highlightr */,
 			);
 			productName = PhotonUtilityKitDemo;
 			productReference = 222FC5FE2A470EA400E32672 /* PhotonUtilityKitDemo.app */;
@@ -144,6 +153,7 @@
 			mainGroup = 222FC5F52A470EA400E32672;
 			packageReferences = (
 				222FC6112A470EF500E32672 /* XCRemoteSwiftPackageReference "PhotonUtilityKit" */,
+				222FC61A2A471EC200E32672 /* XCRemoteSwiftPackageReference "Highlightr" */,
 			);
 			productRefGroup = 222FC5FF2A470EA400E32672 /* Products */;
 			projectDirPath = "";
@@ -172,7 +182,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				222FC6042A470EA400E32672 /* ContentView.swift in Sources */,
+				222FC61E2A472A1800E32672 /* HighliableCodeView.swift in Sources */,
 				222FC6022A470EA400E32672 /* PhotonUtilityKitDemoApp.swift in Sources */,
+				222FC6202A47311800E32672 /* Styles.swift in Sources */,
 				222FC6172A47165200E32672 /* MainViewModel.swift in Sources */,
 				222FC6192A47168100E32672 /* DetailPage.swift in Sources */,
 			);
@@ -398,6 +410,14 @@
 				kind = branch;
 			};
 		};
+		222FC61A2A471EC200E32672 /* XCRemoteSwiftPackageReference "Highlightr" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/raspu/Highlightr";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -405,6 +425,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 222FC6112A470EF500E32672 /* XCRemoteSwiftPackageReference "PhotonUtilityKit" */;
 			productName = PhotonUtilityKit;
+		};
+		222FC61B2A471EC200E32672 /* Highlightr */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 222FC61A2A471EC200E32672 /* XCRemoteSwiftPackageReference "Highlightr" */;
+			productName = Highlightr;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotonUtility
 import PhotonUtilityView
+import Highlightr
 
 extension FeaturePage {
     @ViewBuilder
@@ -21,6 +22,8 @@ extension FeaturePage {
             ToastDemoView()
         case .appSegmentTabBar:
             TabBarDemoView()
+        case .fullscreenContent:
+            FullscreenContentDemoView()
         }
     }
 }
@@ -33,6 +36,7 @@ struct UnevenedRoundedRectDemoView: View {
                 .background(UnevenRoundedRectangle(top: 12, bottom: 0).fill(.gray.opacity(0.1)))
         }
         .matchParent()
+        .navigationTitle("UnevenedRoundedRect")
     }
 }
 
@@ -48,6 +52,8 @@ struct ActionButtonDemoView: View {
             ActionButton(title: "Play", icon: "play",
                          isLoading: $isLoading,
                          style: .init(foregroundColor: .accentColor, backgroundColor: .accentColor.opacity(0.1)))
+            .animation(.easeInOut, value: isLoading)
+            
             ActionButton(title: "Play", icon: "play",
                          style: .init(foregroundColor: .accentColor, backgroundColor: .accentColor.opacity(0.1)),
                          frameConfigration: .init(true))
@@ -61,6 +67,7 @@ struct ActionButtonDemoView: View {
                 }
             }
         }
+        .navigationTitle("ActionButton")
     }
 }
 
@@ -74,6 +81,7 @@ struct ToastDemoView: View {
             
             ToastView(appToast: appToast, colors: toastColor)
         }
+        .matchHeight(.topLeading)
         .environmentObject(appToast)
         .toolbar {
             ToolbarItem {
@@ -97,6 +105,7 @@ struct ToastDemoView: View {
                 }
             }
         }
+        .navigationTitle("Toast")
     }
 }
 
@@ -120,26 +129,59 @@ enum Tabs: String, Hashable, CaseIterable {
     }
 }
 
+class TabBarDemoViewModel: ObservableObject {
+    let textAppSegmentTabBarCode = HighliableCode(code:
+    """
+    TextAppSegmentTabBar(selection: $selected,
+                         sources: tabs,
+                         scrollable: false,
+                         foregroundColor: .accentColor,
+                         backgroundColor: .accentColor.opacity(0.1),
+                         textKeyPath: \\.rawValue)
+    """)
+    
+    let appSegmentTabBarCode = HighliableCode(code:
+    """
+        AppSegmentTabBar(selection: $selected, sources: tabs,
+                         scrollable: false,
+                         foregroundColor: .accentColor,
+                         backgroundColor: .accentColor.opacity(0.1),
+                         horizontalInset: 0) { tab in
+            HStack {
+                Image(systemName: tab.icon)
+                Text(tab.rawValue.uppercased()).bold()
+            }.foregroundColor(tab == selected ? .white : .accentColor).padding(8)
+        }
+    """)
+}
+
 struct TabBarDemoView: View {
+    @StateObject private var viewModel = TabBarDemoViewModel()
+    
     @State private var tabs = Tabs.allCases
     @State private var selected = Tabs.cursive
     
     var body: some View {
         VStack {
-            Text("TextAppSegmentTabBar")
+            Text("TextAppSegmentTabBar").applySubTitle()
+            
+            HighliableCodeView(code: viewModel.textAppSegmentTabBarCode)
+            
             TextAppSegmentTabBar(selection: $selected,
                                  sources: tabs,
-                                 scrollable: false,
+                                 scrollable: true,
                                  foregroundColor: .accentColor,
                                  backgroundColor: .accentColor.opacity(0.1),
                                  textKeyPath: \.rawValue)
             
-            Spacer().frame(height: 20)
+            Spacer().frame(height: 50)
             
-            Text("AppSegmentTabBar")
+            Text("AppSegmentTabBar").applySubTitle()
             
+            HighliableCodeView(code: viewModel.appSegmentTabBarCode)
+
             AppSegmentTabBar(selection: $selected, sources: tabs,
-                             scrollable: false,
+                             scrollable: true,
                              foregroundColor: .accentColor,
                              backgroundColor: .accentColor.opacity(0.1),
                              horizontalInset: 0) { tab in
@@ -147,6 +189,91 @@ struct TabBarDemoView: View {
                     Image(systemName: tab.icon)
                     Text(tab.rawValue.uppercased()).bold()
                 }.foregroundColor(tab == selected ? .white : .accentColor).padding(8)
+            }
+        }
+        .matchHeight(.topLeading)
+        .padding()
+        .navigationTitle("TabBar")
+    }
+}
+
+struct FullscreenContentDemoView: View {
+    @StateObject private var fullscreenPresentation = FullscreenPresentation()
+
+    var body: some View {
+        ZStack {
+            VStack {
+                Text(
+            """
+            Show full-screen content in a specified view.
+            
+            You can use BottomSheetView as a parent view to display a sheet-based view.
+            
+            On iOS, BottomSheetView appears as a bottom sheet with a swipe-down gesture, while on macOS, it appears in the center.
+            """
+                )
+                .matchWidth(.leading)
+                .padding(.bottom)
+                
+                VStack(spacing: 20) {
+                    Text("Bottom sheet").asButton {
+                        let view = BottomSheetView(backgroundColor: .white) {
+                            VStack {
+                                Text("Bottom sheet title")
+                                    .font(.title.bold())
+                                    .padding(.bottom)
+                                Text("On iOS and iPadOS, you can swipe down to dismiss.")
+                                    .multilineTextAlignment(.center)
+                            }.matchHeight(.top).frame(maxHeight: 200)
+                        }
+                        
+                        fullscreenPresentation.present(view: view)
+                    }.matchWidth(.leading)
+                    
+                    Text("Custom").asButton {
+                        let view = VStack {
+                            Text("Custom title")
+                                .font(.title.bold())
+                                .padding(.bottom)
+                            Text("A custom view content. Tap to dismiss.")
+                                .multilineTextAlignment(.center)
+                        }.matchParent()
+                        #if os(iOS)
+                            .background(.thinMaterial)
+                        #else
+                            .background(Color.black.opacity(0.5))
+                        #endif
+                            .onTapGesture {
+                                fullscreenPresentation.dismissAll()
+                            }
+                        
+                        fullscreenPresentation.present(view: view)
+                    }.matchWidth(.leading)
+                }
+            }
+            .matchParent(alignment: .topLeading)
+            .padding()
+            
+            fullscreenContent()
+        }
+        .navigationTitle("Fullscreen content")
+        .environmentObject(fullscreenPresentation)
+    }
+    
+    @ViewBuilder
+    private func fullscreenContent() -> some View {
+        ZStack {
+            if let view = fullscreenPresentation.presentedView {
+                ZStack {
+                    AnyView(view)
+                }.matchParent().transition(fullscreenPresentation.transition)
+                    .onDisappear {
+                        fullscreenPresentation.invokeOnDismiss()
+                    }
+            }
+        }.transaction { current in
+            if let override = fullscreenPresentation.transcation {
+                current = override
             }
         }
     }

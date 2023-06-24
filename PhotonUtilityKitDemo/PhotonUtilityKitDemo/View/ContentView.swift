@@ -21,14 +21,21 @@ struct ContentView: View {
                         ForEach(catagory.pages, id: \.rawValue) { page in
                             NavigationLink {
                                 page.viewBody
+#if os(iOS)
+                                    .navigationBarTitleDisplayMode(.inline)
+#endif
                             } label: {
-                                Text(page.rawValue)
+                                Label(page.rawValue, systemImage: page.icon)
                             }
                         }
                     } header: {
                         Text(catagory.cagatory.rawValue)
                     }
                 }
+            }
+            .searchableCompact(text: $viewModel.searchText, placement: .sidebar)
+            .onChange(of: viewModel.searchText) { newValue in
+                viewModel.refresh()
             }
             .listStyle(.sidebar)
             .toolbar {
@@ -38,6 +45,7 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationTitle("PhotonUtilityKit")
             
             VStack {
                 Image(systemName: "text.book.closed")

@@ -47,17 +47,22 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
         }
     }
     
-    public let text: String
+    public let text: NSAttributedString
     public let autoScrollToBottom: Bool
     
-    public init(text: String, autoScrollToBottom: Bool) {
+    public init(text: NSAttributedString, autoScrollToBottom: Bool) {
         self.text = text
+        self.autoScrollToBottom = autoScrollToBottom
+    }
+    
+    public init(text: String, autoScrollToBottom: Bool) {
+        self.text = NSAttributedString(string: text)
         self.autoScrollToBottom = autoScrollToBottom
     }
     
     public func makeNSView(context: Context) -> NSScrollView {
         let textView = NSTextView()
-        textView.string = self.text
+        textView.textStorage?.setAttributedString(self.text)
         textView.drawsBackground = false
         textView.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
         textView.isEditable = false
@@ -86,7 +91,7 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
         guard let textView = scrollView.documentView as? NSTextView else {
             return
         }
-        textView.string = self.text
+        textView.textStorage?.setAttributedString(self.text)
         setLineSpacing(for: textView)
         textView.autoresizingMask = [.width, .height]
         
@@ -126,17 +131,22 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
         }
     }
     
-    let text: String
+    let text: NSAttributedString
     let autoScrollToBottom: Bool
     
-    public init(text: String, autoScrollToBottom: Bool) {
+    public init(text: NSAttributedString, autoScrollToBottom: Bool) {
         self.text = text
+        self.autoScrollToBottom = autoScrollToBottom
+    }
+    
+    public init(text: String, autoScrollToBottom: Bool) {
+        self.text = NSAttributedString(string: text)
         self.autoScrollToBottom = autoScrollToBottom
     }
     
     public func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
-        textView.text = self.text
+        textView.attributedText = self.text
         textView.backgroundColor = .clear
         textView.isScrollEnabled = true
         textView.isEditable = false
@@ -154,7 +164,7 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
         setText(for: uiView)
         
         if context.coordinator.autoScrollToBottom {
-            uiView.scrollRangeToVisible(NSRange(location: self.text.count - 2, length: 1))
+            uiView.scrollRangeToVisible(NSRange(location: self.text.length - 2, length: 1))
         }
     }
     
@@ -162,18 +172,16 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 6
         
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: UIFont.labelFontSize)
-        ]
-        
-        let attributedString = NSMutableAttributedString(string: self.text, attributes: attributes)
+        let attributedString = NSMutableAttributedString(attributedString: self.text)
+        let fullRange = NSRange(location: 0, length: attributedString.length)
+
         attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
-                                      value: paragraphStyle, range: NSRange(location: 0,
-                                                                            length: attributedString.length))
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor,
-                                      value: UIColor(named: "BodyTextColor")!,
-                                      range: NSRange(location: 0,
-                                                     length: attributedString.length))
+                                      value: paragraphStyle,
+                                      range: fullRange)
+        
+        attributedString.addAttribute(NSAttributedString.Key.font,
+                                      value: UIFont.systemFont(ofSize: UIFont.labelFontSize),
+                                      range: fullRange)
         textView.attributedText = attributedString
     }
 }

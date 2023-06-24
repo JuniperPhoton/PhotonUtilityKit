@@ -17,6 +17,22 @@ enum FeaturePage: String {
     case actionButton = "Action button"
     case toast = "Toast"
     case appSegmentTabBar = "Tab bar"
+    case fullscreenContent = "Fullscreen content"
+    
+    var icon: String {
+        switch self {
+        case .unevenedRoundedRectangle:
+            return "rectangle"
+        case .actionButton:
+            return "hammer"
+        case .toast:
+            return "hammer"
+        case .appSegmentTabBar:
+            return "menubar.rectangle"
+        case .fullscreenContent:
+            return "hammer"
+        }
+    }
 }
 
 struct CatalogyPage: Identifiable {
@@ -29,12 +45,34 @@ struct CatalogyPage: Identifiable {
 }
 
 class MainViewModel: ObservableObject {
-    @Published var catalogyPages: [CatalogyPage] = [
+    @Published var catalogyPages: [CatalogyPage] = []
+    @Published var searchText: String = ""
+    
+    let allCatalogyPages: [CatalogyPage] = [
         CatalogyPage(cagatory: .customUI,
                      pages: [.unevenedRoundedRectangle,
                              .actionButton,
                              .toast,
-                             .appSegmentTabBar
+                             .appSegmentTabBar,
+                             .fullscreenContent
                      ])
     ]
+    
+    init() {
+        catalogyPages = allCatalogyPages
+    }
+    
+    func refresh() {
+        if searchText.isEmpty {
+            catalogyPages = allCatalogyPages
+            return
+        }
+        
+        catalogyPages = []
+        allCatalogyPages.forEach { catagory in
+            catalogyPages.append(.init(cagatory: catagory.cagatory, pages: catagory.pages.filter({ page in
+                page.rawValue.lowercased().contains(searchText.lowercased())
+            })))
+        }
+    }
 }
