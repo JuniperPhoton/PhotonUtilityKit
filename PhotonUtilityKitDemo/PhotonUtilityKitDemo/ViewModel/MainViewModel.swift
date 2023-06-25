@@ -68,7 +68,7 @@ enum FeaturePage: String, FeaturePageTrait {
     
     var supportedPlatforms: [Platform] {
         switch self {
-        case .iconGenerator:
+        case .iconGenerator, .screenshot:
             return [.macOS]
         default:
             return Platform.allCases
