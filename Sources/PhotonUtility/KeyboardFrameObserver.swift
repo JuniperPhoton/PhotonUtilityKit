@@ -16,7 +16,7 @@ import UIKit
 /// On iOS and iPadOS, you subscribe to the changed of ``keyboardFrame`` to perform action.
 ///
 /// On macOS or any other platforms, the ``keyboardFrame`` is always .zero.
-public class KeybordFrameObserver: ObservableObject {
+public class KeyboardFrameObserver: ObservableObject {
     @Published public var keyboardFrame: CGRect = .zero
     
     public init() {
