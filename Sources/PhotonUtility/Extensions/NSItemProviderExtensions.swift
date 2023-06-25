@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreGraphics
+import UniformTypeIdentifiers
 
 #if canImport(UIKit)
 import UIKit
@@ -57,4 +58,38 @@ public extension NSItemProvider {
         }
     }
 #endif
+}
+
+public extension NSItemProvider {
+    func loadAsUrl() async -> URL? {
+        var url = await tryLoadAsFileRepresentation()
+        if url == nil {
+            url = await tryLoadAsPasteboardType()
+        }
+        return url
+    }
+    
+    private func tryLoadAsFileRepresentation() async -> URL? {
+        return await withCheckedContinuation { continuation in
+            _ = self.loadInPlaceFileRepresentation(forTypeIdentifier: UTType.folder.identifier, completionHandler: { url, success, error in
+                continuation.resume(returning: url)
+            })
+        }
+    }
+    
+    private func tryLoadAsPasteboardType() async -> URL? {
+#if os(macOS)
+        return await withCheckedContinuation { continuation in
+            _ = self.loadObject(ofClass: NSPasteboard.PasteboardType.self) { pasteboardItem, _ in
+                guard let rawValue = pasteboardItem?.rawValue else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                continuation.resume(returning: URL(string: rawValue)!)
+            }
+        }
+#else
+        return nil
+#endif
+    }
 }

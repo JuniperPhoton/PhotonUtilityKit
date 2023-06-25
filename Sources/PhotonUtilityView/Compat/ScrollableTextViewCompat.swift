@@ -182,8 +182,10 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
                                       value: paragraphStyle,
                                       range: fullRange)
         
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor(named: foregroundColorName),
-                                      range: fullRange)
+        if let color = UIColor(named: foregroundColorName) {
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color,
+                                          range: fullRange)
+        }
         
         attributedString.addAttribute(NSAttributedString.Key.font,
                                       value: UIFont.systemFont(ofSize: UIFont.labelFontSize),

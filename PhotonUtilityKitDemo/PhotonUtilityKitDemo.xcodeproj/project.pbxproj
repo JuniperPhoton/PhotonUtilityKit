@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2200C6972A480485005BA91E /* UnevenedRoundedRectDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C6962A480485005BA91E /* UnevenedRoundedRectDemoView.swift */; };
+		2200C6992A48049B005BA91E /* ActionButtonDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C6982A48049B005BA91E /* ActionButtonDemoView.swift */; };
+		2200C69B2A4804C5005BA91E /* ToastDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C69A2A4804C5005BA91E /* ToastDemoView.swift */; };
+		2200C69D2A4804D8005BA91E /* TabBarDemoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C69C2A4804D8005BA91E /* TabBarDemoViewModel.swift */; };
+		2200C69F2A4804F3005BA91E /* FullscreenContentDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C69E2A4804F3005BA91E /* FullscreenContentDemoView.swift */; };
+		2200C6A12A480505005BA91E /* StaggeredGridDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C6A02A480505005BA91E /* StaggeredGridDemoView.swift */; };
+		2200C6A32A480523005BA91E /* IconGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C6A22A480523005BA91E /* IconGeneratorView.swift */; };
 		222FC6022A470EA400E32672 /* PhotonUtilityKitDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6012A470EA400E32672 /* PhotonUtilityKitDemoApp.swift */; };
 		222FC6042A470EA400E32672 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6032A470EA400E32672 /* ContentView.swift */; };
 		222FC6062A470EA400E32672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222FC6052A470EA400E32672 /* Assets.xcassets */; };
@@ -20,6 +27,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2200C6962A480485005BA91E /* UnevenedRoundedRectDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnevenedRoundedRectDemoView.swift; sourceTree = "<group>"; };
+		2200C6982A48049B005BA91E /* ActionButtonDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonDemoView.swift; sourceTree = "<group>"; };
+		2200C69A2A4804C5005BA91E /* ToastDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastDemoView.swift; sourceTree = "<group>"; };
+		2200C69C2A4804D8005BA91E /* TabBarDemoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDemoViewModel.swift; sourceTree = "<group>"; };
+		2200C69E2A4804F3005BA91E /* FullscreenContentDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenContentDemoView.swift; sourceTree = "<group>"; };
+		2200C6A02A480505005BA91E /* StaggeredGridDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaggeredGridDemoView.swift; sourceTree = "<group>"; };
+		2200C6A22A480523005BA91E /* IconGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconGeneratorView.swift; sourceTree = "<group>"; };
 		222FC5FE2A470EA400E32672 /* PhotonUtilityKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotonUtilityKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222FC6012A470EA400E32672 /* PhotonUtilityKitDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotonUtilityKitDemoApp.swift; sourceTree = "<group>"; };
 		222FC6032A470EA400E32672 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -46,6 +60,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2200C6952A48047C005BA91E /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				222FC6182A47168100E32672 /* DetailPage.swift */,
+				2200C6962A480485005BA91E /* UnevenedRoundedRectDemoView.swift */,
+				2200C6982A48049B005BA91E /* ActionButtonDemoView.swift */,
+				2200C69A2A4804C5005BA91E /* ToastDemoView.swift */,
+				2200C69C2A4804D8005BA91E /* TabBarDemoViewModel.swift */,
+				2200C69E2A4804F3005BA91E /* FullscreenContentDemoView.swift */,
+				2200C6A02A480505005BA91E /* StaggeredGridDemoView.swift */,
+				2200C6A22A480523005BA91E /* IconGeneratorView.swift */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
 		222FC5F52A470EA400E32672 = {
 			isa = PBXGroup;
 			children = (
@@ -87,8 +116,8 @@
 		222FC6142A47164300E32672 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2200C6952A48047C005BA91E /* Details */,
 				222FC6032A470EA400E32672 /* ContentView.swift */,
-				222FC6182A47168100E32672 /* DetailPage.swift */,
 				222FC61D2A472A1800E32672 /* HighliableCodeView.swift */,
 				222FC61F2A47311800E32672 /* Styles.swift */,
 			);
@@ -182,11 +211,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				222FC6042A470EA400E32672 /* ContentView.swift in Sources */,
+				2200C69F2A4804F3005BA91E /* FullscreenContentDemoView.swift in Sources */,
+				2200C6A32A480523005BA91E /* IconGeneratorView.swift in Sources */,
+				2200C6972A480485005BA91E /* UnevenedRoundedRectDemoView.swift in Sources */,
 				222FC61E2A472A1800E32672 /* HighliableCodeView.swift in Sources */,
 				222FC6022A470EA400E32672 /* PhotonUtilityKitDemoApp.swift in Sources */,
 				222FC6202A47311800E32672 /* Styles.swift in Sources */,
+				2200C6A12A480505005BA91E /* StaggeredGridDemoView.swift in Sources */,
 				222FC6172A47165200E32672 /* MainViewModel.swift in Sources */,
 				222FC6192A47168100E32672 /* DetailPage.swift in Sources */,
+				2200C69B2A4804C5005BA91E /* ToastDemoView.swift in Sources */,
+				2200C6992A48049B005BA91E /* ActionButtonDemoView.swift in Sources */,
+				2200C69D2A4804D8005BA91E /* TabBarDemoViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
