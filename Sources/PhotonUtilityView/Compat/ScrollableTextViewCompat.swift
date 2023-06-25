@@ -48,15 +48,18 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
     }
     
     public let text: NSAttributedString
+    public let foregroundColorName: String?
     public let autoScrollToBottom: Bool
     
-    public init(text: NSAttributedString, autoScrollToBottom: Bool) {
+    public init(text: NSAttributedString, foregroundColorName: String?, autoScrollToBottom: Bool) {
         self.text = text
+        self.foregroundColorName = foregroundColorName
         self.autoScrollToBottom = autoScrollToBottom
     }
     
-    public init(text: String, autoScrollToBottom: Bool) {
+    public init(text: String, foregroundColorName: String?, autoScrollToBottom: Bool) {
         self.text = NSAttributedString(string: text)
+        self.foregroundColorName = foregroundColorName
         self.autoScrollToBottom = autoScrollToBottom
     }
     
@@ -111,6 +114,11 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
         
         // Apply the paragraph style to the text storage
         textStorage.addAttribute(.paragraphStyle, value: paragraphStyle, range: fullRange)
+        
+        if let colorName = foregroundColorName,
+           let color = NSColor(named: colorName) {
+            textStorage.foregroundColor = color
+        }
     }
 }
 #elseif os(iOS)
@@ -132,16 +140,16 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
     }
     
     let text: NSAttributedString
-    let foregroundColorName: String
+    let foregroundColorName: String?
     let autoScrollToBottom: Bool
     
-    public init(text: NSAttributedString, foregroundColorName: String, autoScrollToBottom: Bool) {
+    public init(text: NSAttributedString, foregroundColorName: String?, autoScrollToBottom: Bool) {
         self.text = text
         self.foregroundColorName = foregroundColorName
         self.autoScrollToBottom = autoScrollToBottom
     }
     
-    public init(text: String, foregroundColorName: String, autoScrollToBottom: Bool) {
+    public init(text: String, foregroundColorName: String?, autoScrollToBottom: Bool) {
         self.text = NSAttributedString(string: text)
         self.foregroundColorName = foregroundColorName
         self.autoScrollToBottom = autoScrollToBottom
@@ -182,8 +190,11 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
                                       value: paragraphStyle,
                                       range: fullRange)
         
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor(named: foregroundColorName),
-                                      range: fullRange)
+        if let colorName = foregroundColorName,
+           let color = UIColor(named: colorName) {
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color,
+                                          range: fullRange)
+        }
         
         attributedString.addAttribute(NSAttributedString.Key.font,
                                       value: UIFont.systemFont(ofSize: UIFont.labelFontSize),

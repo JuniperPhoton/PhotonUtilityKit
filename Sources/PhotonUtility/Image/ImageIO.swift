@@ -51,7 +51,23 @@ public actor ImageIO {
                                       bitsPerComponent: 8,
                                       bytesPerRow: 0,
                                       space: CGColorSpaceCreateDeviceRGB(),
-                                      bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue) else {
+                                      bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue) else {
+            return nil
+        }
+        
+        context.draw(image, in: rect)
+        return context.makeImage()
+    }
+    
+    /// Scale image to the specified width and height.
+    public func scaleCGImage(image: CGImage, width: CGFloat, height: CGFloat) -> CGImage? {
+        let rect = CGRect(x: 0, y: 0, width: width, height: height)
+        
+        guard let context = CGContext(data: nil, width: Int(rect.width), height: Int(rect.height),
+                                      bitsPerComponent: 8,
+                                      bytesPerRow: 0,
+                                      space: CGColorSpaceCreateDeviceRGB(),
+                                      bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue) else {
             return nil
         }
         

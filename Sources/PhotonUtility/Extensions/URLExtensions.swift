@@ -65,3 +65,31 @@ public extension URL {
         return utType.isRawImage()
     }
 }
+
+public extension URL {
+    /// Grant permission to access the URL.
+    func grantAccess<T>(access: (URL) -> T) -> T {
+        let granted = self.startAccessingSecurityScopedResource()
+        
+        defer {
+            if (granted) {
+                self.stopAccessingSecurityScopedResource()
+            }
+        }
+        
+        return access(self)
+    }
+    
+    /// Grant permission to access the URL, allowing you to perform async action in the block and return the result.
+    func grantAccessAsync<T>(access: (URL) async -> T) async -> T {
+        let granted = self.startAccessingSecurityScopedResource()
+        
+        defer {
+            if (granted) {
+                self.stopAccessingSecurityScopedResource()
+            }
+        }
+        
+        return await access(self)
+    }
+}

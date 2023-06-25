@@ -10,43 +10,86 @@ import PhotonUtility
 import PhotonUtilityView
 
 struct ContentView: View {
+    var body: some View {
+        if #available(iOS 16.0, macOS 13.0, *), DeviceCompat.isMac() {
+            EpicMainContentView()
+        } else {
+            DeprecatedMainContentView()
+        }
+    }
+}
+
+@available(iOS 16.0, macOS 13.0, *)
+struct EpicMainContentView: View {
+    @StateObject private var viewModel = MainViewModel()
+    
+    var body: some View {
+        NavigationSplitView {
+            SidebarList(viewModel: viewModel)
+        } detail: {
+            EmptyView()
+        }
+    }
+}
+
+struct DeprecatedMainContentView: View {
     @StateObject private var viewModel = MainViewModel()
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(viewModel.catalogyPages, id: \.id) { catagory in
-                    Section {
-                        ForEach(catagory.pages, id: \.rawValue) { page in
-                            NavigationLink {
-                                page.viewBody
-#if os(iOS)
-                                    .navigationBarTitleDisplayMode(.inline)
+            SidebarList(viewModel: viewModel)
+            
+            EmptyView()
+        }
+    }
+}
+
+struct SidebarList: View {
+    @ObservedObject var viewModel = MainViewModel()
+    
+    var body: some View {
+        List {
+#if os(macOS)
+            Text("PhotonUtilityKit Demo")
+                .font(.title2.bold())
+                .padding(.top)
 #endif
-                            } label: {
-                                Label(page.rawValue, systemImage: page.icon)
-                            }
+            
+            ForEach(viewModel.catalogyPages, id: \.id) { catagory in
+                Section {
+                    ForEach(catagory.pages, id: \.rawValue) { page in
+                        NavigationLink {
+                            page.viewBody
+#if os(iOS)
+                                .navigationBarTitleDisplayMode(.inline)
+#endif
+                        } label: {
+                            Label(page.rawValue, systemImage: page.icon)
                         }
-                    } header: {
-                        Text(catagory.cagatory.rawValue)
                     }
+                } header: {
+                    Text(catagory.cagatory.rawValue)
                 }
             }
-            .searchableCompact(text: $viewModel.searchText, placement: .sidebar)
-            .onChange(of: viewModel.searchText) { newValue in
-                viewModel.refresh()
-            }
-            .listStyle(.sidebar)
-            .navigationTitle("PhotonUtilityKit")
+        }
+        .searchableCompact(text: $viewModel.searchText, placement: .sidebar)
+        .onChange(of: viewModel.searchText) { newValue in
+            viewModel.filterBySearchText()
+        }
+        .listStyle(.sidebar)
+        .navigationTitle("PhotonUtilityKit")
+    }
+}
+
+struct EmptyView: View {
+    var body: some View {
+        VStack {
+            Image("AboutIcon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 100, height: 100)
             
-            VStack {
-                Image(systemName: "text.book.closed")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 50, height: 50)
-                
-                Text("Select a page in the sidebar to start")
-            }
+            Text("Select a page from the sidebar to start")
         }
     }
 }

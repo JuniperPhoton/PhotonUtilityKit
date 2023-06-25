@@ -11,15 +11,37 @@ enum Catagory: String {
     case customUI = "Custom Views"
     case customLayout = "Custom Layout"
     case handyExtension = "Handy Extensions"
+    case utility = "Utility"
 }
 
-enum FeaturePage: String {
+enum Platform: String, CaseIterable, Hashable {
+    case iOS
+    case macOS
+    
+    static func currentPlatform() -> [Platform] {
+        var platforms: [Platform] = []
+        #if os(iOS)
+        platforms.append(.iOS)
+        #elseif os(macOS)
+        platforms.append(.macOS)
+        #endif
+        return platforms
+    }
+}
+
+protocol FeaturePageTrait {
+    var icon: String { get }
+    var supportedPlatforms: [Platform] { get }
+}
+
+enum FeaturePage: String, FeaturePageTrait {
     case unevenedRoundedRectangle = "Unevened Rounded Rect"
     case actionButton = "Action button"
     case toast = "Toast"
     case appSegmentTabBar = "Tab bar"
     case fullscreenContent = "Fullscreen content"
     case staggeredGrid = "Staggered Grid"
+    case iconGenerator = "Icon Generator"
     
     var icon: String {
         switch self {
@@ -35,6 +57,17 @@ enum FeaturePage: String {
             return "hammer"
         case .staggeredGrid:
             return "grid"
+        case .iconGenerator:
+            return "viewfinder"
+        }
+    }
+    
+    var supportedPlatforms: [Platform] {
+        switch self {
+        case .iconGenerator:
+            return [.macOS]
+        default:
+            return Platform.allCases
         }
     }
 }
@@ -46,42 +79,63 @@ struct CatalogyPage: Identifiable {
     var id: String {
         self.cagatory.rawValue
     }
+    
+    var isEmpty: Bool {
+        return pages.isEmpty
+    }
+    
+    init(_ cagatory: Catagory, _ pages: [FeaturePage]) {
+        let currentPlatforms = Platform.currentPlatform()
+        
+        self.cagatory = cagatory
+        self.pages = pages.filter { page in
+            page.supportedPlatforms.first { platform in
+                currentPlatforms.contains(platform)
+            } != nil
+        }
+    }
 }
 
-class MainViewModel: ObservableObject {
-    @Published var catalogyPages: [CatalogyPage] = []
-    @Published var searchText: String = ""
-    
-    let allCatalogyPages: [CatalogyPage] = [
-        CatalogyPage(cagatory: .customUI,
-                     pages: [
+func generateAllCatagories() -> [CatalogyPage] {
+    return [
+        CatalogyPage(.customUI,
+                     [
                         .unevenedRoundedRectangle,
                         .actionButton,
                         .toast,
                         .appSegmentTabBar,
                         .fullscreenContent
                      ]),
-        CatalogyPage(cagatory: .customLayout,
-                     pages: [
-                        .staggeredGrid
-                     ]),
-    ]
+        CatalogyPage(.customLayout, [.staggeredGrid]),
+        CatalogyPage(.utility, [.iconGenerator])
+    ].filter { c in
+        !c.isEmpty
+    }
+}
+
+class MainViewModel: ObservableObject {
+    @Published var catalogyPages: [CatalogyPage] = []
+    @Published var searchText: String = ""
+    
+    let allCatalogyPages: [CatalogyPage]
     
     init() {
+        allCatalogyPages = generateAllCatagories()
         catalogyPages = allCatalogyPages
     }
     
-    func refresh() {
+    func filterBySearchText() {
         if searchText.isEmpty {
             catalogyPages = allCatalogyPages
             return
         }
         
         catalogyPages = []
+        
         allCatalogyPages.forEach { catagory in
-            catalogyPages.append(.init(cagatory: catagory.cagatory, pages: catagory.pages.filter({ page in
+            catalogyPages.append(.init(catagory.cagatory, catagory.pages.filter { page in
                 page.rawValue.lowercased().contains(searchText.lowercased())
-            })))
+            }))
         }
     }
 }

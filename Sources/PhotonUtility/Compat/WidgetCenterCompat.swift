@@ -11,8 +11,8 @@ import Foundation
 import WidgetKit
 #endif
 
-public class WidgetCenterCompact {
-    public static let shared = WidgetCenterCompact()
+public class WidgetCenterCompat {
+    public static let shared = WidgetCenterCompat()
     
     private init() {
         // empty
