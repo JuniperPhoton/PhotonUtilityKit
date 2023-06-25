@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Icon-mac-512.png",
+      "filename" : "Icon-mac-256.png",
       "idiom" : "universal"
     }
   ],
