@@ -71,6 +71,13 @@ struct SidebarList: View {
                     Text(catagory.cagatory.rawValue)
                 }
             }
+            
+            Section {
+                Link("Github", destination: URL(string: "https://github.com/JuniperPhoton/PhotonUtilityKit")!)
+                Link("Twitter", destination: URL(string: "https://twitter.com/JuniperPhoton")!)
+            } header: {
+                Text("Links")
+            }
         }
         .searchableCompact(text: $viewModel.searchText, placement: .sidebar)
         .onChange(of: viewModel.searchText) { newValue in

@@ -29,7 +29,7 @@ class HighliableCode: ObservableObject {
     
     @MainActor
     func resolve(darkMode: Bool) async {
-        highlighted = getHighlightr(darkMode: darkMode)?.highlight(code) ?? .init()
+        highlighted = getHighlightr(darkMode: darkMode)?.highlight(code, as: "swift") ?? .init()
     }
 }
 

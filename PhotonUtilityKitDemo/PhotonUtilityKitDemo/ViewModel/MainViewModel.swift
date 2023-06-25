@@ -12,6 +12,7 @@ enum Catagory: String {
     case customLayout = "Custom Layout"
     case handyExtension = "Handy Extensions"
     case utility = "Utility"
+    case utilityTools = "Utility tools"
 }
 
 enum Platform: String, CaseIterable, Hashable {
@@ -42,6 +43,7 @@ enum FeaturePage: String, FeaturePageTrait {
     case fullscreenContent = "Fullscreen content"
     case staggeredGrid = "Staggered Grid"
     case iconGenerator = "Icon Generator"
+    case screenshot = "Screenshot"
     
     var icon: String {
         switch self {
@@ -59,6 +61,8 @@ enum FeaturePage: String, FeaturePageTrait {
             return "grid"
         case .iconGenerator:
             return "viewfinder"
+        case .screenshot:
+            return "macwindow"
         }
     }
     
@@ -68,6 +72,30 @@ enum FeaturePage: String, FeaturePageTrait {
             return [.macOS]
         default:
             return Platform.allCases
+        }
+    }
+}
+
+extension FeaturePage {
+    @ViewBuilder
+    var viewBody: some View {
+        switch self {
+        case .unevenedRoundedRectangle:
+            UnevenedRoundedRectDemoView()
+        case .actionButton:
+            ActionButtonDemoView()
+        case .toast:
+            ToastDemoView()
+        case .appSegmentTabBar:
+            TabBarDemoView()
+        case .fullscreenContent:
+            FullscreenContentDemoView()
+        case .staggeredGrid:
+            StaggeredGridDemoView()
+        case .iconGenerator:
+            IconGeneratorView()
+        case .screenshot:
+            ScreenshotDemoView()
         }
     }
 }
@@ -107,7 +135,8 @@ func generateAllCatagories() -> [CatalogyPage] {
                         .fullscreenContent
                      ]),
         CatalogyPage(.customLayout, [.staggeredGrid]),
-        CatalogyPage(.utility, [.iconGenerator])
+        CatalogyPage(.utility, [.screenshot]),
+        CatalogyPage(.utilityTools, [.iconGenerator])
     ].filter { c in
         !c.isEmpty
     }
