@@ -27,7 +27,8 @@ class HighliableCode: ObservableObject {
         self.code = code
     }
     
-    func resolve(darkMode: Bool) {
+    @MainActor
+    func resolve(darkMode: Bool) async {
         highlighted = getHighlightr(darkMode: darkMode)?.highlight(code) ?? .init()
     }
 }
@@ -38,15 +39,19 @@ struct HighliableCodeView: View {
     
     var body: some View {
         ZStack {
-            ScrollableTextViewCompat(text: code.highlighted, foregroundColorName: "primary", autoScrollToBottom: false)
+            ScrollableTextViewCompat(text: code.highlighted, foregroundColorName: nil, autoScrollToBottom: false)
                 .frame(maxHeight: 200)
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.1)))
         }
             .onAppear {
-                code.resolve(darkMode: colorScheme == .dark)
+                Task {
+                    await code.resolve(darkMode: colorScheme == .dark)
+                }
             }
             .onChange(of: colorScheme) { newValue in
-                code.resolve(darkMode: newValue == .dark)
+                Task {
+                    await code.resolve(darkMode: newValue == .dark)
+                }
             }
     }
 }

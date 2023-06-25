@@ -52,7 +52,7 @@ struct SidebarList: View {
 #if os(macOS)
             Text("PhotonUtilityKit Demo")
                 .font(.title2.bold())
-                .padding(.vertical)
+                .padding(.top)
 #endif
             
             ForEach(viewModel.catalogyPages, id: \.id) { catagory in
