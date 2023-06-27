@@ -162,6 +162,8 @@ public extension View {
         }))
     }
     
+    /// Listen the height changed of this view.
+    /// - Parameter onHeightChanged: invoked on height changed
     func listenHeightChanged(onHeightChanged: @escaping (CGFloat) -> Void) -> some View {
         self.overlay(GeometryReader(content: { proxy in
             Color.clear.onChange(of: proxy.size.height) { newValue in
@@ -172,6 +174,8 @@ public extension View {
         }))
     }
     
+    /// Listen the size changed of this view.
+    /// - Parameter onSizeChanged: invoked on size changed
     func listenSizeChanged(onSizeChanged: @escaping (CGSize) -> Void) -> some View {
         self.overlay(GeometryReader(content: { proxy in
             Color.clear.onChange(of: proxy.size) { newValue in
@@ -182,6 +186,8 @@ public extension View {
         }))
     }
     
+    /// Listen the frame changed of this view.
+    /// - Parameter onFrameChanged: invoked on frame changed
     func listenFrameChanged(coordinateSpace: CoordinateSpace = .global,
                             onFrameChanged: @escaping (CGRect) -> Void) -> some View {
         self.overlay(GeometryReader(content: { proxy in
@@ -194,6 +200,7 @@ public extension View {
     }
 }
 
+/// Convenient extensions to create ``EdgeInsets``.
 public extension EdgeInsets {
     static func createUnified(inset: CGFloat) -> EdgeInsets {
         return EdgeInsets(top: inset, leading: inset, bottom: inset, trailing: inset)
@@ -328,7 +335,8 @@ public extension View {
         }.buttonStyle(CustomPlainButtonSytle())
     }
     
-    /// Wrap this view inside a button.
+    /// Wrap this view inside a button with automatic button style.
+    /// You can apply the button style later.
     func asButton(role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
         Button(role: role, action: action) {
             self
@@ -344,7 +352,8 @@ public extension View {
         }.buttonStyle(CustomPlainButtonSytle())
     }
     
-    /// Wrap this view inside a button.
+    /// Wrap this view inside a button with automatic button style.
+    /// You can apply the button style later.
     func asButton(action: @escaping () -> Void) -> some View {
         Button(action: action) {
             self
@@ -385,5 +394,39 @@ public struct BorderedProminentButtonStyleCompact: ButtonStyle {
 #else
         return false
 #endif
+    }
+}
+
+public extension View {
+    /// Make this view focusable by assigning a ``KeyEquivalent`` to this and perform ``performFocus`` to focus when
+    /// the keyboard shortcut is pressed.
+    func focusableByKeyboard(_ keyEquivalent: KeyEquivalent = "f",
+                             _ performFocus: @escaping () -> Void) -> some View {
+        self.background(
+            Button("") {
+                performFocus()
+            }.keyboardShortcut(keyEquivalent).opacity(0.0)
+        )
+    }
+    
+    /// Make this view focusable by assigning a ``KeyEquivalent`` to this.
+    /// As the keyboard shortcut is pressed, the ``focusState`` will be set to true.
+    ///
+    /// To access the underline ``FocusState<Bool>`` from
+    ///
+    /// ```swift
+    /// @FocusState var focus
+    /// ```
+    ///
+    /// You can use the underline one: _focous.
+    ///
+    @available(iOS 15.0, macOS 12.0, *)
+    func focusableByKeyboard(_ keyEquivalent: KeyEquivalent = "f",
+                             focusState: FocusState<Bool>.Binding) -> some View {
+        self.background(
+            Button("") {
+                focusState.wrappedValue = true
+            }.keyboardShortcut(keyEquivalent).opacity(0.0)
+        )
     }
 }
