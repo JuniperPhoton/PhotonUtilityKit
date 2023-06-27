@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2200C6972A480485005BA91E /* UnevenedRoundedRectDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C6962A480485005BA91E /* UnevenedRoundedRectDemoView.swift */; };
+		2200C6972A480485005BA91E /* UnevenRoundedRectDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C6962A480485005BA91E /* UnevenRoundedRectDemoView.swift */; };
 		2200C6992A48049B005BA91E /* ActionButtonDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C6982A48049B005BA91E /* ActionButtonDemoView.swift */; };
 		2200C69B2A4804C5005BA91E /* ToastDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C69A2A4804C5005BA91E /* ToastDemoView.swift */; };
 		2200C69D2A4804D8005BA91E /* TabBarDemoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C69C2A4804D8005BA91E /* TabBarDemoViewModel.swift */; };
@@ -27,7 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2200C6962A480485005BA91E /* UnevenedRoundedRectDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnevenedRoundedRectDemoView.swift; sourceTree = "<group>"; };
+		2200C6962A480485005BA91E /* UnevenRoundedRectDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnevenRoundedRectDemoView.swift; sourceTree = "<group>"; };
 		2200C6982A48049B005BA91E /* ActionButtonDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonDemoView.swift; sourceTree = "<group>"; };
 		2200C69A2A4804C5005BA91E /* ToastDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastDemoView.swift; sourceTree = "<group>"; };
 		2200C69C2A4804D8005BA91E /* TabBarDemoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDemoViewModel.swift; sourceTree = "<group>"; };
@@ -63,7 +63,7 @@
 		2200C6952A48047C005BA91E /* Details */ = {
 			isa = PBXGroup;
 			children = (
-				2200C6962A480485005BA91E /* UnevenedRoundedRectDemoView.swift */,
+				2200C6962A480485005BA91E /* UnevenRoundedRectDemoView.swift */,
 				2200C6982A48049B005BA91E /* ActionButtonDemoView.swift */,
 				2200C69A2A4804C5005BA91E /* ToastDemoView.swift */,
 				2200C69C2A4804D8005BA91E /* TabBarDemoViewModel.swift */,
@@ -213,7 +213,7 @@
 				222FC6042A470EA400E32672 /* ContentView.swift in Sources */,
 				2200C69F2A4804F3005BA91E /* FullscreenContentDemoView.swift in Sources */,
 				2200C6A32A480523005BA91E /* IconGeneratorView.swift in Sources */,
-				2200C6972A480485005BA91E /* UnevenedRoundedRectDemoView.swift in Sources */,
+				2200C6972A480485005BA91E /* UnevenRoundedRectDemoView.swift in Sources */,
 				222FC61E2A472A1800E32672 /* HighliableCodeView.swift in Sources */,
 				222FC6022A470EA400E32672 /* PhotonUtilityKitDemoApp.swift in Sources */,
 				222FC6202A47311800E32672 /* Styles.swift in Sources */,

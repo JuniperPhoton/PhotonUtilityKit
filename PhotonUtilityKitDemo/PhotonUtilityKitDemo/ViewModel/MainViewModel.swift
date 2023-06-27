@@ -36,7 +36,7 @@ protocol FeaturePageTrait {
 }
 
 enum FeaturePage: String, FeaturePageTrait {
-    case unevenedRoundedRectangle = "Unevened Rounded Rect"
+    case unevenRoundedRectangle = "Uneven Rounded Rect"
     case actionButton = "Action button"
     case toast = "Toast"
     case appSegmentTabBar = "Tab bar"
@@ -47,7 +47,7 @@ enum FeaturePage: String, FeaturePageTrait {
     
     var icon: String {
         switch self {
-        case .unevenedRoundedRectangle:
+        case .unevenRoundedRectangle:
             return "rectangle"
         case .actionButton:
             return "hammer"
@@ -80,8 +80,8 @@ extension FeaturePage {
     @ViewBuilder
     var viewBody: some View {
         switch self {
-        case .unevenedRoundedRectangle:
-            UnevenedRoundedRectDemoView()
+        case .unevenRoundedRectangle:
+            UnevenRoundedRectDemoView()
         case .actionButton:
             ActionButtonDemoView()
         case .toast:
@@ -128,7 +128,7 @@ func generateAllCatagories() -> [CatalogyPage] {
     return [
         CatalogyPage(.customUI,
                      [
-                        .unevenedRoundedRectangle,
+                        .unevenRoundedRectangle,
                         .actionButton,
                         .toast,
                         .appSegmentTabBar,
