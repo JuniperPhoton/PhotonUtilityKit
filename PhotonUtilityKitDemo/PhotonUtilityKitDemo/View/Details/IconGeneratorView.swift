@@ -65,7 +65,6 @@ struct IconGeneratorView: View {
     @StateObject private var appToast = AppToast()
     @StateObject private var viewModel = IconGeneratorViewModel()
     
-    @State private var selectedPlatform = Platform.macOS
     @State private var showImportPicker = false
     @State private var showExportPicker = false
     @State private var dropping = false
@@ -80,7 +79,13 @@ struct IconGeneratorView: View {
                         .frame(width: 200, height: 200)
                 } else {
                     if #available(macOS 13.0, *) {
-                        Text("Drop file here to begin")
+                        Text("""
+                            Drop file here to begin.
+                            
+                            You should import an image with at least 1024x1024 resolutions to get better outputs.
+                            
+                            This will scale the image down to this size and save: 1024, 512, 256, 128, 64, 32 and 16.
+                            """)
                             .matchParent()
                             .background {
                                 if dropping {
@@ -113,14 +118,6 @@ struct IconGeneratorView: View {
         }
         .environmentObject(appToast)
         .toolbar {
-            ToolbarItem {
-                Picker("", selection: $selectedPlatform) {
-                    ForEach([Platform.macOS], id: \.self) { platform in
-                        Text(platform.rawValue).tag(platform)
-                    }
-                }.frame(maxWidth: 100)
-            }
-            
             ToolbarItem(placement: .confirmationAction) {
                 Text("Scale and save").asButton {
                     showExportPicker.toggle()
