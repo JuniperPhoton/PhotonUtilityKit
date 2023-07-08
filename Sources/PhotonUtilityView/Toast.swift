@@ -80,12 +80,13 @@ public struct ToastColor {
 ///
 /// - parameter appToast: the app toast state used to show or dismiss toast.
 public extension View {
-    func withToast(_ appToast: AppToast = AppToast()) -> some View {
+    func withToast(_ appToast: AppToast = AppToast(),
+                   toastColors: ToastColor = ToastColor()) -> some View {
         ZStack {
             self
                 .zIndex(1)
             
-            ToastView(appToast: appToast)
+            ToastView(appToast: appToast, colors: toastColors)
                 .zIndex(2)
         }
         .environmentObject(appToast)
