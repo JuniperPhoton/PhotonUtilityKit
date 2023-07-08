@@ -30,7 +30,6 @@ import PhotonUtility
 /// ```swift
 /// view.toast($toastContent)
 /// ```
-@MainActor
 public class AppToast: ObservableObject {
     @Published var toast: String = ""
     
@@ -40,10 +39,12 @@ public class AppToast: ObservableObject {
         // empty
     }
     
+    @MainActor
     public func showToast(_ notification: String) {
         callAsFunction(Binding.constant(notification))
     }
     
+    @MainActor
     public func callAsFunction(_ notification: Binding<String>) {
         withEaseOutAnimation {
             self.toast = notification.wrappedValue
@@ -59,6 +60,7 @@ public class AppToast: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: pendingWorkItem!)
     }
     
+    @MainActor
     public func clear() {
         pendingWorkItem?.perform()
     }
@@ -71,6 +73,22 @@ public struct ToastColor {
     public init(foregroundColor: Color = .black, backgroundColor: Color = .white) {
         self.foregroundColor = foregroundColor
         self.backgroundColor = backgroundColor
+    }
+}
+
+/// Wrap this view inside a ZStack and overlay with a ``ToastView``.
+///
+/// - parameter appToast: the app toast state used to show or dismiss toast.
+public extension View {
+    func withToast(_ appToast: AppToast = AppToast()) -> some View {
+        ZStack {
+            self
+                .zIndex(1)
+            
+            ToastView(appToast: appToast)
+                .zIndex(2)
+        }
+        .environmentObject(appToast)
     }
 }
 
