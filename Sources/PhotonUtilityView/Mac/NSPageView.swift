@@ -13,7 +13,7 @@ import AppKit
 
 /// A NSViewControllerRepresentable for showing NSPageController.
 /// Use ``init(selection:pageObjects:idKeyPath:contentView:)`` to initialize a view and add it to a SwiftUI view hierachy.
-public struct NSPageView<T, V>: NSViewControllerRepresentable where V: View {
+public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
     let selection: Binding<Int>
     let pageObjects: [T]
     let idKeyPath: KeyPath<T, String>
@@ -27,7 +27,7 @@ public struct NSPageView<T, V>: NSViewControllerRepresentable where V: View {
     public init(selection: Binding<Int>,
                 pageObjects: [T],
                 idKeyPath: KeyPath<T, String>,
-                contentView: @escaping (T) -> V) {
+                @ViewBuilder contentView: @escaping (T) -> V) {
         self.selection = selection
         self.pageObjects = pageObjects
         self.idKeyPath = idKeyPath
