@@ -27,7 +27,7 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
     public init(selection: Binding<Int>,
                 pageObjects: [T],
                 idKeyPath: KeyPath<T, String>,
-                contentView: @escaping (T) -> V) {
+                @ViewBuilder contentView: @escaping (T) -> V) {
         self.selection = selection
         self.pageObjects = pageObjects
         self.idKeyPath = idKeyPath
