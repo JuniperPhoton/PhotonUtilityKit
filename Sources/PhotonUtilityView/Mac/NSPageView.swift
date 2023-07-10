@@ -47,7 +47,7 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
             return pageObjects.first { page in
                 let pageId = page[keyPath: idKeyPath]
                 return pageId == id
-            }!
+            }
         }
         controller.onSelectedIndexChanged = { index in
             withTransaction(selection.transaction) {
@@ -90,7 +90,7 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
     var pageObjects: [T] = []
     
     var idFromObject: ((T) -> String)? = nil
-    var idToObject: ((String) -> T)? = nil
+    var idToObject: ((String) -> T?)? = nil
     var objectToView: ((T) -> V)? = nil
     
     var onSelectedIndexChanged: ((Int) -> Void)? = nil
