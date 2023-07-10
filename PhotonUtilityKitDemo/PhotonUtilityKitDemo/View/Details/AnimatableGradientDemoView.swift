@@ -51,12 +51,11 @@ struct AnimatableGradientDemoView: View {
             }.padding()
         }
         .matchParent()
-        .background(Rectangle().fillAnimatableGradient(fromGradient: .init(colors: [.accentColor.opacity(0.2), .accentColor.opacity(0.1)]),
-                                                       toGradient: .init(colors: [.accentColor.opacity(0.05), .accentColor.opacity(0.0)]),
+        .background(Rectangle().fillAnimatableGradient(fromGradient: .init(colors: [.accentColor.opacity(0.2), .red.opacity(0.1)]),
+                                                       toGradient: .init(colors: [.red.opacity(0.1), .accentColor.opacity(0.2)]),
                                                        progress: progress,
                                                        fillShape: { gradient in
             LinearGradient(gradient: gradient, startPoint: .leading, endPoint: .bottomTrailing)
-        }))
-        .padding()
+        }).ignoresSafeArea())
     }
 }
