@@ -14,6 +14,17 @@ public extension Shape {
     ///
     /// - parameter progress: Controls the animating progress from ``fromGradient`` to ``toGradient``.
     /// - parameter fillShape: A block to return a ``ShapeStyle`` given a ``Gradient``, like ``LinearGradient`` or ``AngularGradient``.
+    ///
+    /// An example:
+    ///
+    /// ```swift
+    ///     Capsule()
+    ///         .fillAnimatableGradient(fromGradient: .init(colors: [.accentColor, .red, .green]),
+    ///                                 toGradient: .init(colors: [.green, .orange, .gray]),
+    ///                                 progress: progress) { gradient in
+    ///             LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .trailing)
+    ///         }
+    /// ```
     func fillAnimatableGradient<Style: ShapeStyle>(fromGradient: Gradient,
                                                    toGradient: Gradient,
                                                    progress: CGFloat,
