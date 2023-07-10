@@ -132,7 +132,7 @@ fileprivate func colorMixer(fromColor: Color, toColor: Color, progress: CGFloat)
     let red = fromR + (toR - fromR) * progress
     let green = fromG + (toG - fromG) * progress
     let blue = fromB + (toB - fromB) * progress
-    let alpha = fromB + (toB - fromB) * progress
+    let alpha = fromAlpha + (toAlpha - fromAlpha) * progress
     
     return Color(red: Double(red), green: Double(green), blue: Double(blue), opacity: Double(alpha))
 }

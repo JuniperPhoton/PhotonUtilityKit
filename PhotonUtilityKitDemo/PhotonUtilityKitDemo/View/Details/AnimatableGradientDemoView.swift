@@ -45,11 +45,18 @@ struct AnimatableGradientDemoView: View {
                 )
             
             Button("Animate") {
-                withAnimation(.easeOut) {
+                withAnimation(.easeOut(duration: 2.0).repeatForever(autoreverses: true)) {
                     self.progress = self.progress == 1.0 ? 0.0 : 1.0
                 }
             }.padding()
         }
+        .matchParent()
+        .background(Rectangle().fillAnimatableGradient(fromGradient: .init(colors: [.accentColor.opacity(0.2), .accentColor.opacity(0.1)]),
+                                                       toGradient: .init(colors: [.accentColor.opacity(0.05), .accentColor.opacity(0.0)]),
+                                                       progress: progress,
+                                                       fillShape: { gradient in
+            LinearGradient(gradient: gradient, startPoint: .leading, endPoint: .bottomTrailing)
+        }))
         .padding()
     }
 }

@@ -35,6 +35,7 @@
 		2200C69E2A4804F3005BA91E /* FullscreenContentDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenContentDemoView.swift; sourceTree = "<group>"; };
 		2200C6A02A480505005BA91E /* StaggeredGridDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaggeredGridDemoView.swift; sourceTree = "<group>"; };
 		2200C6A22A480523005BA91E /* IconGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconGeneratorView.swift; sourceTree = "<group>"; };
+		2225886E2A5C6730006D22CF /* PhotonUtilityKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PhotonUtilityKit; path = ..; sourceTree = "<group>"; };
 		222FC5FE2A470EA400E32672 /* PhotonUtilityKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotonUtilityKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222FC6012A470EA400E32672 /* PhotonUtilityKitDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotonUtilityKitDemoApp.swift; sourceTree = "<group>"; };
 		222FC6032A470EA400E32672 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,6 +81,7 @@
 		222FC5F52A470EA400E32672 = {
 			isa = PBXGroup;
 			children = (
+				2225886E2A5C6730006D22CF /* PhotonUtilityKit */,
 				222FC6002A470EA400E32672 /* PhotonUtilityKitDemo */,
 				222FC5FF2A470EA400E32672 /* Products */,
 			);
