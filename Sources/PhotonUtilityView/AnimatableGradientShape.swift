@@ -98,6 +98,9 @@ fileprivate func colorMixer(fromColor: Color, toColor: Color, progress: CGFloat)
     let fromB: CGFloat
     let toB: CGFloat
     
+    let fromAlpha: CGFloat
+    let toAlpha: CGFloat
+    
 #if canImport(UIKit)
     let fromUIColor = UIColor(fromColor)
     let toUIColor = UIColor(toColor)
@@ -105,10 +108,12 @@ fileprivate func colorMixer(fromColor: Color, toColor: Color, progress: CGFloat)
     fromR = fromUIColor.cgColor.components![0]
     fromG = fromUIColor.cgColor.components![1]
     fromB = fromUIColor.cgColor.components![2]
+    fromAlpha = fromUIColor.cgColor.alpha
     
     toR = toUIColor.cgColor.components![0]
     toG = toUIColor.cgColor.components![1]
     toB = toUIColor.cgColor.components![2]
+    toAlpha = toUIColor.cgColor.alpha
 #else
     let fromNSColor = NSColor(fromColor)
     let toNSColor = NSColor(toColor)
@@ -116,15 +121,18 @@ fileprivate func colorMixer(fromColor: Color, toColor: Color, progress: CGFloat)
     fromR = fromNSColor.cgColor.components![0]
     fromG = fromNSColor.cgColor.components![1]
     fromB = fromNSColor.cgColor.components![2]
+    fromAlpha = fromNSColor.cgColor.alpha
     
     toR = toNSColor.cgColor.components![0]
     toG = toNSColor.cgColor.components![1]
     toB = toNSColor.cgColor.components![2]
+    toAlpha = toNSColor.cgColor.alpha
 #endif
     
     let red = fromR + (toR - fromR) * progress
     let green = fromG + (toG - fromG) * progress
     let blue = fromB + (toB - fromB) * progress
+    let alpha = fromB + (toB - fromB) * progress
     
-    return Color(red: Double(red), green: Double(green), blue: Double(blue))
+    return Color(red: Double(red), green: Double(green), blue: Double(blue), opacity: Double(alpha))
 }
