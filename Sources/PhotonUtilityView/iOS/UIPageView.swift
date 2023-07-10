@@ -38,7 +38,6 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
     }
     
     public func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        print("dwccc updateUIViewController \(selection.wrappedValue)")
         if let controller = uiViewController as? CustomUIPageViewController<T, V> {
             controller.setup(selection: selection, pageObjects: pageObjects, pageToView: contentView)
             controller.updatePage(animated: true)
@@ -75,7 +74,6 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
         if let selection = selection,
            let pageObjects = pageObjects,
            let pageToView = pageToView {
-            print("dwccc udpate page \(selection.wrappedValue)")
             
             let nextIndex = selection.wrappedValue
             let nextPage = pageObjects[nextIndex]
@@ -176,7 +174,6 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
         guard let pageToView = pageToView else {
             return nil
         }
-        print("dwccc get before page of \(beforePage)")
         return PageDetailViewController<T>(page: beforePage, view: AnyView(pageToView(beforePage)))
     }
     
@@ -192,7 +189,6 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
         guard let pageToView = pageToView else {
             return nil
         }
-        print("dwccc get after page of \(nextPage)")
         return PageDetailViewController<T>(page: nextPage, view: AnyView(pageToView(nextPage)))
     }
 }

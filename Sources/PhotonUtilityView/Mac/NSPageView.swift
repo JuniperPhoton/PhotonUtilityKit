@@ -62,8 +62,10 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
         guard let pageViewController = nsViewController as? NSPageViewContainerController<T, V> else {
             return
         }
-        if pageViewController.selectedIndex != selection.wrappedValue {
+        if pageViewController.pageObjects != pageObjects || pageViewController.selectedIndex != selection.wrappedValue {
+            pageViewController.pageObjects = pageObjects
             pageViewController.updateSelectedIndex(selection.wrappedValue)
+            pageViewController.updateDataSource()
         }
     }
 }
@@ -116,7 +118,7 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
-        self.arrangedObjects = pageObjects
+        self.updateDataSource()
     }
     
     override func viewDidLayout() {
@@ -124,6 +126,10 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
         self.view.subviews.forEach { v in
             v.frame = self.view.bounds
         }
+    }
+    
+    func updateDataSource() {
+        self.arrangedObjects = pageObjects
     }
     
     func updateSelectedIndex(_ index: Int) {
