@@ -7,6 +7,7 @@
 
 import Foundation
 import Vision
+import NaturalLanguage
 
 #if canImport(AppKit)
 import AppKit
@@ -26,6 +27,27 @@ public class TextExtractor {
     
     private init() {
         // empty
+    }
+    
+    /// Check if a given text is a word only text or a sentence.
+    public func isWordOnly(_ text: String) -> Bool {
+        var tokenizer = NLTokenizer(unit: .sentence)
+        tokenizer.string = text
+        let sentences = tokenizer.tokens(for: text.startIndex..<text.endIndex).count
+        
+        tokenizer = NLTokenizer(unit: .word)
+        tokenizer.string = text
+        let words = tokenizer.tokens(for: text.startIndex..<text.endIndex).count
+        
+        print("The given text words \(words), sentences: \(sentences)")
+        
+        if sentences == 1 && words == 1 {
+            return true
+        } else if sentences > 0 {
+            return false
+        } else {
+            return false
+        }
     }
     
     public func extractFromImage(cgImage: CGImage?) async throws -> String {
