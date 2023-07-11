@@ -100,13 +100,13 @@ fileprivate struct AnimatableGradientShape<S: Shape, Style: ShapeStyle>: Animata
         self.toGradient = toGradient
         self.progress = progress
         self.fillShape = fillShape
+        
+        let color = UIColor(fromGradient.stops.first!.color)
+        let cgColor = color.cgColor.components
+        let a = 0
     }
     
     public func body(content: Content) -> some View {
-        body
-    }
-    
-    public var body: some View {
         shape.fill(fillShape(currentGradient))
     }
     
@@ -117,7 +117,7 @@ fileprivate struct AnimatableGradientShape<S: Shape, Style: ShapeStyle>: Animata
             let fromColor = fromGradient.stops[i].color
             let toColor = toGradient.stops[i].color
             gradientColors.append(colorMixer(fromColor: fromColor,
-                                             toColor: toColor, progress: progress))
+                                             toColor: toColor, progress: animatableData))
         }
         
         return Gradient(colors: gradientColors)
@@ -126,23 +126,29 @@ fileprivate struct AnimatableGradientShape<S: Shape, Style: ShapeStyle>: Animata
 
 fileprivate extension Color {
     func resolve() -> Color {
+        let cgColorComponents: [CGFloat]
 #if canImport(UIKit)
         let platformColor = UIColor(self)
         let cgColor = platformColor.cgColor
-        return Color(cgColor: cgColor)
+        guard let components = cgColor.components else {
+            return self
+        }
+        cgColorComponents = components
 #elseif canImport(AppKit)
         let platformColor = NSColor(self)
         let cgColor = platformColor.cgColor
         guard let components = cgColor.components else {
             return self
         }
-        return Color(red: Double(components[0]),
-                     green: Double(components[1]),
-                     blue: Double(components[2]),
-                     opacity: Double(cgColor.alpha))
+        cgColorComponents = components
 #else
         return self
 #endif
+        
+        return Color(red: Double(cgColorComponents[0]),
+                     green: Double(cgColorComponents[1]),
+                     blue: Double(cgColorComponents[2]),
+                     opacity: Double(cgColorComponents[3]))
     }
 }
 
@@ -158,32 +164,46 @@ fileprivate func colorMixer(fromColor: Color, toColor: Color, progress: CGFloat)
     
     let fromAlpha: CGFloat
     let toAlpha: CGFloat
-    
+        
 #if canImport(UIKit)
     let fromPlatformColor = UIColor(fromColor)
-    fromR = fromPlatformColor.cgColor.components![0]
-    fromG = fromPlatformColor.cgColor.components![1]
-    fromB = fromPlatformColor.cgColor.components![2]
-    fromAlpha = fromPlatformColor.cgColor.alpha
-        
+    guard let fromComponents = fromPlatformColor.cgColor.components else {
+        return fromColor
+    }
+    
+    fromR = fromComponents[0]
+    fromG = fromComponents[1]
+    fromB = fromComponents[2]
+    fromAlpha = fromComponents[3]
+    
     let toPlatformColor = UIColor(toColor)
-    toR = toPlatformColor.cgColor.components![0]
-    toG = toPlatformColor.cgColor.components![1]
-    toB = toPlatformColor.cgColor.components![2]
-    toAlpha = toPlatformColor.cgColor.alpha
+    guard let toComponents = toPlatformColor.cgColor.components else {
+        return fromColor
+    }
+    toR = toComponents[0]
+    toG = toComponents[1]
+    toB = toComponents[2]
+    toAlpha = toComponents[3]
 #else
     let fromPlatformColor = NSColor(fromColor)
     let toPlatformColor = NSColor(toColor)
     
-    fromR = fromPlatformColor.cgColor.components![0]
-    fromG = fromPlatformColor.cgColor.components![1]
-    fromB = fromPlatformColor.cgColor.components![2]
-    fromAlpha = fromPlatformColor.cgColor.alpha
+    guard let fromComponents = fromPlatformColor.cgColor.components else {
+        return fromColor
+    }
+    guard let toComponents = toPlatformColor.cgColor.components else {
+        return fromColor
+    }
     
-    toR = toPlatformColor.cgColor.components![0]
-    toG = toPlatformColor.cgColor.components![1]
-    toB = toPlatformColor.cgColor.components![2]
-    toAlpha = toPlatformColor.cgColor.alpha
+    fromR = fromComponents[0]
+    fromG = fromComponents[1]
+    fromB = fromComponents[2]
+    fromAlpha = fromComponents[3]
+    
+    toR = toComponents[0]
+    toG = toComponents[1]
+    toB = toComponents[2]
+    toAlpha = toComponents[3]
 #endif
     
     let red = fromR + (toR - fromR) * progress
