@@ -36,15 +36,17 @@ public extension Shape {
                 Gradient.Stop(color: stop.color.resolve(), location: stop.location)
             })
             
-            let resolvedToGradient = Gradient(stops: fromGradient.stops.map { stop in
+            let resolvedToGradient = Gradient(stops: toGradient.stops.map { stop in
                 Gradient.Stop(color: stop.color.resolve(), location: stop.location)
             })
             
-            return self.modifier(AnimatableGradientShape(shape: self,
-                                                         fromGradient: resolvedFromGradient,
-                                                         toGradient: resolvedToGradient,
-                                                         progress: progress,
-                                                         fillShape: fillShape))
+            return self.modifier(AnimatableGradientShape(
+                shape: self,
+                fromGradient: resolvedFromGradient,
+                toGradient: resolvedToGradient,
+                progress: progress,
+                fillShape: fillShape)
+            )
         }
     }
 }
@@ -88,7 +90,8 @@ fileprivate struct AnimatableGradientShape<S: Shape, Style: ShapeStyle>: Animata
         }
     }
     
-    public init(shape: S, fromGradient: Gradient,
+    public init(shape: S,
+                fromGradient: Gradient,
                 toGradient: Gradient,
                 progress: CGFloat,
                 fillShape: @escaping (Gradient) -> Style) {
@@ -157,14 +160,13 @@ fileprivate func colorMixer(fromColor: Color, toColor: Color, progress: CGFloat)
     let toAlpha: CGFloat
     
 #if canImport(UIKit)
-    let fromPlatformColor = UIColor(fromColor).resolvedColor(with: UITraitCollection.current)
-    let toPlatformColor = UIColor(toColor).resolvedColor(with: UITraitCollection.current)
-    
+    let fromPlatformColor = UIColor(fromColor)
     fromR = fromPlatformColor.cgColor.components![0]
     fromG = fromPlatformColor.cgColor.components![1]
     fromB = fromPlatformColor.cgColor.components![2]
     fromAlpha = fromPlatformColor.cgColor.alpha
         
+    let toPlatformColor = UIColor(toColor)
     toR = toPlatformColor.cgColor.components![0]
     toG = toPlatformColor.cgColor.components![1]
     toB = toPlatformColor.cgColor.components![2]

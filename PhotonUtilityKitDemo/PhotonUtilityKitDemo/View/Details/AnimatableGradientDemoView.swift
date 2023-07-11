@@ -44,20 +44,39 @@ struct AnimatableGradientDemoView: View {
                                                 }
                 )
             
-            Text("Circle")
-                .font(.title.bold())
-                .foregroundColor(.white)
-                .addShadow(x: 0, y: 0)
-                .padding()
-                .padding()
-                .background(
-                    Circle()
-                        .fillAnimatableGradient(fromGradient: Gradient(colors: [Color("ThemeAwareColor"), Color.white]),
-                                                toGradient:Gradient(colors: [Color("ThemeAwareColor"), Color.white]),
-                                                progress: progress) { gradient in
-                                                    LinearGradient(gradient: gradient, startPoint: progress == 1.0 ? .bottomTrailing : .topLeading, endPoint: .trailing)
-                                                }
-                )
+            HStack {
+                Text("Circle")
+                    .font(.title.bold())
+                    .foregroundColor(.white)
+                    .addShadow(x: 0, y: 0)
+                    .padding()
+                    .padding()
+                    .background(
+                        Circle()
+                            .fillAnimatableGradient(fromGradient: Gradient(colors: [Color("ThemeAwareColor"), Color.white]),
+                                                    toGradient:Gradient(colors: [Color("ThemeAwareColor"), Color.white]),
+                                                    progress: progress) { gradient in
+                                                        LinearGradient(gradient: gradient, startPoint: progress == 1.0 ? .bottomTrailing : .topLeading, endPoint: .trailing)
+                                                    }
+                    )
+                
+                Text("Surface")
+                    .font(.title.bold())
+                    .foregroundColor(.white)
+                    .addShadow(x: 0, y: 0)
+                    .padding()
+                    .padding()
+                    .background(
+                        Circle()
+                            .fillAnimatableGradient(fromGradient: Gradient(colors: [Color("SurfaceColor"), Color.white]),
+                                                    toGradient:Gradient(colors: [Color.white, Color("SurfaceColor")]),
+                                                    progress: progress) { gradient in
+                                                        LinearGradient(gradient: gradient,
+                                                                       startPoint: .topLeading,
+                                                                       endPoint: .bottomTrailing)
+                                                    }
+                    )
+            }
             
             Button("Animate") {
                 withAnimation(.easeOut(duration: 2.0).repeatForever(autoreverses: true)) {
