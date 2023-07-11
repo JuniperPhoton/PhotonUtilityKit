@@ -12,10 +12,10 @@ struct AnimatableGradientDemoView: View {
     @State private var progress: CGFloat = 0
     
     var body: some View {
+        let from = Gradient(colors: [.accentColor, .red, .green])
+        let to = Gradient(colors: [.green, .orange, .gray])
+        
         VStack {
-            let from = Gradient(colors: [.accentColor, .red, .green])
-            let to = Gradient(colors: [.green, .orange, .gray])
-            
             Text("Capsule linear")
                 .font(.title.bold())
                 .foregroundColor(.white)
@@ -59,42 +59,42 @@ struct AnimatableGradientDemoView: View {
                                                         LinearGradient(gradient: gradient, startPoint: progress == 1.0 ? .bottomTrailing : .topLeading, endPoint: .trailing)
                                                     }
                     )
-                
-                Text("Surface")
-                    .font(.title.bold())
-                    .foregroundColor(.white)
-                    .addShadow(x: 0, y: 0)
-                    .padding()
-                    .padding()
-                    .background(
-                        Circle()
-                            .fillAnimatableGradient(fromGradient: Gradient(colors: [Color("SurfaceColor"), Color.white]),
-                                                    toGradient:Gradient(colors: [Color.white, Color("SurfaceColor")]),
-                                                    progress: progress) { gradient in
-                                                        LinearGradient(gradient: gradient,
-                                                                       startPoint: .topLeading,
-                                                                       endPoint: .bottomTrailing)
-                                                    }
-                    )
             }
             
             Button("Animate") {
-                withAnimation(.easeOut(duration: 2.0).repeatForever(autoreverses: true)) {
+                withAnimation(.easeOut(duration: 5.0).repeatForever(autoreverses: true)) {
                     self.progress = self.progress == 1.0 ? 0.0 : 1.0
                 }
             }.padding()
         }
         .matchParent()
         .background(
-            Rectangle()
-                .fillAnimatableGradient(
-                    fromGradient: .init(colors: [.accentColor.opacity(0.2), .red.opacity(0.1)]),
-                    toGradient: .init(colors: [.red.opacity(0.1), .accentColor.opacity(0.2)]),
-                    progress: progress,
-                    fillShape: { gradient in
-                        LinearGradient(gradient: gradient, startPoint: .leading, endPoint: .bottomTrailing)
-                    }
-                ).ignoresSafeArea()
+            ZStack {
+                Rectangle()
+                    .fillAnimatableGradient(
+                        fromGradient: to,
+                        toGradient: from,
+                        progress: progress,
+                        fillShape: { gradient in
+                            RadialGradient(gradient: gradient, center: progress == 1.0 ? .top : .bottomTrailing, startRadius: progress == 1.0 ? 600 : 180, endRadius: 1000)
+                        }
+                    )
+                    .blur(radius: progress == 1.0 ? 30 : 12, opaque: true)
+                    .scaleEffect(CGSize(width: 1.5, height: 1.5))
+                
+                Rectangle()
+                    .fillAnimatableGradient(
+                        fromGradient: from,
+                        toGradient: to,
+                        progress: progress,
+                        fillShape: { gradient in
+                            AngularGradient(gradient: gradient, center: progress == 1.0 ? .init(x: 0.2, y: 0.4) : .center, angle: .degrees(progress == 1.0 ? 320 : 470))
+                        }
+                    )
+                    .blur(radius: progress == 1.0 ? 30 : 12, opaque: true)
+                    .scaleEffect(CGSize(width: 1.5, height: 1.5))
+                    .blendMode(.lighten)
+            }.drawingGroup().ignoresSafeArea().opacity(0.6)
         )
     }
 }
