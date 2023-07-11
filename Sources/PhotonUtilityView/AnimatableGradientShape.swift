@@ -123,85 +123,49 @@ fileprivate struct AnimatableGradientShape<S: Shape, Style: ShapeStyle>: Animata
 public extension Color {
     /// Resolve this SwiftUI color to the Color with RGBA components based on the current environment.
     func resolve() -> Color {
-        let cgColorComponents: [CGFloat]
 #if canImport(UIKit)
-        let platformColor = UIColor(self)
-        let cgColor = platformColor.cgColor
-        guard let components = cgColor.components else {
-            return self
-        }
-        cgColorComponents = components
-#elseif canImport(AppKit)
-        let platformColor = NSColor(self)
-        let cgColor = platformColor.cgColor
-        guard let components = cgColor.components else {
-            return self
-        }
-        cgColorComponents = components
+        typealias PlatformColor = UIColor
 #else
-        return self
+        typealias PlatformColor = NSColor
 #endif
+        let platformColor = PlatformColor(self)
+        guard let components = platformColor.cgColor.components else {
+            return self
+        }
         
-        return Color(red: Double(cgColorComponents[0]),
-                     green: Double(cgColorComponents[1]),
-                     blue: Double(cgColorComponents[2]),
-                     opacity: Double(cgColorComponents[3]))
+        return Color(red: Double(components[0]),
+                     green: Double(components[1]),
+                     blue: Double(components[2]),
+                     opacity: Double(components[3]))
     }
 }
 
 fileprivate func colorMixer(fromColor: Color, toColor: Color, progress: CGFloat) -> Color {
-    let fromR: CGFloat
-    let toR: CGFloat
-    
-    let fromG: CGFloat
-    let toG: CGFloat
-    
-    let fromB: CGFloat
-    let toB: CGFloat
-    
-    let fromAlpha: CGFloat
-    let toAlpha: CGFloat
-        
 #if canImport(UIKit)
-    let fromPlatformColor = UIColor(fromColor)
-    guard let fromComponents = fromPlatformColor.cgColor.components else {
-        return fromColor
-    }
-    
-    fromR = fromComponents[0]
-    fromG = fromComponents[1]
-    fromB = fromComponents[2]
-    fromAlpha = fromComponents[3]
-    
-    let toPlatformColor = UIColor(toColor)
-    guard let toComponents = toPlatformColor.cgColor.components else {
-        return fromColor
-    }
-    toR = toComponents[0]
-    toG = toComponents[1]
-    toB = toComponents[2]
-    toAlpha = toComponents[3]
+    typealias PlatformColor = UIColor
 #else
-    let fromPlatformColor = NSColor(fromColor)
-    let toPlatformColor = NSColor(toColor)
+    typealias PlatformColor = NSColor
+#endif
     
+    let fromPlatformColor = PlatformColor(fromColor)
+    let toPlatformColor = PlatformColor(toColor)
     guard let fromComponents = fromPlatformColor.cgColor.components else {
         return fromColor
     }
+    
     guard let toComponents = toPlatformColor.cgColor.components else {
-        return fromColor
+        return toColor
     }
     
-    fromR = fromComponents[0]
-    fromG = fromComponents[1]
-    fromB = fromComponents[2]
-    fromAlpha = fromComponents[3]
+    let fromR = fromComponents[0]
+    let fromG = fromComponents[1]
+    let fromB = fromComponents[2]
+    let fromAlpha = fromComponents[3]
     
-    toR = toComponents[0]
-    toG = toComponents[1]
-    toB = toComponents[2]
-    toAlpha = toComponents[3]
-#endif
+    let toR = toComponents[0]
+    let toG = toComponents[1]
+    let toB = toComponents[2]
+    let toAlpha = toComponents[3]
     
     let red = fromR + (toR - fromR) * progress
     let green = fromG + (toG - fromG) * progress
