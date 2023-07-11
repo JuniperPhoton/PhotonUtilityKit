@@ -100,10 +100,6 @@ fileprivate struct AnimatableGradientShape<S: Shape, Style: ShapeStyle>: Animata
         self.toGradient = toGradient
         self.progress = progress
         self.fillShape = fillShape
-        
-        let color = UIColor(fromGradient.stops.first!.color)
-        let cgColor = color.cgColor.components
-        let a = 0
     }
     
     public func body(content: Content) -> some View {
@@ -124,7 +120,8 @@ fileprivate struct AnimatableGradientShape<S: Shape, Style: ShapeStyle>: Animata
     }
 }
 
-fileprivate extension Color {
+public extension Color {
+    /// Resolve this SwiftUI color to the Color with RGBA components based on the current environment.
     func resolve() -> Color {
         let cgColorComponents: [CGFloat]
 #if canImport(UIKit)
