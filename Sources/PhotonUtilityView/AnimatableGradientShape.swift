@@ -29,10 +29,41 @@ public extension Shape {
                                                    toGradient: Gradient,
                                                    progress: CGFloat,
                                                    fillShape: @escaping (Gradient) -> Style) -> some View {
-        self.modifier(AnimatableGradientShape(shape: self, fromGradient: fromGradient,
-                                              toGradient: toGradient,
-                                              progress: progress,
-                                              fillShape: fillShape))
+        return ColorSchemeAwareView {
+            // We must resolve the color to the current trait collection here
+            // Each time the ShapeWrapper updates(due to colorScheme changed), we must resolve the colors.
+            let resolvedFromGradient = Gradient(stops: fromGradient.stops.map { stop in
+                Gradient.Stop(color: stop.color.resolve(), location: stop.location)
+            })
+            
+            let resolvedToGradient = Gradient(stops: fromGradient.stops.map { stop in
+                Gradient.Stop(color: stop.color.resolve(), location: stop.location)
+            })
+            
+            return self.modifier(AnimatableGradientShape(shape: self,
+                                                         fromGradient: resolvedFromGradient,
+                                                         toGradient: resolvedToGradient,
+                                                         progress: progress,
+                                                         fillShape: fillShape))
+        }
+    }
+}
+
+/// We use a wrapper to wrap the rendering view.
+/// Inside we observe colorScheme changed and recalculate the content view.
+fileprivate struct ColorSchemeAwareView<V: View>: View {
+    /// On iOS, to make this ViewModifier update on colorScheme changed, we need to declare it here.
+    /// On macOS, there is no such issue.
+    @Environment(\.colorScheme) private var colorScheme
+    
+    let view: () -> V
+    
+    init(_ view: @escaping () -> V) {
+        self.view = view
+    }
+    
+    var body: some View {
+        view()
     }
 }
 
@@ -80,11 +111,35 @@ fileprivate struct AnimatableGradientShape<S: Shape, Style: ShapeStyle>: Animata
         var gradientColors = [Color]()
         
         for i in 0..<fromGradient.stops.count {
-            gradientColors.append(colorMixer(fromColor: fromGradient.stops[i].color,
-                                             toColor: toGradient.stops[i].color, progress: progress))
+            let fromColor = fromGradient.stops[i].color
+            let toColor = toGradient.stops[i].color
+            gradientColors.append(colorMixer(fromColor: fromColor,
+                                             toColor: toColor, progress: progress))
         }
         
         return Gradient(colors: gradientColors)
+    }
+}
+
+fileprivate extension Color {
+    func resolve() -> Color {
+#if canImport(UIKit)
+        let platformColor = UIColor(self)
+        let cgColor = platformColor.cgColor
+        return Color(cgColor: cgColor)
+#elseif canImport(AppKit)
+        let platformColor = NSColor(self)
+        let cgColor = platformColor.cgColor
+        guard let components = cgColor.components else {
+            return self
+        }
+        return Color(red: Double(components[0]),
+                     green: Double(components[1]),
+                     blue: Double(components[2]),
+                     opacity: Double(cgColor.alpha))
+#else
+        return self
+#endif
     }
 }
 
@@ -102,31 +157,31 @@ fileprivate func colorMixer(fromColor: Color, toColor: Color, progress: CGFloat)
     let toAlpha: CGFloat
     
 #if canImport(UIKit)
-    let fromUIColor = UIColor(fromColor)
-    let toUIColor = UIColor(toColor)
+    let fromPlatformColor = UIColor(fromColor).resolvedColor(with: UITraitCollection.current)
+    let toPlatformColor = UIColor(toColor).resolvedColor(with: UITraitCollection.current)
     
-    fromR = fromUIColor.cgColor.components![0]
-    fromG = fromUIColor.cgColor.components![1]
-    fromB = fromUIColor.cgColor.components![2]
-    fromAlpha = fromUIColor.cgColor.alpha
-    
-    toR = toUIColor.cgColor.components![0]
-    toG = toUIColor.cgColor.components![1]
-    toB = toUIColor.cgColor.components![2]
-    toAlpha = toUIColor.cgColor.alpha
+    fromR = fromPlatformColor.cgColor.components![0]
+    fromG = fromPlatformColor.cgColor.components![1]
+    fromB = fromPlatformColor.cgColor.components![2]
+    fromAlpha = fromPlatformColor.cgColor.alpha
+        
+    toR = toPlatformColor.cgColor.components![0]
+    toG = toPlatformColor.cgColor.components![1]
+    toB = toPlatformColor.cgColor.components![2]
+    toAlpha = toPlatformColor.cgColor.alpha
 #else
-    let fromNSColor = NSColor(fromColor)
-    let toNSColor = NSColor(toColor)
+    let fromPlatformColor = NSColor(fromColor)
+    let toPlatformColor = NSColor(toColor)
     
-    fromR = fromNSColor.cgColor.components![0]
-    fromG = fromNSColor.cgColor.components![1]
-    fromB = fromNSColor.cgColor.components![2]
-    fromAlpha = fromNSColor.cgColor.alpha
+    fromR = fromPlatformColor.cgColor.components![0]
+    fromG = fromPlatformColor.cgColor.components![1]
+    fromB = fromPlatformColor.cgColor.components![2]
+    fromAlpha = fromPlatformColor.cgColor.alpha
     
-    toR = toNSColor.cgColor.components![0]
-    toG = toNSColor.cgColor.components![1]
-    toB = toNSColor.cgColor.components![2]
-    toAlpha = toNSColor.cgColor.alpha
+    toR = toPlatformColor.cgColor.components![0]
+    toG = toPlatformColor.cgColor.components![1]
+    toB = toPlatformColor.cgColor.components![2]
+    toAlpha = toPlatformColor.cgColor.alpha
 #endif
     
     let red = fromR + (toR - fromR) * progress

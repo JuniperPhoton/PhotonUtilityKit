@@ -29,7 +29,7 @@ struct AnimatableGradientDemoView: View {
                                                     LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .trailing)
                                                 }
                 )
-            
+
             Text("RoundedRectangle angular")
                 .font(.title.bold())
                 .foregroundColor(.white)
@@ -44,6 +44,21 @@ struct AnimatableGradientDemoView: View {
                                                 }
                 )
             
+            Text("Circle")
+                .font(.title.bold())
+                .foregroundColor(.white)
+                .addShadow(x: 0, y: 0)
+                .padding()
+                .padding()
+                .background(
+                    Circle()
+                        .fillAnimatableGradient(fromGradient: Gradient(colors: [Color("ThemeAwareColor"), Color.white]),
+                                                toGradient:Gradient(colors: [Color("ThemeAwareColor"), Color.white]),
+                                                progress: progress) { gradient in
+                                                    LinearGradient(gradient: gradient, startPoint: progress == 1.0 ? .bottomTrailing : .topLeading, endPoint: .trailing)
+                                                }
+                )
+            
             Button("Animate") {
                 withAnimation(.easeOut(duration: 2.0).repeatForever(autoreverses: true)) {
                     self.progress = self.progress == 1.0 ? 0.0 : 1.0
@@ -51,11 +66,16 @@ struct AnimatableGradientDemoView: View {
             }.padding()
         }
         .matchParent()
-        .background(Rectangle().fillAnimatableGradient(fromGradient: .init(colors: [.accentColor.opacity(0.2), .red.opacity(0.1)]),
-                                                       toGradient: .init(colors: [.red.opacity(0.1), .accentColor.opacity(0.2)]),
-                                                       progress: progress,
-                                                       fillShape: { gradient in
-            LinearGradient(gradient: gradient, startPoint: .leading, endPoint: .bottomTrailing)
-        }).ignoresSafeArea())
+        .background(
+            Rectangle()
+                .fillAnimatableGradient(
+                    fromGradient: .init(colors: [.accentColor.opacity(0.2), .red.opacity(0.1)]),
+                    toGradient: .init(colors: [.red.opacity(0.1), .accentColor.opacity(0.2)]),
+                    progress: progress,
+                    fillShape: { gradient in
+                        LinearGradient(gradient: gradient, startPoint: .leading, endPoint: .bottomTrailing)
+                    }
+                ).ignoresSafeArea()
+        )
     }
 }
