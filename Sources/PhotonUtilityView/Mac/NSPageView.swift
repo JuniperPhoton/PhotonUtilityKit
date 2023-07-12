@@ -10,7 +10,6 @@ import PhotonUtility
 
 #if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import AppKit
-
 /// A ``NSViewControllerRepresentable`` for showing ``NSPageController``.
 /// Use ``init(selection:pageObjects:idKeyPath:contentView:)`` to initialize a view and add it to a SwiftUI view hierachy.
 public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
@@ -43,7 +42,11 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
         controller.objectToView = { object in
             return contentView(object)
         }
-        controller.idToObject = { id in
+        controller.idToObject = { [weak controller] id in
+            // Should apply weak reference to the controller to prevent circle causing memory leak.
+            guard let controller = controller else {
+                return nil
+            }
             // We should refer to controller.pageObjects to get the udpated objects, in which controller is a reference type.
             // Since NSPageView is a struct type, which can't be captured in the block.
             return controller.pageObjects.first { page in
@@ -60,15 +63,15 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
         return controller
     }
     
-    public func updateNSViewController(_ nsViewController: NSViewControllerType, context: Context) {
-        guard let pageViewController = nsViewController as? NSPageViewContainerController<T, V> else {
+    public func updateNSViewController(_ nsViewController: some NSViewController, context: Context) {
+        guard let controller = nsViewController as? NSPageViewContainerController<T, V> else {
             return
         }
 
-        if pageViewController.pageObjects != pageObjects || pageViewController.selectedIndex != selection.wrappedValue {
-            pageViewController.pageObjects = pageObjects
-            pageViewController.updateSelectedIndex(selection.wrappedValue)
-            pageViewController.updateDataSource()
+        if controller.pageObjects != pageObjects || controller.selectedIndex != selection.wrappedValue {
+            controller.pageObjects = pageObjects
+            controller.updateSelectedIndex(selection.wrappedValue)
+            controller.updateDataSource()
         }
     }
 }
@@ -150,10 +153,9 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
     
     func pageController(_ pageController: NSPageController,
                         viewControllerForIdentifier identifier: NSPageController.ObjectIdentifier) -> NSViewController {
-        let object = idToObject!(identifier)
         let controller = NSPageViewContentController<T, V>()
         controller.content = objectToView
-        controller.object = object
+        controller.object = idToObject?(identifier)
         return controller
     }
 }
