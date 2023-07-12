@@ -11,7 +11,7 @@ import PhotonUtility
 #if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import AppKit
 
-/// A NSViewControllerRepresentable for showing NSPageController.
+/// A ``NSViewControllerRepresentable`` for showing ``NSPageController``.
 /// Use ``init(selection:pageObjects:idKeyPath:contentView:)`` to initialize a view and add it to a SwiftUI view hierachy.
 public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
     let selection: Binding<Int>
@@ -44,7 +44,8 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
             return contentView(object)
         }
         controller.idToObject = { id in
-            return pageObjects.first { page in
+            // We should refer to controller.pageObjects to get the udpated objects.
+            return controller.pageObjects.first { page in
                 let pageId = page[keyPath: idKeyPath]
                 return pageId == id
             }
@@ -62,6 +63,7 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
         guard let pageViewController = nsViewController as? NSPageViewContainerController<T, V> else {
             return
         }
+
         if pageViewController.pageObjects != pageObjects || pageViewController.selectedIndex != selection.wrappedValue {
             pageViewController.pageObjects = pageObjects
             pageViewController.updateSelectedIndex(selection.wrappedValue)

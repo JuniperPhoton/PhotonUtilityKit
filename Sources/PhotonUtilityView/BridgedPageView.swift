@@ -9,7 +9,7 @@ import SwiftUI
 
 /// A unified version of ``UIPageView`` and ``NSPageView``.
 ///
-/// Internally it uses the ``UIPageViewController`` and ``NSPageViewContainerController`` to provide paging scrolling.
+/// Internally it uses the ``UIPageViewController`` and ``NSPageController`` to provide scrolling feature by pages.
 public struct BridgedPageView<T: Equatable, V: View>: View {
     let selection: Binding<Int>
     let pageObjects: [T]
