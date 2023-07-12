@@ -44,7 +44,8 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
             return contentView(object)
         }
         controller.idToObject = { id in
-            // We should refer to controller.pageObjects to get the udpated objects.
+            // We should refer to controller.pageObjects to get the udpated objects, in which controller is a reference type.
+            // Since NSPageView is a struct type, which can't be captured in the block.
             return controller.pageObjects.first { page in
                 let pageId = page[keyPath: idKeyPath]
                 return pageId == id
