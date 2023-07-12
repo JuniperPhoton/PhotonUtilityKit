@@ -49,17 +49,26 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
     
     public let text: NSAttributedString
     public let foregroundColorName: String?
+    public let contentInsets: EdgeInsets?
     public let autoScrollToBottom: Bool
     
-    public init(text: NSAttributedString, foregroundColorName: String?, autoScrollToBottom: Bool) {
+    public init(text: NSAttributedString,
+                foregroundColorName: String?,
+                autoScrollToBottom: Bool,
+                contentInsets: EdgeInsets? = nil) {
         self.text = text
         self.foregroundColorName = foregroundColorName
+        self.contentInsets = contentInsets
         self.autoScrollToBottom = autoScrollToBottom
     }
     
-    public init(text: String, foregroundColorName: String?, autoScrollToBottom: Bool) {
+    public init(text: String,
+                foregroundColorName: String?,
+                autoScrollToBottom: Bool,
+                contentInsets: EdgeInsets? = nil) {
         self.text = NSAttributedString(string: text)
         self.foregroundColorName = foregroundColorName
+        self.contentInsets = contentInsets
         self.autoScrollToBottom = autoScrollToBottom
     }
     
@@ -75,6 +84,14 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
         scrollView.documentView = textView
         scrollView.drawsBackground = false
         
+        if let insets = contentInsets {
+            scrollView.automaticallyAdjustsContentInsets = false
+            scrollView.contentInsets = NSEdgeInsets(top: insets.top,
+                                                    left: insets.leading,
+                                                    bottom: insets.bottom,
+                                                    right: insets.trailing)
+        }
+                
         if autoScrollToBottom {
             context.coordinator.register()
         }
@@ -142,17 +159,26 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
     let text: NSAttributedString
     let foregroundColorName: String?
     let autoScrollToBottom: Bool
+    let contentInsets: EdgeInsets?
     
-    public init(text: NSAttributedString, foregroundColorName: String?, autoScrollToBottom: Bool) {
+    public init(text: NSAttributedString,
+                foregroundColorName: String?,
+                autoScrollToBottom: Bool,
+                contentInsets: EdgeInsets? = nil) {
         self.text = text
         self.foregroundColorName = foregroundColorName
         self.autoScrollToBottom = autoScrollToBottom
+        self.contentInsets = contentInsets
     }
     
-    public init(text: String, foregroundColorName: String?, autoScrollToBottom: Bool) {
+    public init(text: String,
+                foregroundColorName: String?,
+                autoScrollToBottom: Bool,
+                contentInsets: EdgeInsets? = nil) {
         self.text = NSAttributedString(string: text)
         self.foregroundColorName = foregroundColorName
         self.autoScrollToBottom = autoScrollToBottom
+        self.contentInsets = contentInsets
     }
     
     public func makeUIView(context: Context) -> UITextView {
@@ -162,6 +188,13 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
         textView.isScrollEnabled = true
         textView.isEditable = false
         textView.delegate = context.coordinator
+        
+        if let insets = contentInsets {
+            textView.contentInset = UIEdgeInsets(top: insets.top,
+                                                 left: insets.leading,
+                                                 bottom: insets.bottom,
+                                                 right: insets.trailing)
+        }
         return textView
     }
     
