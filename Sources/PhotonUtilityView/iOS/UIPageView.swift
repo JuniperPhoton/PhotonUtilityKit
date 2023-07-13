@@ -84,13 +84,13 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
             
             let nextView = pageToView(nextPage)
             let controller = PageDetailViewController<T>(page: nextPage, view: AnyView(nextView))
-            var direction: UIPageViewController.NavigationDirection = .forward
+            let direction: UIPageViewController.NavigationDirection
             
             if let currentPage = currentPage,
                let currentIndex = pageObjects.firstIndex(of: currentPage) {
-                if currentIndex < nextIndex {
-                    direction = .reverse
-                }
+                direction = nextIndex > currentIndex ? .forward : .reverse
+            } else {
+                direction = .forward
             }
             
             currentPage = nextPage
