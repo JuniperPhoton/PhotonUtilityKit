@@ -153,7 +153,7 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
                                    didFinishAnimating finished: Bool,
                                    previousViewControllers: [UIViewController],
                                    transitionCompleted completed: Bool) {
-        if finished, let vc = pendingTransitionToViewController {
+        if completed, let vc = pendingTransitionToViewController {
             self.currentPage = vc.page
             self.currentViewController = vc
             self.pendingTransitionToViewController = nil
