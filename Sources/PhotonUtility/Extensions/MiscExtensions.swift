@@ -43,17 +43,6 @@ public extension Comparable {
         }
         return self
     }
-    
-    /// Clamp this to the  half-open ``range``.
-    func clamp(to range: Range<Self>) -> Self {
-        if self < range.lowerBound {
-            return range.lowerBound
-        }
-        if self >= range.upperBound {
-            return range.upperBound
-        }
-        return self
-    }
 }
 
 /// Check if it's in preview process.
