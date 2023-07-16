@@ -22,9 +22,10 @@ public enum SearchFieldPlacementCompact {
             return .sidebar
         case .toolbar:
             return .toolbar
-#endif
+#elseif os(tvOS)
         default:
             return .automatic
+#endif
         }
     }
 }
