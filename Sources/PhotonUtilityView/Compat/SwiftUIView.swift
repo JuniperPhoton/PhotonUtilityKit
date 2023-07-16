@@ -15,12 +15,16 @@ public enum SearchFieldPlacementCompact {
     @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
     var wrapped: SearchFieldPlacement {
         switch self {
+#if !os(tvOS)
         case .automatic:
             return .automatic
         case .sidebar:
             return .sidebar
         case .toolbar:
             return .toolbar
+#endif
+        default:
+            return .automatic
         }
     }
 }

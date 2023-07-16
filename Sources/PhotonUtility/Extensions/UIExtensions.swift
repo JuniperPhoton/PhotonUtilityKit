@@ -397,6 +397,7 @@ public struct BorderedProminentButtonStyleCompact: ButtonStyle {
     }
 }
 
+#if !os(tvOS)
 public extension View {
     /// Make this view focusable by assigning a ``KeyEquivalent`` to this and perform ``performFocus`` to focus when
     /// the keyboard shortcut is pressed.
@@ -430,3 +431,4 @@ public extension View {
         )
     }
 }
+#endif

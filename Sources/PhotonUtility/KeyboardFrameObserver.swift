@@ -20,19 +20,19 @@ public class KeyboardFrameObserver: ObservableObject {
     @Published public var keyboardFrame: CGRect = .zero
     
     public init() {
-#if canImport(UIKit)
+#if os(iOS)
         NotificationCenter.default.addObserver(self, selector: #selector(willHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 #endif
     }
     
     deinit {
-#if canImport(UIKit)
+#if os(iOS)
         NotificationCenter.default.removeObserver(self)
 #endif
     }
     
-#if canImport(UIKit)
+#if os(iOS)
     @objc private func willHide() {
         self.keyboardFrame = .zero
     }

@@ -162,6 +162,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
     
     @State var autoScrollState = AutoScrollState<T>(value: nil)
     
+#if !os(tvOS)
     public init(selection: Binding<T>,
                 sources: [T],
                 scrollable: Bool,
@@ -179,6 +180,23 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
         self.keyboardShortcut = keyboardShortcut
         self.label = label
     }
+#else
+    public init(selection: Binding<T>,
+                sources: [T],
+                scrollable: Bool,
+                foregroundColor: Color,
+                backgroundColor: Color,
+                horizontalInset: CGFloat,
+                label: @escaping (T) -> V) {
+        self.selection = selection
+        self.sources = sources
+        self.scrollable = scrollable
+        self.foregroundColor = foregroundColor
+        self.backgroundColor = backgroundColor
+        self.horizontalInset = horizontalInset
+        self.label = label
+    }
+#endif
     
     public var body: some View {
         if scrollable {
