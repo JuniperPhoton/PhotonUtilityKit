@@ -107,3 +107,15 @@ public extension Collection {
         return result
     }
 }
+
+public extension Array {
+    /// Safely get the item of an array given an index.
+    /// If the index is invalid, it will return nil instead.
+    subscript(safeIndex index: Int) -> Element? {
+        guard index >= 0, index < endIndex else {
+            return nil
+        }
+
+        return self[index]
+    }
+}
