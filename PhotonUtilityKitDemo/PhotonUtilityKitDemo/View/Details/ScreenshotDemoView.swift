@@ -18,9 +18,10 @@ class ScreenshotDemoViewModel: ObservableObject {
 #endif
     }
     
-    func takeScreenshot() {
+    @MainActor
+    func takeScreenshot() async {
 #if os(macOS)
-        self.image = AppWindowService.shared.createScreenshot(bestResolution: true)
+        self.image = await AppWindowService.shared.createScreenshot(bestResolution: true)
 #endif
     }
 }
@@ -53,7 +54,9 @@ struct ScreenshotDemoView: View {
                 viewModel.requestPermission()
             }
             Text("Take screenshot").asButton {
-                viewModel.takeScreenshot()
+                Task {
+                    await viewModel.takeScreenshot()
+                }
             }
         }
         .padding()

@@ -12,6 +12,10 @@ import CoreGraphics
 import AppKit
 #endif
 
+#if canImport(ScreenCaptureKit)
+import ScreenCaptureKit
+#endif
+
 /// Provides some utility methods for window service, like creating a screenshot.
 public class AppWindowService {
     public static let shared = AppWindowService()
@@ -45,10 +49,10 @@ public class AppWindowService {
     @MainActor
     public func createScreenshot(croppedTo: CGRect?) async -> CGImage? {
 #if canImport(AppKit)
-        guard let cgImage = createScreenshot(bestResolution: false) else {
+        guard let cgImage = await createScreenshot(bestResolution: false) else {
             return nil
         }
-                
+        
         var resultImage: CGImage? = cgImage
         
         if let croppedTo = croppedTo {
@@ -60,7 +64,7 @@ public class AppWindowService {
             guard let currentWindow = NSApplication.shared.currentEvent?.window else {
                 return nil
             }
-                        
+            
             croppedToFrame = croppedToFrame.offsetBy(dx: currentWindow.frame.minX,
                                                      dy: -currentWindow.frame.minY)
             
@@ -75,29 +79,25 @@ public class AppWindowService {
     
     /// Create original screenshot.
     /// - parameter bestResolution: true to return the best resolution, which should be the same pixel size of the screen.
-    public func createScreenshot(bestResolution: Bool) -> CGImage? {
+    public func createScreenshot(bestResolution: Bool) async -> CGImage? {
 #if canImport(AppKit)
-        let mainDisplay = NSScreen.screens[0]
+        var providers: [any ScreenshotProvider] = []
         
-        // Note that main NSScreen is the one with keyboard focused, and NSScreen.screens[0] should be the one as main display in macOS settings.
-        if let currentScreen = NSScreen.main {
-            let currentScreenRect = currentScreen.frame
-                        
-            let x = currentScreenRect.minX
-            let w = currentScreenRect.width
-            let h = currentScreenRect.height
-            
-            let y = -(currentScreenRect.minY - mainDisplay.frame.height) - currentScreenRect.height
-            let clipRect = CGRect(x: x, y: y, width: w, height: h)
-            
-            // The first parameter is screenBounds, which:
-            // - If it is `.infinity`, then CGWindowListCreateImage will return the image contains all screens in all displays
-            // - It's coordinate is the one with origin at the upper-left; y-value increasing downward
-            // - The NSScreen/frame is the one with origin at the bottom-left; y-value increasing upwawrd, so we need to transfer the coordinate
-            return CGWindowListCreateImage(clipRect, .optionOnScreenOnly, .zero, bestResolution ? .bestResolution : .nominalResolution)
+        if #available(macOS 13.0, *) {
+            providers = [CGDisplayScreenshotProvider(), SCKitScreenshotProvider()]
         } else {
-            return nil
+            providers = [CGDisplayScreenshotProvider(), CGWindowListScreenshotProvider()]
         }
+        
+        var providerIndex = 0
+        var resultImage: CGImage? = nil
+        
+        repeat {
+            resultImage = try? await providers[providerIndex].captureScreenshot()
+            providerIndex += 1
+        } while(resultImage == nil && providerIndex < providers.count)
+        
+        return resultImage
 #else
         return nil
 #endif
