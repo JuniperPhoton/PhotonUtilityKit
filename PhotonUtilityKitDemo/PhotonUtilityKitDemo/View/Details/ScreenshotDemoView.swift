@@ -45,10 +45,12 @@ struct ScreenshotDemoView: View {
                 Image(image, scale: 1.0, label: Text(""))
                     .resizable()
                     .scaledToFit()
+                    .matchWidth(.leading)
             }
             
             HighliableCodeView(code: code)
         }
+        .matchParent(alignment: .topLeading)
         .toolbar {
             Text("Request permission").asButton {
                 viewModel.requestPermission()
