@@ -124,7 +124,7 @@ public class SCKitScreenshotProvider: ScreenshotProvider {
                 
                 try await stream.startCapture()
             } catch {
-                print("dwccc error on captureScreenshot \(error)")
+                print("error on captureScreenshot \(error)")
                 onCaptured(nil)
             }
         }
@@ -180,7 +180,7 @@ public class SCKitScreenshotProvider: ScreenshotProvider {
         }
         
         func stream(_ stream: SCStream, didStopWithError error: Error) {
-            print("dwccc AppWindowStreamOutput didStopWithError: \(error)")
+            print("AppWindowStreamOutput didStopWithError: \(error)")
         }
     }
 }
