@@ -7,7 +7,7 @@
 
 import SwiftUI
 import PhotonUtility
-import Introspect
+import SwiftUIIntrospect
 
 /// A ``AppSegmentTabBar`` which use ``Text`` as content view.
 public struct TextAppSegmentTabBar<T: Hashable>: View {
@@ -303,14 +303,16 @@ struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable 
 struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable & Hashable {
     @ObservedObject var state: AutoScrollState<T>
     @State var nsScrollView: NSScrollView? = nil
-    
+        
     func body(content: Content) -> some View {
         ScrollViewReader { proxy in
             content.onChange(of: state.value) { newValue in
                 self.nsScrollView?.scroll(toRect: state.rect)
             }
-            .introspectScrollView { nsScrollView in
-                self.nsScrollView = nsScrollView
+            .introspect(.scrollView, on: .macOS(.v11, .v12, .v13, .v14)) { nsScrollView in
+                DispatchQueue.main.async {
+                    self.nsScrollView = nsScrollView
+                }
             }
         }
     }
