@@ -21,7 +21,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url: "https://github.com/siteline/SwiftUI-Introspect", exact: .init(stringLiteral: "0.2.3"))
+        .package(url: "https://github.com/siteline/swiftui-introspect", from: "0.9.2"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -37,7 +37,7 @@ let package = Package(
             dependencies: ["PhotonUtility"]),
         .target(
             name: "PhotonUtilityView",
-            dependencies: ["PhotonUtility", .product(name: "Introspect", package: "SwiftUI-Introspect")],
+            dependencies: ["PhotonUtility", .product(name: "SwiftUIIntrospect", package: "swiftui-introspect")],
             resources: [
                 .process("Resources"),
             ]
