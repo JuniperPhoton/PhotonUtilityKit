@@ -16,7 +16,7 @@ import Highlightr
 #if canImport(Highlightr)
 func getHighlightr(darkMode: Bool) -> Highlightr? {
     guard let highlightr = Highlightr() else {
-        return nilHighlightr
+        return nil
     }
     highlightr.setTheme(to: darkMode ? "vs 2015" : "xcode")
     return highlightr
