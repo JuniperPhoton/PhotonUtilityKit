@@ -83,7 +83,9 @@ struct SidebarList: View {
         .onChange(of: viewModel.searchText) { newValue in
             viewModel.filterBySearchText()
         }
+#if !os(tvOS)
         .listStyle(.sidebar)
+#endif
         .navigationTitle("PhotonUtilityKit")
     }
 }

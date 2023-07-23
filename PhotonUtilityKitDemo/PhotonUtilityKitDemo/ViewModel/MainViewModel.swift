@@ -18,6 +18,7 @@ enum Catagory: String {
 enum Platform: String, CaseIterable, Hashable {
     case iOS
     case macOS
+    case tvOS
     
     static func currentPlatform() -> [Platform] {
         var platforms: [Platform] = []
@@ -25,6 +26,8 @@ enum Platform: String, CaseIterable, Hashable {
         platforms.append(.iOS)
         #elseif os(macOS)
         platforms.append(.macOS)
+        #elseif os(tvOS)
+        platforms.append(.tvOS)
         #endif
         return platforms
     }

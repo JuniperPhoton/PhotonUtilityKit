@@ -20,7 +20,7 @@
 		222FC60A2A470EA400E32672 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222FC6092A470EA400E32672 /* Preview Assets.xcassets */; };
 		222FC6132A470EF500E32672 /* PhotonUtilityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 222FC6122A470EF500E32672 /* PhotonUtilityKit */; };
 		222FC6172A47165200E32672 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6162A47165200E32672 /* MainViewModel.swift */; };
-		222FC61C2A471EC200E32672 /* Highlightr in Frameworks */ = {isa = PBXBuildFile; productRef = 222FC61B2A471EC200E32672 /* Highlightr */; };
+		222FC61C2A471EC200E32672 /* Highlightr in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = 222FC61B2A471EC200E32672 /* Highlightr */; };
 		222FC61E2A472A1800E32672 /* HighliableCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC61D2A472A1800E32672 /* HighliableCodeView.swift */; };
 		222FC6202A47311800E32672 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC61F2A47311800E32672 /* Styles.swift */; };
 		226BBD092A48205C00A4ECD1 /* ScreenshotDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226BBD082A48205C00A4ECD1 /* ScreenshotDemoView.swift */; };
@@ -373,10 +373,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.juniperphoton.PhotonUtilityKitDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 			};
 			name = Debug;
 		};
@@ -411,10 +413,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.juniperphoton.PhotonUtilityKitDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 			};
 			name = Release;
 		};

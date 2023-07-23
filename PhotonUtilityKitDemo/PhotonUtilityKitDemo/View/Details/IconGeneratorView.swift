@@ -68,8 +68,9 @@ struct IconGeneratorView: View {
     @State private var showImportPicker = false
     @State private var showExportPicker = false
     @State private var dropping = false
-
+    
     var body: some View {
+#if os(macOS)
         ZStack {
             VStack {
                 if let image = viewModel.imageToDisplay {
@@ -86,28 +87,28 @@ struct IconGeneratorView: View {
                             
                             This will scale the image down to this size and save: 1024, 512, 256, 128, 64, 32 and 16.
                             """)
-                            .matchParent()
-                            .background {
-                                if dropping {
-                                    Rectangle().fill(Color.accentColor.opacity(0.1))
-                                }
+                        .matchParent()
+                        .background {
+                            if dropping {
+                                Rectangle().fill(Color.accentColor.opacity(0.1))
                             }
-                            .onDrop(of: [.url], isTargeted: $dropping) { providers in
-                                guard let provider = providers.first else {
-                                    return true
-                                }
-                                
-                                Task {
-                                    let url = await provider.loadAsUrl()
-                                    if let url = url {
-                                        print("loadFileRepresentation \(url)")
-                                        await viewModel.resolveImage(url: url)
-                                    } else {
-                                        print("error on loadFileRepresentation")
-                                    }
-                                }
+                        }
+                        .onDrop(of: [.url], isTargeted: $dropping) { providers in
+                            guard let provider = providers.first else {
                                 return true
                             }
+                            
+                            Task {
+                                let url = await provider.loadAsUrl()
+                                if let url = url {
+                                    print("loadFileRepresentation \(url)")
+                                    await viewModel.resolveImage(url: url)
+                                } else {
+                                    print("error on loadFileRepresentation")
+                                }
+                            }
+                            return true
+                        }
                     } else {
                         Text("Select file to begin")
                     }
@@ -145,12 +146,15 @@ struct IconGeneratorView: View {
                     guard let url = try? result.get() else {
                         return
                     }
-                                        
+                    
                     Task {
                         await viewModel.resolveImage(url: url)
                     }
                 }
             }
         }
+#else
+        Text("Not supported")
+#endif
     }
 }

@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-#if canImport(AppKit)
+#if os(macOS)
 import AppKit
-#else
+#elseif os(iOS)
 import UIKit
 #endif
 
-#if canImport(AppKit)
+#if os(macOS)
 /// A scrollable text view for macOS.
 /// It wraps ``NSTextView`` and ``NSScrollView`` to achieve the best performance for displaying a large text.
 ///

@@ -27,6 +27,7 @@ class ScreenshotDemoViewModel: ObservableObject {
 }
 
 struct ScreenshotDemoView: View {
+#if os(macOS)
     @StateObject private var viewModel = ScreenshotDemoViewModel()
     @State private var code = HighliableCode(code:
             """
@@ -63,4 +64,9 @@ struct ScreenshotDemoView: View {
         }
         .padding()
     }
+#else
+    var body: some View {
+        Text("Not supported")
+    }
+#endif
 }
