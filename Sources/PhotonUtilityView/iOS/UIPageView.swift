@@ -32,7 +32,9 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
                                                           options: nil)
         controller.setup(selection: selection, pageObjects: pageObjects, pageToView: contentView)
         controller.onSelectionChanged = { index in
-            self.selection.wrappedValue = index
+            withTransaction(selection.transaction) {
+                self.selection.wrappedValue = index
+            }
         }
         return controller
     }
@@ -40,7 +42,13 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
     public func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
         if let controller = uiViewController as? CustomUIPageViewController<T, V> {
             controller.setup(selection: selection, pageObjects: pageObjects, pageToView: contentView)
-            controller.updatePage(animated: true)
+            
+            let selectionAnimation = selection.transaction.animation
+            let contextAnimation = context.transaction.animation
+            let animated = selectionAnimation != nil && contextAnimation != nil
+            print("updateUIViewController animated: \(animated)")
+
+            controller.updatePage(animated: animated)
         }
     }
 }
@@ -97,6 +105,7 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
             currentViewController = controller
             
             setViewControllers([controller], direction: direction, animated: animated)
+            print("UIPageView setViewControllers")
         }
     }
     

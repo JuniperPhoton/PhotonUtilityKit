@@ -69,8 +69,14 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
         }
 
         if controller.pageObjects != pageObjects || controller.selectedIndex != selection.wrappedValue {
+            let selectionAnimation = selection.transaction.animation
+            let contextAnimation = context.transaction.animation
+            let animated = selectionAnimation != nil && contextAnimation != nil
+            print("updateNSViewController useAnimation: \(animated)")
+
             controller.pageObjects = pageObjects
-            controller.updateSelectedIndex(selection.wrappedValue)
+            controller.updateSelectedIndex(selection.wrappedValue,
+                                           animated: animated)
             controller.updateDataSource()
         }
     }
@@ -136,12 +142,18 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
     
     func updateDataSource() {
         self.arrangedObjects = pageObjects
+        print("NSPageView updateDataSource")
     }
     
-    func updateSelectedIndex(_ index: Int) {
-        NSAnimationContext.runAnimationGroup { context in
-            self.animator().selectedIndex = index
-        } completionHandler: {
+    func updateSelectedIndex(_ index: Int, animated: Bool) {
+        if animated {
+            NSAnimationContext.runAnimationGroup { context in
+                self.animator().selectedIndex = index
+            } completionHandler: {
+                self.completeTransition()
+            }
+        } else {
+            self.selectedIndex = index
             self.completeTransition()
         }
     }
