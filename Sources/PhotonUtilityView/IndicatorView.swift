@@ -14,6 +14,8 @@ public struct IndicatorView: View {
     let foregroundColor: Color
     let tappable: Bool
     
+    private let size: CGFloat = DeviceCompat.isTV() ? 30 : 10
+    
     public init(selectedIndex: Binding<Int>, count: Int, foregroundColor: Color, tappable: Bool = true) {
         self.selectedIndex = selectedIndex
         self.count = count
@@ -25,7 +27,7 @@ public struct IndicatorView: View {
         HStack {
             ForEach(0..<count, id: \.self) { page in
                 Circle().strokeBorder(foregroundColor, lineWidth: 2)
-                    .frame(width: 10, height: 10)
+                    .frame(width: size, height: size)
                     .overlay(
                         Circle().fill(selectedIndex.wrappedValue == page ? foregroundColor : Color.clear)
                     )

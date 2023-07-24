@@ -46,11 +46,18 @@ struct HighliableCodeView: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var code: HighliableCode
     
+    let maxHeight: CGFloat?
+    
+    init(code: HighliableCode, maxHeight: CGFloat? = 200) {
+        self.code = code
+        self.maxHeight = maxHeight
+    }
+    
     var body: some View {
 #if canImport(Highlightr)
         ZStack {
             ScrollableTextViewCompat(text: code.highlighted, foregroundColorName: nil, autoScrollToBottom: false)
-                .frame(maxHeight: 200)
+                .frame(maxHeight: maxHeight)
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.1)))
         }
         .onAppear {
@@ -63,8 +70,6 @@ struct HighliableCodeView: View {
                 await code.resolve(darkMode: newValue == .dark)
             }
         }
-#else
-        Text("Not supported")
 #endif
     }
 }
