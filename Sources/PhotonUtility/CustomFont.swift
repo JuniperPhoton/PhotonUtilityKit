@@ -17,9 +17,7 @@ public func isNotChineseLocalEnvironment() -> Bool {
 
 /// A ViewModifier to apply to a ``Text`` to use a custom font.
 /// More specifily, for English, it uses ``DIN Condensed`` font, for Chinese, it uses the system font.
-public struct CustomFont: ViewModifier {
-    @Environment(\.locale) var locale
-    
+public struct CustomFont: ViewModifier {    
     let fixedEnglishFont: Bool
     let size: CGFloat
     let relativeTo: Font.TextStyle
@@ -35,6 +33,7 @@ public struct CustomFont: ViewModifier {
         self.relativeTo = relativeTo
     }
         
+    @ViewBuilder
     public func body(content: Content) -> some View {
         let useEnglish = isNotChineseLocalEnvironment() || fixedEnglishFont
         if useEnglish {
