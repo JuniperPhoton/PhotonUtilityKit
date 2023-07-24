@@ -35,9 +35,9 @@ public struct BridgedPageView<T: Equatable, V: View>: View {
     }
     
     public var body: some View {
-        #if os(macOS)
+        #if canImport(AppKit)
         NSPageView(selection: selection, pageObjects: pageObjects, idKeyPath: idKeyPath, contentView: contentView)
-        #elseif os(iOS)
+        #elseif canImport(UIKit)
         UIPageView(selection: selection, pageObjects: pageObjects, idKeyPath: idKeyPath, contentView: contentView)
         #else
         EmptyView()

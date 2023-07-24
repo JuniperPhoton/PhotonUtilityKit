@@ -48,11 +48,14 @@ enum FeaturePage: String, FeaturePageTrait {
     case staggeredGrid = "Staggered Grid"
     case iconGenerator = "Icon Generator"
     case screenshot = "Screenshot"
+    case bridgedPageView = "Bridged PageView"
     
     var icon: String {
         switch self {
         case .unevenRoundedRectangle:
             return "rectangle"
+        case .bridgedPageView:
+            return "book"
         case .animatableGradient:
             return "square.stack.3d.down.right"
         case .actionButton:
@@ -88,6 +91,8 @@ extension FeaturePage {
         switch self {
         case .unevenRoundedRectangle:
             UnevenRoundedRectDemoView()
+        case .bridgedPageView:
+            BridgedPageViewDemoView()
         case .animatableGradient:
             AnimatableGradientDemoView()
         case .actionButton:
@@ -137,6 +142,7 @@ func generateAllCatagories() -> [CatalogyPage] {
         CatalogyPage(.customUI,
                      [
                         .unevenRoundedRectangle,
+                        .bridgedPageView,
                         .animatableGradient,
                         .actionButton,
                         .toast,
