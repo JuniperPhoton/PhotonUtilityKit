@@ -14,6 +14,7 @@ public struct BridgedPageView<T: Equatable, V: View>: View {
     let selection: Binding<Int>
     let pageObjects: [T]
     let idKeyPath: KeyPath<T, String>
+    let onContentPrepared: ((T) -> Void)?
     let contentView: (T) -> V
     
     /// Construct a ``BridgedPageView``.
@@ -23,22 +24,27 @@ public struct BridgedPageView<T: Equatable, V: View>: View {
     ///                        Any changes to the selection will reflect the internal state, and the other way around.
     /// - parameter pageObjects: The objects to be displayed in pages.
     /// - parameter idKeyPath: The ``KeyPath`` to get the string type id of a page object.
+    /// - parameter onContentPrepared: When the view controller associated a page object is loaded, you can do some prefetch work.
     /// - parameter contentView: The block to return the view to display for each page object.
     public init(selection: Binding<Int>,
                 pageObjects: [T],
                 idKeyPath: KeyPath<T, String>,
+                onContentPrepared: ((T) -> Void)? = nil,
                 @ViewBuilder contentView: @escaping (T) -> V) {
         self.selection = selection
         self.pageObjects = pageObjects
         self.idKeyPath = idKeyPath
+        self.onContentPrepared = onContentPrepared
         self.contentView = contentView
     }
     
     public var body: some View {
         #if canImport(AppKit)
-        NSPageView(selection: selection, pageObjects: pageObjects, idKeyPath: idKeyPath, contentView: contentView)
+        NSPageView(selection: selection, pageObjects: pageObjects,
+                   idKeyPath: idKeyPath, onContentPrepared: onContentPrepared, contentView: contentView)
         #elseif canImport(UIKit)
-        UIPageView(selection: selection, pageObjects: pageObjects, idKeyPath: idKeyPath, contentView: contentView)
+        UIPageView(selection: selection, pageObjects: pageObjects,
+                   idKeyPath: idKeyPath, onContentPrepared: onContentPrepared, contentView: contentView)
         #else
         EmptyView()
         #endif

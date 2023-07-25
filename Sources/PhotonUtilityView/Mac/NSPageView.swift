@@ -16,6 +16,8 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
     let selection: Binding<Int>
     let pageObjects: [T]
     let idKeyPath: KeyPath<T, String>
+    
+    let onContentPrepared: ((T) -> Void)?
     let contentView: (T) -> V
     
     /// Construct a ``NSPageView``.
@@ -26,10 +28,12 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
     public init(selection: Binding<Int>,
                 pageObjects: [T],
                 idKeyPath: KeyPath<T, String>,
+                onContentPrepared: ((T) -> Void)? = nil,
                 @ViewBuilder contentView: @escaping (T) -> V) {
         self.selection = selection
         self.pageObjects = pageObjects
         self.idKeyPath = idKeyPath
+        self.onContentPrepared = onContentPrepared
         self.contentView = contentView
     }
     
@@ -54,6 +58,7 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
                 return pageId == id
             }
         }
+        controller.onContentPrepared = onContentPrepared
         controller.onSelectedIndexChanged = { index in
             withTransaction(selection.transaction) {
                 selection.wrappedValue = index
@@ -106,6 +111,7 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
     var objectToView: ((T) -> V)? = nil
     
     var onSelectedIndexChanged: ((Int) -> Void)? = nil
+    var onContentPrepared: ((T) -> Void)? = nil
     
     override var selectedIndex: Int {
         didSet {
@@ -168,6 +174,9 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
         let controller = NSPageViewContentController<T, V>()
         controller.content = objectToView
         controller.object = idToObject?(identifier)
+        if let object = controller.object {
+            onContentPrepared?(object)
+        }
         return controller
     }
 }

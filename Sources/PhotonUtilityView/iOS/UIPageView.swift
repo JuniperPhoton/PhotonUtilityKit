@@ -14,15 +14,18 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
     let selection: Binding<Int>
     let pageObjects: [T]
     let idKeyPath: KeyPath<T, String>
+    let onContentPrepared: ((T) -> Void)?
     let contentView: (T) -> V
     
     public init(selection: Binding<Int>,
                 pageObjects: [T],
                 idKeyPath: KeyPath<T, String>,
+                onContentPrepared: ((T) -> Void)? = nil,
                 @ViewBuilder contentView: @escaping (T) -> V) {
         self.selection = selection
         self.pageObjects = pageObjects
         self.idKeyPath = idKeyPath
+        self.onContentPrepared = onContentPrepared
         self.contentView = contentView
     }
     
@@ -30,12 +33,13 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
         let controller = CustomUIPageViewController<T, V>(transitionStyle: .scroll,
                                                           navigationOrientation: .horizontal,
                                                           options: nil)
-        controller.setup(selection: selection, pageObjects: pageObjects, pageToView: contentView)
         controller.onSelectionChanged = { index in
             withTransaction(selection.transaction) {
                 self.selection.wrappedValue = index
             }
         }
+        controller.onContentPrepared = onContentPrepared
+        controller.setup(selection: selection, pageObjects: pageObjects, pageToView: contentView)
         return controller
     }
     
@@ -62,6 +66,7 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
     private var currentPage: T? = nil
     private var currentViewController: UIViewController? = nil
     
+    var onContentPrepared: ((T) -> Void)? = nil
     var onSelectionChanged: ((Int) -> Void)? = nil
     
     public override func viewDidLoad() {
@@ -104,8 +109,8 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
             currentPage = nextPage
             currentViewController = controller
             
+            onContentPrepared?(nextPage)
             setViewControllers([controller], direction: direction, animated: animated)
-            print("UIPageView setViewControllers")
         }
     }
     
@@ -183,6 +188,7 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
         guard let pageToView = pageToView else {
             return nil
         }
+        onContentPrepared?(beforePage)
         return PageDetailViewController<T>(page: beforePage, view: AnyView(pageToView(beforePage)))
     }
     
@@ -198,6 +204,7 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
         guard let pageToView = pageToView else {
             return nil
         }
+        onContentPrepared?(nextPage)
         return PageDetailViewController<T>(page: nextPage, view: AnyView(pageToView(nextPage)))
     }
 }
