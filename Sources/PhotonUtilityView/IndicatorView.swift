@@ -34,7 +34,7 @@ public struct IndicatorView: View {
                     .contentShape(Circle())
                     .runIf(condition: tappable) { v in
                         v.onTapGestureCompact {
-                            withEaseOutAnimation {
+                            withDefaultAnimation {
                                 selectedIndex.wrappedValue = page
                             }
                         }

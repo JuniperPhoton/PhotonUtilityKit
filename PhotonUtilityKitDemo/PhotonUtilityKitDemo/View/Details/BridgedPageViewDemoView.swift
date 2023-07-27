@@ -23,7 +23,7 @@ struct BridgedPageViewDemoView: View {
                     .padding()
                     .padding(.horizontal)
                                 
-                BridgedPageView(selection: $selectedIndex.easeOutAnimation(), pageObjects: items, idKeyPath: \.id) { item in
+                BridgedPageView(selection: $selectedIndex.animation(), pageObjects: items, idKeyPath: \.id) { item in
                     VStack {
                         Text(item.content)
                             .font(.largeTitle.bold())

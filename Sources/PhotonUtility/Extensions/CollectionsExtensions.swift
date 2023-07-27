@@ -33,7 +33,7 @@ public extension Collection {
     func countOf(check: (Element) -> Bool) -> Int {
         var count = 0
         forEach { e in
-            if (check(e)) {
+            if check(e) {
                 count = count + 1
             }
         }

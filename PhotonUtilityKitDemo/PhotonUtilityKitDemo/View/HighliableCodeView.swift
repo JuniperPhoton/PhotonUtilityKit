@@ -58,6 +58,7 @@ struct HighliableCodeView: View {
         ZStack {
             ScrollableTextViewCompat(text: code.highlighted, foregroundColorName: nil, autoScrollToBottom: false)
                 .frame(maxHeight: maxHeight)
+                .padding()
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.1)))
         }
         .onAppear {

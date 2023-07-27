@@ -72,7 +72,7 @@ public extension URL {
         let granted = self.startAccessingSecurityScopedResource()
         
         defer {
-            if (granted) {
+            if granted {
                 self.stopAccessingSecurityScopedResource()
             }
         }
@@ -85,7 +85,7 @@ public extension URL {
         let granted = self.startAccessingSecurityScopedResource()
         
         defer {
-            if (granted) {
+            if granted {
                 self.stopAccessingSecurityScopedResource()
             }
         }

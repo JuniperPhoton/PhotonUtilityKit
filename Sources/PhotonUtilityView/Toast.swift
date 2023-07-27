@@ -46,13 +46,13 @@ public class AppToast: ObservableObject {
     
     @MainActor
     public func callAsFunction(_ notification: Binding<String>) {
-        withEaseOutAnimation {
+        withDefaultAnimation {
             self.toast = notification.wrappedValue
         }
         
         pendingWorkItem?.cancel()
         pendingWorkItem = DispatchWorkItem(block: {
-            withEaseOutAnimation {
+            withDefaultAnimation {
                 self.toast = ""
                 notification.wrappedValue = ""
             }

@@ -16,21 +16,92 @@ fileprivate struct ActionButtonCustomStyle: ButtonStyle {
     }
 }
 
+fileprivate struct ActionButtonStyle {
+    var adaptOnUISizeClassChanged: Bool
+    var stretchToWidth: Bool
+    var foregroundColor: Color
+    var backgroundColor: Color
+    
+    func adaptOnUISizeClassChanged(_ adapt: Bool) -> ActionButtonStyle {
+        ActionButtonStyle(adaptOnUISizeClassChanged: adapt,
+                          stretchToWidth: stretchToWidth,
+                          foregroundColor: foregroundColor,
+                          backgroundColor: backgroundColor)
+    }
+}
+
+fileprivate struct ActionButtonStyleKey: EnvironmentKey {
+    static var defaultValue: ActionButtonStyle {
+        ActionButtonStyle(adaptOnUISizeClassChanged: false, stretchToWidth: false,
+                          foregroundColor: .primary, backgroundColor: .accentColor)
+    }
+}
+
+fileprivate extension EnvironmentValues {
+    var actionButtonStyle: ActionButtonStyle {
+        get {
+            self[ActionButtonStyleKey.self]
+        }
+        set {
+            self[ActionButtonStyleKey.self] = newValue
+        }
+    }
+}
+
+struct ActionButtonStyleModifier: ViewModifier {
+    @Environment(\.actionButtonStyle) private var actionButtonStyle
+    
+    var adaptOnUISizeClassChanged: Bool? = nil
+    var stretchToWidth: Bool? = nil
+    var foregroundColor: Color? = nil
+    var backgroundColor: Color? = nil
+    
+    func body(content: Content) -> some View {
+        content.environment(\.actionButtonStyle,
+                             ActionButtonStyle(adaptOnUISizeClassChanged: adaptOnUISizeClassChanged ?? actionButtonStyle.adaptOnUISizeClassChanged,
+                                               stretchToWidth: stretchToWidth ?? actionButtonStyle.stretchToWidth,
+                                               foregroundColor: foregroundColor ?? actionButtonStyle.foregroundColor,
+                                               backgroundColor: backgroundColor ?? actionButtonStyle.backgroundColor))
+    }
+}
+
+public extension View {
+    func actionButtonAdaptOnUISizeClassChanged(_ adapt: Bool) -> some View {
+        self.modifier(ActionButtonStyleModifier(adaptOnUISizeClassChanged: adapt))
+    }
+    
+    func actionButtonStretchToWidth(_ stretchToWidth: Bool) -> some View {
+        self.modifier(ActionButtonStyleModifier(stretchToWidth: stretchToWidth))
+    }
+    
+    func actionButtonForegroundColor(_ color: Color) -> some View {
+        self.modifier(ActionButtonStyleModifier(foregroundColor: color))
+    }
+    
+    func actionButtonBackgroundColor(_ color: Color) -> some View {
+        self.modifier(ActionButtonStyleModifier(backgroundColor: color))
+    }
+}
+
 /// A button with default style.
 ///
-/// Use ``title`` and ``icon`` to specifiy the element in this button. Note that either of them can be nil.
-/// Use ``style`` to specify the color scheme of this button.
-/// Use ``frameConfigration`` to specifiy how the button will layout in parent and specifiy some geo effects.
+/// Use ``title`` and ``icon`` to specifiy the visual elements in this button. Note that one of these can be nil.
+/// To customize the colors and other effects, use one of these methods:
 ///
-/// If this action supports loading, passing binding ``isLoading``. If it's in loading state, the button would be disabled and show a progress view.
+/// - ``actionButtonForegroundColor(_:)``: Set the text and icon color.
+/// - ``actionButtonBackgroundColor(_:)``: Set the background color.
+/// - ``actionButtonStretchToWidth(_:)``: True if you want this button has infinity width limation.
+/// - ``actionButtonAdaptOnUISizeClassChanged(_:)``: On iOS, set this to true will adapt to horizontal class size.
+///
+/// If this action supports loading, passing binding ``isLoading``.
+///  If it's in loading state, the button would be disabled and show a progress view.
 ///
 /// You must set the ``onClick`` to response the tap gesture.
 public struct ActionButton: View {
+    @Environment(\.actionButtonStyle) private var style
+    
     public let title: LocalizedStringKey?
     public let icon: String?
-    
-    public let style: ActionButtonStyle
-    public let frameConfigration: FrameConfiguration
     
     public var isLoading: Binding<Bool>
     
@@ -39,13 +110,9 @@ public struct ActionButton: View {
     public init(title: LocalizedStringKey? = nil,
                 icon: String? = nil,
                 isLoading: Binding<Bool> = .constant(false),
-                style: ActionButtonStyle,
-                frameConfigration: FrameConfiguration = FrameConfiguration(),
                 onClick: (() -> Void)? = nil) {
         self.title = title
         self.icon = icon
-        self.style = style
-        self.frameConfigration = frameConfigration
         self.onClick = onClick
         self.isLoading = isLoading
     }
@@ -54,11 +121,18 @@ public struct ActionButton: View {
         Button {
             onClick?()
         } label: {
-            content
+            labelContent
         }.buttonStyle(ActionButtonCustomStyle())
     }
     
+    @available(*, deprecated, message: "Use labelContent property instead.")
     public var content: some View {
+        labelContent
+    }
+    
+    /// Get the label content inside the button.
+    /// Useful if you just want the custom style of this button's label without wrapping it inside a button.
+    public var labelContent: some View {
         HStack(spacing: 12) {
             if isLoading.wrappedValue {
                 if #available(iOS 15.0, *) {
@@ -71,99 +145,44 @@ public struct ActionButton: View {
                 }
             }
             
-            if (icon != nil) {
-                Image(systemName: icon!)
+            if let icon = icon {
+                Image(systemName: icon)
                     .renderingMode(.template)
                     .foregroundColor(style.foregroundColor)
             }
             
-            if (shouldShowTitle()) {
+            if showTitle {
                 Text(title!)
                     .font(.body.bold())
                     .foregroundColor(style.foregroundColor)
                     .lineLimit(1)
-                    .applyEffect(effect: frameConfigration.geoEffect)
             }
         }
-        #if os(macOS)
-            .padding(10)
-        #else
-            .padding(12)
-        #endif
-            .frame(minHeight: 30)
-            .matchParent(axis: frameConfigration.stretchToWidth ? .width : .none, alignment: .center)
-            .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(style.backgroundColor))
-            .disabled(isLoading.wrappedValue)
-            .opacity(isLoading.wrappedValue ? 0.5 : 1.0)
+        .padding(DeviceCompat.isMac() ? 10 : 12)
+        .padding(12)
+        .frame(minHeight: 30)
+        .matchParent(axis: style.stretchToWidth ? .width : .none, alignment: .center)
+        .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
+            .fill(style.backgroundColor))
+        .disabled(isLoading.wrappedValue)
+        .opacity(isLoading.wrappedValue ? 0.5 : 1.0)
     }
     
 #if os(iOS)
     @Environment(\.horizontalSizeClass) var sizeClass
-#endif
     
-    private func shouldShowTitle() -> Bool {
-        if (title == nil) {
-            return false
+    private var showTitle: Bool {
+        guard title != nil else { return false }
+        
+        if !actionButtonStyle.adaptOnUISizeClassChanged {
+            return true
         }
         
-#if os(iOS)
-        if (!frameConfigration.adaptOnUISizeClassChanged) {
-            return title != nil
-        }
-        return sizeClass == .regular && title != nil
-        
+        return sizeClass == .regular
+    }
 #else
+    private var showTitle: Bool {
         return title != nil
+    }
 #endif
-    }
-}
-
-/// Effects applied to ``FrameConfiguration``.
-///
-/// Typically you use ``MatchedGeometryEffect(id:namespace:)`` to animate view's frame or position between layouts.
-public enum Effect {
-    case none
-    case MatchedGeometryEffect(id: String, namespace: Namespace.ID, property: MatchedGeometryProperties)
-}
-
-/// Controls how the button will layout in parent and specifiy some geo effects.
-///
-/// If ``stretchToWidth`` is true, then the button will take as wide as much it can be. Otherwise it bahaves like "wrapContent" effect.
-/// You use ``adaptOnUISizeClassChanged`` to let the button hide icon if  there is no enough space to display it. Note that this takes effect for iOS and iPadOS only.
-public struct FrameConfiguration {
-    public let stretchToWidth: Bool
-    public let adaptOnUISizeClassChanged: Bool
-    public let geoEffect: Effect
-    
-    public init(_ stretchToWidth: Bool = false,
-                adaptOnUISizeClassChanged: Bool = false,
-                geoEffect: Effect = .none) {
-        self.stretchToWidth = stretchToWidth
-        self.adaptOnUISizeClassChanged = adaptOnUISizeClassChanged
-        self.geoEffect = geoEffect
-    }
-}
-
-/// Specify the ``foregroundColor`` and ``backgroundColor`` of this button.
-public struct ActionButtonStyle {
-    public let foregroundColor: Color
-    public let backgroundColor: Color
-    
-    public init(foregroundColor: Color, backgroundColor: Color) {
-        self.foregroundColor = foregroundColor
-        self.backgroundColor = backgroundColor
-    }
-}
-
-fileprivate extension View {
-    @ViewBuilder
-    func applyEffect(effect: Effect) -> some View {
-        switch effect {
-        case .MatchedGeometryEffect(let id, let namespace, let properties):
-            self.matchedGeometryEffect(id: id, in: namespace, properties: properties)
-        default:
-            self
-        }
-    }
 }

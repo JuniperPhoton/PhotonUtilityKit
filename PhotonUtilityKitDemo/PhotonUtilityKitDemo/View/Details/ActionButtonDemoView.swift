@@ -12,17 +12,30 @@ import PhotonUtilityView
 struct ActionButtonDemoView: View {
     @State private var isLoading = true
     
+    @StateObject private var code = HighliableCode(code:
+                """
+                ActionButton(title: "Play", icon: "play",
+                             isLoading: $isLoading)
+                    .actionButtonForegroundColor(.accentColor)
+                    .actionButtonBackgroundColor(.accentColor.opacity(0.1))
+                """)
+    
     var body: some View {
         VStack(alignment: .leading) {
+            HighliableCodeView(code: code, maxHeight: 100)
+            
             Text("Icon only").applySubTitle()
             
-            ActionButton(icon: "play",
-                         style: .init(foregroundColor: .accentColor, backgroundColor: .accentColor.opacity(0.1)))
+            ActionButton(icon: "play")
+                .actionButtonForegroundColor(.accentColor)
+                .actionButtonBackgroundColor(.accentColor.opacity(0.1))
             
             Text("Icon and text").applySubTitle()
                 .padding(.top)
-            ActionButton(title: "Play", icon: "play",
-                         style: .init(foregroundColor: .accentColor, backgroundColor: .accentColor.opacity(0.1)))
+            
+            ActionButton(title: "Play", icon: "play")
+                .actionButtonForegroundColor(.accentColor)
+                .actionButtonBackgroundColor(.accentColor.opacity(0.1))
             
             Text("With loading").applySubTitle()
                 .padding(.top)
@@ -31,20 +44,31 @@ struct ActionButtonDemoView: View {
                 self.isLoading.toggle()
             }
             
-            ActionButton(title: "Play", icon: "play",
-                         isLoading: $isLoading,
-                         style: .init(foregroundColor: .accentColor, backgroundColor: .accentColor.opacity(0.1)))
+            VStack {
+                Text("Is loading: \(String(describing: isLoading))")
+                    .matchWidth(.leading)
+                
+                ActionButton(title: "Play", icon: "play",
+                             isLoading: $isLoading)
+                .matchWidth(.leading)
+            }
+            .actionButtonForegroundColor(.accentColor)
+            .actionButtonBackgroundColor(.accentColor.opacity(0.1))
             .animation(.easeInOut, value: isLoading)
             
             Text("Stretch to width").applySubTitle()
+                .actionButtonForegroundColor(.accentColor)
+                .actionButtonBackgroundColor(.accentColor.opacity(0.1))
                 .padding(.top)
             
-            ActionButton(title: "Play", icon: "play",
-                         style: .init(foregroundColor: .accentColor, backgroundColor: .accentColor.opacity(0.1)),
-                         frameConfigration: .init(true))
+            ActionButton(title: "Play", icon: "play")
+                .actionButtonForegroundColor(.white)
+                .actionButtonBackgroundColor(.accentColor)
+                .actionButtonStretchToWidth(true)
         }
         .padding()
         .matchWidth()
+        .matchHeight(.topLeading)
         .navigationTitle("ActionButton")
     }
 }
