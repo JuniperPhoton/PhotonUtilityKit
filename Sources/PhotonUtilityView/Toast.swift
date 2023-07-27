@@ -76,6 +76,46 @@ public struct ToastColor {
     }
 }
 
+fileprivate struct ToastStyle {
+    var showIcon: Bool = true
+}
+
+fileprivate struct ToastColorKey: EnvironmentKey {
+    static var defaultValue: ToastColor {
+        ToastColor()
+    }
+}
+
+fileprivate struct ToastStyleKey: EnvironmentKey {
+    static var defaultValue: ToastStyle {
+        ToastStyle()
+    }
+}
+
+fileprivate extension EnvironmentValues {
+    var toastColor: ToastColor {
+        get { self[ToastColorKey.self] }
+        set { self[ToastColorKey.self] = newValue }
+    }
+    
+    var toastStyle: ToastStyle {
+        get { self[ToastStyleKey.self]}
+        set { self[ToastStyleKey.self] = newValue }
+    }
+}
+
+public extension View {
+    /// Set ``color`` as the color set to ``ToastView``.
+    func toastColors(_ color: ToastColor) -> some View {
+        self.environment(\.toastColor, color)
+    }
+    
+    /// Shows/hides icon inside ``ToastView``.
+    func toastShowIcon(_ showIcon: Bool) -> some View {
+        self.environment(\.toastStyle, ToastStyle(showIcon: showIcon))
+    }
+}
+
 /// Wrap this view inside a ZStack and overlay with a ``ToastView``.
 ///
 /// - parameter appToast: the app toast state used to show or dismiss toast.
@@ -83,10 +123,10 @@ public extension View {
     func withToast(_ appToast: AppToast = AppToast(),
                    toastColors: ToastColor = ToastColor()) -> some View {
         ZStack {
-            self
-                .zIndex(1)
+            self.zIndex(1)
             
-            ToastView(appToast: appToast, colors: toastColors)
+            ToastView(appToast: appToast)
+                .toastColors(toastColors)
                 .zIndex(2)
         }
         .environmentObject(appToast)
@@ -96,17 +136,19 @@ public extension View {
 /// A view to show toast managed by ``AppToast``.
 /// Place this view into your fullscreen root view and that's it.
 ///
+/// To customize the colors, use ``toastColors(_:)``, ``toastShowIcon(_:)`` method.
+///
 /// You use the methods in ``AppToast`` to present a toast.
 /// See ``AppToast`` for more details.
 public struct ToastView: View {
+    @Environment(\.toastColor) private var colors: ToastColor
+    
     @ObservedObject var appToast: AppToast
-    let colors: ToastColor
     
-    @State var dragYOffset: CGFloat = 0
+    @State private var dragYOffset: CGFloat = 0
     
-    public init(appToast: AppToast, colors: ToastColor = .init()) {
+    public init(appToast: AppToast) {
         self.appToast = appToast
-        self.colors = colors
     }
     
     public var body: some View {
@@ -130,6 +172,8 @@ public struct ToastView: View {
 }
 
 fileprivate struct ToastContentView: View {
+    @Environment(\.toastStyle) private var style: ToastStyle
+    
     @State var showBellAnimation = false
     
     let toast: String
@@ -137,19 +181,24 @@ fileprivate struct ToastContentView: View {
     
     var body: some View {
         HStack {
-            Image(systemName: "bell")
-                .renderingMode(.template)
-                .foregroundColor(colors.foregroundColor)
-                .rotationEffect(Angle(degrees: showBellAnimation ? 10 : -10))
-                .animation(.default.repeatForever(), value: showBellAnimation)
+            if style.showIcon {
+                Image(systemName: "bell")
+                    .renderingMode(.template)
+                    .foregroundColor(colors.foregroundColor)
+                    .rotationEffect(Angle(degrees: showBellAnimation ? 10 : -10))
+                    .animation(.default.repeatForever(), value: showBellAnimation)
+            }
             Text(LocalizedStringKey(toast))
                 .foregroundColor(colors.foregroundColor)
         }.padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             .background(Capsule().fill(colors.backgroundColor).addShadow())
             .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
             .transition(.move(edge: .top).combined(with: .opacity))
+            .animation(.default, value: style.showIcon)
             .onAppear {
-                showBellAnimation = true
+                if style.showIcon {
+                    showBellAnimation = true
+                }
             }
     }
 }

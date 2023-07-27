@@ -13,10 +13,14 @@ struct ToastDemoView: View {
     @StateObject private var appToast = AppToast()
     @State private var toastColor = ToastColor()
     
+    @State private var showIcon = true
+    
     var body: some View {
         ZStack {
             VStack {
                 Text("Click the buttons to show toasts.")
+                
+                Toggle("Shows icon", isOn: $showIcon)
                 
                 Text("Dismiss").asButton {
                     appToast.clear()
@@ -36,7 +40,9 @@ struct ToastDemoView: View {
                 }
             }
             
-            ToastView(appToast: appToast, colors: toastColor)
+            ToastView(appToast: appToast)
+                .toastColors(toastColor)
+                .toastShowIcon(showIcon)
         }
         .matchHeight(.topLeading)
         .environmentObject(appToast)
