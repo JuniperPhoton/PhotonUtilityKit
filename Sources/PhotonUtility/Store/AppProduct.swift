@@ -69,12 +69,12 @@ public class AppProduct: ObservableObject {
     }
     
     public func restore() async {
-        withEaseOutAnimation {
+        withDefaultAnimation {
             self.isLoading = true
         }
         
         defer {
-            withEaseOutAnimation {
+            withDefaultAnimation {
                 self.isLoading = false
             }
         }
@@ -91,7 +91,7 @@ public class AppProduct: ObservableObject {
     }
     
     public func loadProducts() async {
-        withEaseOutAnimation {
+        withDefaultAnimation {
             self.isLoading = true
         }
         
@@ -100,13 +100,13 @@ public class AppProduct: ObservableObject {
             storeLogger.log("products are \(appProducts.count)")
             
             let products = await refreshProductTranscation(products: appProducts)
-            withEaseOutAnimation {
+            withDefaultAnimation {
                 self.products = products
                 self.isLoading = false
             }
         } catch {
             storeLogger.log("error on getting products \(error)")
-            withEaseOutAnimation {
+            withDefaultAnimation {
                 self.isLoading = false
             }
         }
@@ -116,7 +116,7 @@ public class AppProduct: ObservableObject {
         do {
             storeLogger.log("begin purchase \(product.displayName)")
             
-            withEaseOutAnimation {
+            withDefaultAnimation {
                 isLoading = true
             }
             
@@ -144,13 +144,13 @@ public class AppProduct: ObservableObject {
             
             storeLogger.log("end purchase \(product.displayName)")
             
-            withEaseOutAnimation {
+            withDefaultAnimation {
                 self.isLoading = false
             }
         } catch {
             storeLogger.log("error on purchasing products \(error)")
             
-            withEaseOutAnimation {
+            withDefaultAnimation {
                 self.isLoading = false
             }
         }

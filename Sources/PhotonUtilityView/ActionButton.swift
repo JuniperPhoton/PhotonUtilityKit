@@ -66,18 +66,23 @@ struct ActionButtonStyleModifier: ViewModifier {
 }
 
 public extension View {
+    /// Set whether the ``ActionButton`` to adapt on horizontal class size changes.
     func actionButtonAdaptOnUISizeClassChanged(_ adapt: Bool) -> some View {
         self.modifier(ActionButtonStyleModifier(adaptOnUISizeClassChanged: adapt))
     }
     
+    /// Set whether the ``ActionButton``'s label stretch to the width.
+    /// If true, this view will take the whole availabe width to layout.
     func actionButtonStretchToWidth(_ stretchToWidth: Bool) -> some View {
         self.modifier(ActionButtonStyleModifier(stretchToWidth: stretchToWidth))
     }
     
+    /// Set the foreground color of ``ActionButton``.
     func actionButtonForegroundColor(_ color: Color) -> some View {
         self.modifier(ActionButtonStyleModifier(foregroundColor: color))
     }
     
+    /// Set the background color of ``ActionButton``.
     func actionButtonBackgroundColor(_ color: Color) -> some View {
         self.modifier(ActionButtonStyleModifier(backgroundColor: color))
     }
@@ -159,7 +164,6 @@ public struct ActionButton: View {
             }
         }
         .padding(DeviceCompat.isMac() ? 10 : 12)
-        .padding(12)
         .frame(minHeight: 30)
         .matchParent(axis: style.stretchToWidth ? .width : .none, alignment: .center)
         .background(RoundedRectangle(cornerRadius: 8, style: .continuous)

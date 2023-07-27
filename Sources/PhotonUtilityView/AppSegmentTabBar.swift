@@ -225,7 +225,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                     .asPlainButton {
                         DeviceCompat.triggerVibrationFeedback()
                         
-                        withEaseOutAnimation {
+                        withDefaultAnimation {
                             selection.wrappedValue = item
                         }
                     }
@@ -243,7 +243,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                         }
                     }
                     .onChange(of: selection.wrappedValue) { newValue in
-                        withEaseOutAnimation {
+                        withDefaultAnimation {
                             frameState.updateSelectedFrame(item: newValue)
                         }
                     }

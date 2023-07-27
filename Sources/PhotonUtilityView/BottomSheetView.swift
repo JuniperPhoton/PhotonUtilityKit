@@ -139,7 +139,7 @@ public struct BottomSheetView<Content: View>: View {
             .background(Color.black.opacity(0.4))
             .onAppear {
                 controller.setup(fullscreenPresentation: fullscreenPresentation)
-                withEaseOutAnimation {
+                withDefaultAnimation {
                     controller.showContent = true
                 }
             }
