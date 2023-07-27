@@ -178,7 +178,7 @@ public struct ActionButton: View {
     private var showTitle: Bool {
         guard title != nil else { return false }
         
-        if !actionButtonStyle.adaptOnUISizeClassChanged {
+        if !style.adaptOnUISizeClassChanged {
             return true
         }
         
