@@ -20,8 +20,6 @@ struct ToastDemoView: View {
             VStack {
                 Text("Click the buttons to show toasts.")
                 
-                Toggle("Shows icon", isOn: $showIcon)
-                
                 Text("Dismiss").asButton {
                     appToast.clear()
                 }.buttonStyle(.bordered)
@@ -38,6 +36,9 @@ struct ToastDemoView: View {
                     toastColor = ToastColor()
                     appToast(.constant("Create engaging SwiftUI Mac apps by incorporating side bars, tables, toolbars, and several other popular user interface elements."))
                 }
+                
+                Toggle("Shows icon", isOn: $showIcon)
+                    .padding(.horizontal)
             }
             
             ToastView(appToast: appToast)
