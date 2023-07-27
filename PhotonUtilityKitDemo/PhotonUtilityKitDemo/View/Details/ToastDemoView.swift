@@ -39,6 +39,10 @@ struct ToastDemoView: View {
                 
                 Toggle("Shows icon", isOn: $showIcon)
                     .padding(.horizontal)
+                
+                NavigationZStack {
+                    CustomContentView()
+                }
             }
             
             ToastView(appToast: appToast)
@@ -48,5 +52,54 @@ struct ToastDemoView: View {
         .matchHeight(.topLeading)
         .environmentObject(appToast)
         .navigationTitle("Toast")
+    }
+}
+
+struct CustomContentView: View {
+    @State private var title = "Test"
+    
+    var body: some View {
+        VStack {
+            Text("Test")
+            Button {
+                title = "Changed title"
+            } label: {
+                Text("Toggle")
+            }
+        }
+        .navigationZStackTitle(title)
+    }
+}
+
+struct NaivgationTitlePreferenceKey: PreferenceKey {
+    static func reduce(value: inout String, nextValue: () -> String) {
+        value = nextValue()
+    }
+    
+    static var defaultValue: String { "" }
+}
+
+extension View {
+    func navigationZStackTitle(_ title: String) -> some View {
+        self.preference(key: NaivgationTitlePreferenceKey.self, value: title)
+    }
+}
+
+struct NavigationZStack<V: View>: View {
+    var item: () -> V
+    
+    @State private var title: String = ""
+    
+    var body: some View {
+        VStack {
+            if !title.isEmpty {
+                Text(title)
+                    .font(.largeTitle.bold())
+            }
+            item()
+        }.matchParent()
+            .onPreferenceChange(NaivgationTitlePreferenceKey.self) { value in
+                self.title = value
+            }
     }
 }
