@@ -41,6 +41,7 @@ protocol FeaturePageTrait {
 enum FeaturePage: String, FeaturePageTrait {
     case unevenRoundedRectangle = "Uneven Rounded Rect"
     case animatableGradient = "Animatable Gradient"
+    case animatableNumber = "Animatable Number"
     case actionButton = "Action button"
     case toast = "Toast"
     case appSegmentTabBar = "Tab bar"
@@ -54,6 +55,8 @@ enum FeaturePage: String, FeaturePageTrait {
         switch self {
         case .unevenRoundedRectangle:
             return "rectangle"
+        case .animatableNumber:
+            return "number"
         case .bridgedPageView:
             return "book"
         case .animatableGradient:
@@ -91,6 +94,8 @@ extension FeaturePage {
         switch self {
         case .unevenRoundedRectangle:
             UnevenRoundedRectDemoView()
+        case .animatableNumber:
+            AnimatedNumberDemoView()
         case .bridgedPageView:
             BridgedPageViewDemoView()
         case .animatableGradient:
@@ -144,6 +149,7 @@ func generateAllCatagories() -> [CatalogyPage] {
                         .unevenRoundedRectangle,
                         .bridgedPageView,
                         .animatableGradient,
+                        .animatableNumber,
                         .actionButton,
                         .toast,
                         .appSegmentTabBar,

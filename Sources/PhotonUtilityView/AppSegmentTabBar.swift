@@ -292,7 +292,7 @@ struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable 
     func body(content: Content) -> some View {
         ScrollViewReader { proxy in
             content.onChange(of: state.value) { newValue in
-                withEaseOutAnimation {
+                withDefaultAnimation {
                     proxy.scrollTo(state.value)
                 }
             }

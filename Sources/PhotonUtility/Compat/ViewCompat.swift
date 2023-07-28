@@ -40,3 +40,14 @@ public extension View {
 #endif
     }
 }
+
+public extension View {
+    @ViewBuilder
+    func monospacedDigitCompat() -> some View {
+        if #available(iOS 15.0, macOS 12.0, tvOS 15.0, *) {
+            self.monospacedDigit()
+        } else {
+            self
+        }
+    }
+}
