@@ -12,9 +12,7 @@ import PhotonUtility
 struct BridgedPageViewDemoView: View {
     @State private var selectedIndex = 0
     @State private var items = [PageItem]()
-    
-    @State private var showCode = false
-    
+            
     var body: some View {
         VStack {
             if !items.isEmpty {
@@ -22,33 +20,9 @@ struct BridgedPageViewDemoView: View {
                     .matchWidth(.leading)
                     .padding()
                     .padding(.horizontal)
-                                
+                
                 BridgedPageView(selection: $selectedIndex.animation(), pageObjects: items, idKeyPath: \.id) { item in
-                    VStack {
-                        Text(item.content)
-                            .font(.largeTitle.bold())
-                            .matchWidth(.leading)
-                        Rectangle().fill(.gray.opacity(0.2)).frame(width: 20, height: 2)
-                            .matchWidth(.leading)
-                        
-                        HighliableCodeView(code: .init(code:
-                        #"""
-                        BridgedPageView(selection: $selectedIndex.easeOutAnimation(), pageObjects: items, idKeyPath: \.id) { item in
-                            VStack(spacing: 0) {
-                                Text(item.content)
-                                    .font(.largeTitle.bold())
-                                    .matchWidth(.leading)
-                                Rectangle().fill(.gray.opacity(0.2)).frame(width: 20, height: 2)
-                                    .matchWidth(.leading)
-                            }
-                        }
-                        """#), maxHeight: 300).padding(.top)
-                        
-                        Spacer()
-                    }.padding()
-                        .matchParent()
-                        .background(RoundedRectangle(cornerRadius: 12).fill(.gray.opacity(0.1)))
-                        .padding()
+                    PageContent(item: item)
                 }.padding()
             }
             
@@ -61,6 +35,38 @@ struct BridgedPageViewDemoView: View {
                     items.append(PageItem(content: String(i)))
                 }
             }
+    }
+}
+
+fileprivate struct PageContent: View {
+    let item: PageItem
+    
+    var body: some View {
+        VStack {
+            Text(item.content)
+                .font(.largeTitle.bold())
+                .matchWidth(.leading)
+            Rectangle().fill(.gray.opacity(0.2)).frame(width: 20, height: 2)
+                .matchWidth(.leading)
+            
+            HighliableCodeView(code: .init(code:
+            #"""
+            BridgedPageView(selection: $selectedIndex.easeOutAnimation(), pageObjects: items, idKeyPath: \.id) { item in
+                VStack(spacing: 0) {
+                    Text(item.content)
+                        .font(.largeTitle.bold())
+                        .matchWidth(.leading)
+                    Rectangle().fill(.gray.opacity(0.2)).frame(width: 20, height: 2)
+                        .matchWidth(.leading)
+                }
+            }
+            """#), maxHeight: 300).padding(.top)
+            
+            Spacer()
+        }.padding()
+            .matchParent()
+            .background(RoundedRectangle(cornerRadius: 12).fill(.gray.opacity(0.1)))
+            .padding()
     }
 }
 
