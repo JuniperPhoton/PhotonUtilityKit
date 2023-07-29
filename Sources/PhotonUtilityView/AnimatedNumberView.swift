@@ -142,9 +142,7 @@ fileprivate struct AnimatedNumberView: View {
                 }
                 
                 stateHolder.newNumber = newValue
-                
-                print("AnimatedNumberView state holder \(String(reflecting: stateHolder))")
-                
+                                
                 withTransaction(transcation) {
                     if stateHolder.increased {
                         stateHolder.newNumberOffsetY = 0

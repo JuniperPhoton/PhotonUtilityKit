@@ -7,8 +7,11 @@
 
 import SwiftUI
 import PhotonUtility
+import OSLog
 
 #if canImport(AppKit) && !targetEnvironment(macCatalyst)
+private let logger = Logger(subsystem: "com.juniperphoton.photonutilityview", category: "NSPageView")
+
 import AppKit
 /// A ``NSViewControllerRepresentable`` for showing ``NSPageController``.
 /// Use ``init(selection:pageObjects:idKeyPath:contentView:)`` to initialize a view and add it to a SwiftUI view hierachy.
@@ -72,17 +75,18 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
         guard let controller = nsViewController as? NSPageViewContainerController<T, V> else {
             return
         }
-
+        
         if controller.pageObjects != pageObjects || controller.selectedIndex != selection.wrappedValue {
             let selectionAnimation = selection.transaction.animation
             let contextAnimation = context.transaction.animation
             let animated = selectionAnimation != nil && contextAnimation != nil
-            print("updateNSViewController useAnimation: \(animated)")
-
+            logger.log("updateNSViewController new \(selection.wrappedValue), count: \(pageObjects.count)")
+            logger.log("updateNSViewController old \(controller.selectedIndex), count: \(controller.pageObjects.count)")
+            
             controller.pageObjects = pageObjects
+            controller.updateDataSource()
             controller.updateSelectedIndex(selection.wrappedValue,
                                            animated: animated)
-            controller.updateDataSource()
         }
     }
 }
@@ -113,15 +117,6 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
     var onSelectedIndexChanged: ((Int) -> Void)? = nil
     var onContentPrepared: ((T) -> Void)? = nil
     
-    override var selectedIndex: Int {
-        didSet {
-            let index = selectedIndex
-            DispatchQueue.main.async {
-                self.onSelectedIndexChanged?(index)
-            }
-        }
-    }
-    
     override func loadView() {
         let view = ResizeAwareNSView()
         view.onStartLiveResize = { [weak self] in
@@ -148,10 +143,12 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
     
     func updateDataSource() {
         self.arrangedObjects = pageObjects
-        print("NSPageView updateDataSource")
+        logger.log("NSPageView updateDataSource \(self.arrangedObjects.count)")
     }
     
     func updateSelectedIndex(_ index: Int, animated: Bool) {
+        logger.log("NSPageView updateSelectedIndex \(index)")
+        
         if animated {
             NSAnimationContext.runAnimationGroup { context in
                 self.animator().selectedIndex = index
@@ -178,6 +175,12 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
             onContentPrepared?(object)
         }
         return controller
+    }
+    
+    func pageController(_ pageController: NSPageController, didTransitionTo object: Any) {
+        DispatchQueue.main.async {
+            self.onSelectedIndexChanged?(self.selectedIndex)
+        }
     }
 }
 

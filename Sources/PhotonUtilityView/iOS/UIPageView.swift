@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import OSLog
 
 #if canImport(UIKit) && !targetEnvironment(macCatalyst)
 import UIKit
+
+private let logger = Logger(subsystem: "com.juniperphoton.photonutilityview", category: "UIPageView")
 
 public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
     let selection: Binding<Int>
@@ -50,7 +53,7 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
             let selectionAnimation = selection.transaction.animation
             let contextAnimation = context.transaction.animation
             let animated = selectionAnimation != nil && contextAnimation != nil
-            print("updateUIViewController animated: \(animated)")
+            logger.log("updateUIViewController animated: \(animated)")
 
             controller.updatePage(animated: animated)
         }
