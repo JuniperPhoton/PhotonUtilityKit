@@ -188,7 +188,7 @@ class NSPageViewContentController<T, V>: NSViewController where V: View {
     var content: ((T) -> V)? = nil
     var object: T? = nil
     
-    private var hostingController: NSHostingController<AnyView>? = nil
+    private var hostingView: NSHostingView<V>? = nil
     
     override func loadView() {
         self.view = NSView()
@@ -196,7 +196,7 @@ class NSPageViewContentController<T, V>: NSViewController where V: View {
     
     override func viewDidLayout() {
         super.viewDidLayout()
-        hostingController?.view.frame = self.view.bounds
+        hostingView?.frame = self.view.bounds
     }
     
     override func viewDidLoad() {
@@ -206,8 +206,9 @@ class NSPageViewContentController<T, V>: NSViewController where V: View {
             return
         }
         let view = content(object)
-        self.hostingController = NSHostingController(rootView: AnyView(view))
-        self.view.addSubview(self.hostingController!.view)
+        let hostingView = NSHostingView(rootView: view)
+        self.view.addSubview(hostingView)
+        self.hostingView = hostingView
     }
 }
 #endif
