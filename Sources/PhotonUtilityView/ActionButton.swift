@@ -166,7 +166,7 @@ public struct ActionButton: View {
         .padding(DeviceCompat.isMac() ? 10 : 12)
         .frame(minHeight: 30)
         .matchParent(axis: style.stretchToWidth ? .width : .none, alignment: .center)
-        .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
+        .background(RoundedRectangle(cornerRadius: 8, style: .circular)
             .fill(style.backgroundColor))
         .disabled(isLoading.wrappedValue)
         .opacity(isLoading.wrappedValue ? 0.5 : 1.0)
