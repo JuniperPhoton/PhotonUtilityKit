@@ -66,7 +66,7 @@ public class BottomSheetController: ObservableObject {
     }
     
     public func dismiss(onEnd: (() -> Void)? = nil) {
-        withEaseOutAnimation(duration: 0.2, onEnd: {
+        withDefaultAnimation(onEnd: {
             self.fullscreenPresentation?.dismissAll()
             onEnd?()
         }, onEndDelay: 0.0) {
@@ -78,10 +78,12 @@ public class BottomSheetController: ObservableObject {
 public struct BottomSheetView<Content: View>: View {
     @EnvironmentObject var fullscreenPresentation: FullscreenPresentation
     
-    @StateObject var controller: BottomSheetController = BottomSheetController()
-    @State var dragOffsetY: CGFloat = 0
-    @State var contentHeight: CGFloat = 0
-    
+    @StateObject private var controller: BottomSheetController = BottomSheetController()
+    @State private var dragOffsetY: CGFloat = 0
+    @State private var contentHeight: CGFloat = 0
+    @State private var startTime: Date? = nil
+    @State private var safeArea: EdgeInsets = .init()
+
     private let backgroundColor: Color
     private let content: () -> Content
     
@@ -99,7 +101,7 @@ public struct BottomSheetView<Content: View>: View {
                     .padding()
                     .frame(maxWidth: DeviceCompat.isOnPhoneOnly() ? .infinity : 600)
                     .background(UnevenRoundedRectangle(top: 12, bottom: DeviceCompat.isMac() ? 12 : 0)
-                        .fill(backgroundColor).ignoresSafeArea())
+                        .fill(backgroundColor).ignoresSafeArea(edges: .bottom))
                     .listenHeightChanged(onHeightChanged: { height in
                         self.contentHeight = height
                     })
@@ -109,17 +111,32 @@ public struct BottomSheetView<Content: View>: View {
                     .transition(.move(edge: .bottom))
                     .gesture(DragGesture(minimumDistance: 0).onChanged { value in
                         if value.translation.height >= 0 {
+                            if startTime == nil {
+                                startTime = .now
+                            }
                             dragOffsetY = value.translation.height
                         }
                     }.onEnded { value in
                         if value.translation.height > 100 {
-                            withEaseOutAnimation(duration: 0.2, onEnd: {
+                            let startY = value.startLocation.y
+                            let endY = value.predictedEndLocation.y
+                            let deltaY = abs(endY - startY)
+                            let deltaTime = Date.now.timeIntervalSince1970 - (startTime ?? .now).timeIntervalSince1970
+                            let velocity = deltaTime == 0 ? 20 : (deltaY / deltaTime / 100)
+                            let fixedVelocity = velocity.clamp(to: 10...20)
+                            
+                            print("velocity is \(velocity), fixed \(fixedVelocity), safa \(safeArea)")
+                            startTime = nil
+                            
+                            withAnimation(.interpolatingSpring(stiffness: 70, damping: 272, initialVelocity: fixedVelocity)) {
+                                dragOffsetY = self.contentHeight + safeArea.bottom
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 dismiss(animated: false)
-                            }, onEndDelay: 0.0) {
-                                dragOffsetY = self.contentHeight * 1.5
                             }
                         } else {
-                            withEaseOutAnimation {
+                            withDefaultAnimation {
                                 dragOffsetY = 0
                             }
                         }
@@ -128,6 +145,7 @@ public struct BottomSheetView<Content: View>: View {
                     .onTapGestureCompact {
                         // ignored
                     }
+                    .measureSafeArea(safeArea: $safeArea)
             }
         }.ignoresSafeArea()
 #if os(macOS)
@@ -153,10 +171,11 @@ public struct BottomSheetView<Content: View>: View {
             fullscreenPresentation.dismissAll()
             return
         }
-        withEaseOutAnimation(duration: 0.2, onEnd: {
-            fullscreenPresentation.dismissAll()
-        }, onEndDelay: 0.0) {
+        withDefaultAnimation(onEnd: {
             controller.showContent = false
+            fullscreenPresentation.dismissAll()
+        }) {
+            self.dragOffsetY = self.contentHeight + safeArea.bottom
         }
     }
 }

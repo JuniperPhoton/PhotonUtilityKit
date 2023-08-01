@@ -200,6 +200,38 @@ public extension View {
     }
 }
 
+public extension View {
+    /// Get the safe area insets of this view.
+    /// If this view's offset can be changed, this view modifier should be placed at the
+    /// bottom of a view.
+    ///
+    /// MyView().offset(x: x, y: y)
+    ///     .measureSafeArea($safeArea)
+    ///
+    func measureSafeArea(safeArea: Binding<EdgeInsets>) -> some View {
+        ViewSafeAreaWrapper(safeArea: safeArea, content: self)
+    }
+}
+
+private struct ViewSafeAreaWrapper<V: View>: View {
+    @Binding var safeArea: EdgeInsets
+    let content: V
+    
+    var body: some View {
+        content.background {
+            GeometryReader { proxy in
+                Color.clear.ignoresSafeArea(edges: .bottom).onAppear {
+                    safeArea = proxy.safeAreaInsets
+                    print("safe area onAppear \(safeArea)")
+                }.onChange(of: proxy.safeAreaInsets) { newValue in
+                    safeArea = newValue
+                    print("safe area onChange \(safeArea)")
+                }
+            }
+        }
+    }
+}
+
 /// Convenient extensions to create ``EdgeInsets``.
 public extension EdgeInsets {
     static func createUnified(inset: CGFloat) -> EdgeInsets {
