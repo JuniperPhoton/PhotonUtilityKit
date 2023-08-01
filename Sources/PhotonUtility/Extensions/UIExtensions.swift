@@ -218,7 +218,7 @@ private struct ViewSafeAreaWrapper<V: View>: View {
     let content: V
     
     var body: some View {
-        content.background {
+        content.background(
             GeometryReader { proxy in
                 Color.clear.ignoresSafeArea(edges: .bottom).onAppear {
                     safeArea = proxy.safeAreaInsets
@@ -228,7 +228,7 @@ private struct ViewSafeAreaWrapper<V: View>: View {
                     print("safe area onChange \(safeArea)")
                 }
             }
-        }
+        )
     }
 }
 

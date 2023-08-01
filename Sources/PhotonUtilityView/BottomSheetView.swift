@@ -76,7 +76,11 @@ public class BottomSheetController: ObservableObject {
             self.fullscreenPresentation?.dismissAll()
             onEnd?()
         }) {
+#if os(iOS)
             self.dragOffsetY = self.contentHeight + self.safeArea.bottom
+#else
+            self.showContent = false
+#endif
         }
     }
 }
