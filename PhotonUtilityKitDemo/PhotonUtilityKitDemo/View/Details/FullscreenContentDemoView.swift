@@ -10,8 +10,8 @@ import PhotonUtility
 import PhotonUtilityView
 
 struct FullscreenContentDemoView: View {
-    @StateObject private var fullscreenPresentation = FullscreenPresentation()
-
+    @EnvironmentObject private var fullscreenPresentation: FullscreenPresentation
+    
     var body: some View {
         ZStack {
             VStack {
@@ -49,12 +49,12 @@ struct FullscreenContentDemoView: View {
                                 .padding(.bottom)
                             Text("A custom view content. Tap to dismiss.")
                                 .multilineTextAlignment(.center)
-                        }.matchParent()
-                        #if os(iOS)
+                        }.foregroundColor(.white).matchParent()
+#if os(iOS)
                             .background(.thinMaterial)
-                        #else
+#else
                             .background(Color.black.opacity(0.5))
-                        #endif
+#endif
                             .onTapGesture {
                                 fullscreenPresentation.dismissAll()
                             }
@@ -65,28 +65,8 @@ struct FullscreenContentDemoView: View {
             }
             .matchParent(alignment: .topLeading)
             .padding()
-            
-            fullscreenContent()
         }
         .navigationTitle("Fullscreen content")
         .environmentObject(fullscreenPresentation)
-    }
-    
-    @ViewBuilder
-    private func fullscreenContent() -> some View {
-        ZStack {
-            if let view = fullscreenPresentation.presentedView {
-                ZStack {
-                    AnyView(view)
-                }.matchParent().transition(fullscreenPresentation.transition)
-                    .onDisappear {
-                        fullscreenPresentation.invokeOnDismiss()
-                    }
-            }
-        }.transaction { current in
-            if let override = fullscreenPresentation.transcation {
-                current = override
-            }
-        }
     }
 }

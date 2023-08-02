@@ -9,49 +9,6 @@ import Foundation
 import SwiftUI
 import PhotonUtility
 
-public class FullscreenPresentation: ObservableObject {
-    @Published public var presentedView: (any View)? = nil
-    
-    @Published public var transcation: Transaction? = nil
-    @Published public var transition: AnyTransition = .identity
-    
-    private var onDismiss: (() -> Void)? = nil
-    
-    public init() {
-        // empty
-    }
-    
-    public func present(animated: Bool = true, transition: AnyTransition = .opacity, view: any View,
-                        onDismiss: (() -> Void)? = nil) {
-        self.onDismiss = onDismiss
-        
-        withTransaction(createTranscation(animated: animated)) {
-            self.presentedView = view
-            self.transition = transition
-        }
-    }
-    
-    public func dismissAll(animated: Bool = true, transition: AnyTransition = .opacity) {
-        withTransaction(createTranscation(animated: animated)) {
-            self.presentedView = nil
-            self.transition = transition
-        }
-    }
-    
-    public func invokeOnDismiss() {
-        self.onDismiss?()
-        self.onDismiss = nil
-    }
-    
-    private func createTranscation(animated: Bool) -> Transaction {
-        if animated {
-            return Transaction(animation: .easeOut)
-        } else {
-            return Transaction()
-        }
-    }
-}
-
 public class BottomSheetController: ObservableObject {
     @Published public var showContent: Bool = false
     

@@ -10,12 +10,17 @@ import PhotonUtility
 import PhotonUtilityView
 
 struct ContentView: View {
+    @StateObject private var fullscreenPresentation = FullscreenPresentation()
+
     var body: some View {
-        if #available(iOS 16.0, macOS 13.0, *), DeviceCompat.isMac() {
-            EpicMainContentView()
-        } else {
-            DeprecatedMainContentView()
+        Group {
+            if #available(iOS 16.0, macOS 13.0, *), DeviceCompat.isMac() {
+                EpicMainContentView()
+            } else {
+                DeprecatedMainContentView()
+            }
         }
+        .withFullscreenPresentation(fullscreenPresentation)
     }
 }
 
