@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "photonutilitykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JuniperPhoton/PhotonUtilityKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "1e5bac761b46899951b7b278b949638e4b1c8c3a"
+      }
+    },
+    {
       "identity" : "swiftui-introspect",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/swiftui-introspect",
