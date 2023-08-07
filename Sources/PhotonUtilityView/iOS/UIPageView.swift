@@ -47,23 +47,31 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
     }
     
     public func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        if let controller = uiViewController as? CustomUIPageViewController<T, V> {
-            controller.setup(selection: selection, pageObjects: pageObjects, pageToView: contentView)
-            
-            let selectionAnimation = selection.transaction.animation
-            let contextAnimation = context.transaction.animation
-            let animated = selectionAnimation != nil && contextAnimation != nil
-            logger.log("updateUIViewController animated: \(animated)")
-
-            controller.updatePage(animated: animated)
+        guard let controller = uiViewController as? CustomUIPageViewController<T, V> else {
+            return
         }
+        
+        if controller.pageObjects == pageObjects && controller.selection?.wrappedValue == self.selection.wrappedValue {
+            return
+        }
+        
+        controller.setup(selection: selection, pageObjects: pageObjects, pageToView: contentView)
+        
+        let selectionAnimation = selection.transaction.animation
+        let contextAnimation = context.transaction.animation
+        let animated = selectionAnimation != nil || contextAnimation != nil
+        
+        logger.log("updateUIViewController animated: \(animated), to index \(selection.wrappedValue)")
+        logger.log("updateUIViewController selectionAnimation \(selectionAnimation != nil), contextAnimation: \(contextAnimation != nil)")
+
+        controller.updatePage(animated: animated)
     }
 }
 
 public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewController, UIPageViewControllerDelegate,
                                                                 UIPageViewControllerDataSource {
-    private var selection: Binding<Int>? = nil
-    private var pageObjects: [T]? = nil
+    private(set) var selection: Binding<Int>? = nil
+    private(set) var pageObjects: [T]? = nil
     private var pageToView: ((T) -> V)? = nil
     
     private var currentPage: T? = nil

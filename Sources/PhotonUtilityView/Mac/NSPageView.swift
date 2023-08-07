@@ -79,14 +79,13 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
         if controller.pageObjects != pageObjects || controller.selectedIndex != selection.wrappedValue {
             let selectionAnimation = selection.transaction.animation
             let contextAnimation = context.transaction.animation
-            let animated = selectionAnimation != nil && contextAnimation != nil
-            logger.log("updateNSViewController new \(selection.wrappedValue), count: \(pageObjects.count)")
+            let animated = selectionAnimation != nil || contextAnimation != nil
+            logger.log("updateNSViewController new \(selection.wrappedValue), count: \(pageObjects.count), animated: \(animated)")
             logger.log("updateNSViewController old \(controller.selectedIndex), count: \(controller.pageObjects.count)")
             
             controller.pageObjects = pageObjects
             controller.updateDataSource()
-            controller.updateSelectedIndex(selection.wrappedValue,
-                                           animated: animated)
+            controller.updateSelectedIndex(selection.wrappedValue, animated: animated)
         }
     }
 }
@@ -147,7 +146,7 @@ class NSPageViewContainerController<T, V>: NSPageController, NSPageControllerDel
     }
     
     func updateSelectedIndex(_ index: Int, animated: Bool) {
-        logger.log("NSPageView updateSelectedIndex \(index)")
+        logger.log("NSPageView updateSelectedIndex \(index), animated \(animated)")
         
         if animated {
             NSAnimationContext.runAnimationGroup { context in
