@@ -21,7 +21,6 @@ import ServiceManagement
 /// https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLoginItems.html#//apple_ref/doc/uid/10000172i-SW5-BAJJBJEG
 public class LoginItemCompat {
     private let useNewAPI: Bool = true
-    
     private let launcherHelperIdentifier: String
     
     public init(launcherHelperIdentifier: String) {
@@ -29,13 +28,11 @@ public class LoginItemCompat {
     }
     
     public func register() {
-#if !DEBUG
         if #available(macOS 13.0, *), useNewAPI {
             registerInternalForVentura()
         } else {
-            SMLoginItemSetEnabled(LoginItemCompat.launcherHelperIdentifier as CFString, true)
+            SMLoginItemSetEnabled(launcherHelperIdentifier as CFString, true)
         }
-#endif
     }
     
     public func unregister() {
