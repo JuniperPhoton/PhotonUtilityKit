@@ -6,6 +6,8 @@
 //
 
 import Foundation
+
+#if canImport(AppKit)
 import ServiceManagement
 
 /// Provide a compat way to implement auto-login feature.
@@ -62,3 +64,4 @@ public class LoginItemCompat {
         }
     }
 }
+#endif
