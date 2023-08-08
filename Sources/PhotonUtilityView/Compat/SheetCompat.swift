@@ -46,6 +46,10 @@ private func fixContentViewTransformIssue() {
             return
         }
         
+        // This is the weird way to fix.
+        // We know setting the transform property multiply times will still result
+        // in one drawing cycle.
+        // But it just fixes.
         view.transform = CGAffineTransform(translationX: 0, y: 0.1)
         view.transform = CGAffineTransform.identity
     }
