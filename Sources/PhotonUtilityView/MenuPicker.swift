@@ -84,6 +84,11 @@ public struct MenuPicker<Selection: Identifiable & Hashable & Localizable, Label
             } else {
                 label
             }
-        }.menuStyle(.borderedButton).menuIndicator(.hidden).controlSize(.large)
+        }
+#if os(macOS)
+        .menuStyle(.borderedButton)
+        .menuIndicator(.hidden)
+#endif
+        .controlSize(.large)
     }
 }
