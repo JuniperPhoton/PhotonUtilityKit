@@ -21,19 +21,22 @@ fileprivate struct ActionButtonStyle {
     var stretchToWidth: Bool
     var foregroundColor: Color
     var backgroundColor: Color
+    var useContinuousStyle: Bool
     
     func adaptOnUISizeClassChanged(_ adapt: Bool) -> ActionButtonStyle {
         ActionButtonStyle(adaptOnUISizeClassChanged: adapt,
                           stretchToWidth: stretchToWidth,
                           foregroundColor: foregroundColor,
-                          backgroundColor: backgroundColor)
+                          backgroundColor: backgroundColor,
+                          useContinuousStyle: useContinuousStyle)
     }
 }
 
 fileprivate struct ActionButtonStyleKey: EnvironmentKey {
     static var defaultValue: ActionButtonStyle {
         ActionButtonStyle(adaptOnUISizeClassChanged: false, stretchToWidth: false,
-                          foregroundColor: .primary, backgroundColor: .accentColor)
+                          foregroundColor: .primary, backgroundColor: .accentColor,
+                          useContinuousStyle: false)
     }
 }
 
@@ -55,13 +58,15 @@ struct ActionButtonStyleModifier: ViewModifier {
     var stretchToWidth: Bool? = nil
     var foregroundColor: Color? = nil
     var backgroundColor: Color? = nil
+    var useContinuousStyle: Bool? = nil
     
     func body(content: Content) -> some View {
         content.environment(\.actionButtonStyle,
                              ActionButtonStyle(adaptOnUISizeClassChanged: adaptOnUISizeClassChanged ?? actionButtonStyle.adaptOnUISizeClassChanged,
                                                stretchToWidth: stretchToWidth ?? actionButtonStyle.stretchToWidth,
                                                foregroundColor: foregroundColor ?? actionButtonStyle.foregroundColor,
-                                               backgroundColor: backgroundColor ?? actionButtonStyle.backgroundColor))
+                                               backgroundColor: backgroundColor ?? actionButtonStyle.backgroundColor,
+                                               useContinuousStyle: useContinuousStyle ?? actionButtonStyle.useContinuousStyle))
     }
 }
 
@@ -86,6 +91,11 @@ public extension View {
     func actionButtonBackgroundColor(_ color: Color) -> some View {
         self.modifier(ActionButtonStyleModifier(backgroundColor: color))
     }
+    
+    /// Set the style of round rectangle style of ``ActionButton``.
+    func actionButtonUseContinuousStyle(_ use: Bool) -> some View {
+        self.modifier(ActionButtonStyleModifier(useContinuousStyle: use))
+    }
 }
 
 /// A button with default style.
@@ -97,6 +107,7 @@ public extension View {
 /// - ``actionButtonBackgroundColor(_:)``: Set the background color.
 /// - ``actionButtonStretchToWidth(_:)``: True if you want this button has infinity width limation.
 /// - ``actionButtonAdaptOnUISizeClassChanged(_:)``: On iOS, set this to true will adapt to horizontal class size.
+/// - ``actionButtonUseContinuousStyle(_:)``: Set the rounded style.
 ///
 /// If this action supports loading, passing binding ``isLoading``.
 ///  If it's in loading state, the button would be disabled and show a progress view.
@@ -166,7 +177,7 @@ public struct ActionButton: View {
         .padding(DeviceCompat.isMac() ? 10 : 12)
         .frame(minHeight: 30)
         .matchParent(axis: style.stretchToWidth ? .width : .none, alignment: .center)
-        .background(RoundedRectangle(cornerRadius: 8)
+        .background(RoundedRectangle(cornerRadius: 8, style: style.useContinuousStyle ? .continuous : .circular)
             .fill(style.backgroundColor))
         .disabled(isLoading.wrappedValue)
         .opacity(isLoading.wrappedValue ? 0.5 : 1.0)
