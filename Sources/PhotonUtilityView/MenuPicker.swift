@@ -80,7 +80,10 @@ public struct MenuPicker<Selection: Identifiable & Hashable & Localizable, Label
         } label: {
             let label = labelView()
             if type(of: label) == EmptyView.self {
-                Label(selection.wrappedValue.localizedStringKey, systemImage: "chevron.up.chevron.down")
+                HStack {
+                    Text(selection.wrappedValue.localizedStringKey)
+                    Image(systemName: "chevron.up.chevron.down")
+                }
             } else {
                 label
             }
