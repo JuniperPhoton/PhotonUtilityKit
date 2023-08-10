@@ -16,7 +16,7 @@ import PhotonUtility
 public extension View {
     func sheetCompat<ViewContent: View, Item: Identifiable>(
         item: Binding<Item?>,
-        onDismiss: (() -> Void)?,
+        onDismiss: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (Item) -> ViewContent
     ) -> some View {
         self.sheet(item: item, onDismiss: {
