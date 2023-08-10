@@ -26,6 +26,12 @@ class IconGeneratorViewModel: ObservableObject {
     }
     
     @MainActor
+    func clear() {
+        self.imageURL = nil
+        self.imageToDisplay = nil
+    }
+    
+    @MainActor
     func saveTo(url: URL) async -> Bool {
         return await url.grantAccessAsync { url in
             guard let imageURL = imageURL, let imageToDisplay = imageToDisplay else {
@@ -150,6 +156,16 @@ struct IconGeneratorView: View {
                     Task {
                         await viewModel.resolveImage(url: url)
                     }
+                }
+                
+                Text("Clear").asButton {
+                    viewModel.clear()
+                }
+            }
+            
+            ToolbarItem(placement: .navigation) {
+                Text("Clear").asButton {
+                    viewModel.clear()
                 }
             }
         }
