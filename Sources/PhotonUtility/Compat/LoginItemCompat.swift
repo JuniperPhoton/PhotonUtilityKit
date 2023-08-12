@@ -46,7 +46,8 @@ public class LoginItemCompat {
     @available(macOS 13.0, *)
     private func registerInternalForVentura() {
         do {
-            try SMAppService.mainApp.register()
+            try SMAppService.loginItem(identifier: launcherHelperIdentifier).register()
+            print("success on register SMAppService for \(launcherHelperIdentifier)")
         } catch {
             print("error on register SMAppService \(error)")
         }
@@ -55,7 +56,8 @@ public class LoginItemCompat {
     @available(macOS 13.0, *)
     private func unregisterInternalForVentura() {
         do {
-            try SMAppService.mainApp.unregister()
+            try SMAppService.loginItem(identifier: launcherHelperIdentifier).unregister()
+            print("success on unregister SMAppService for \(launcherHelperIdentifier)")
         } catch {
             print("error on unregister SMAppService \(error)")
         }
