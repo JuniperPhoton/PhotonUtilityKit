@@ -9,12 +9,13 @@ import SwiftUI
 
 public extension View {
     /// Shows a view inside a popover, anchoring to the current view.
+    /// This is availabe on iOS, iPadOS and macOS.
     func popoverCompat<Content: View>(isPresented: Binding<Bool>,
                                       @ViewBuilder content: @escaping () -> Content) -> some View {
 #if os(macOS)
         self.disabled(isPresented.wrappedValue)
             .popover(isPresented: isPresented, content: content)
-#else
+#elseif os(iOS)
         // For iOS 16.4+, a API called presentationCompactAdaptation(_:) can be used to adjust
         // the presentation style for compact horizontal class size.
         // However if we display a long text insider the popover its height can't be calculated in the right way.
@@ -22,6 +23,8 @@ public extension View {
         // Sigh...
         self.disabled(isPresented.wrappedValue)
             .modifier(AlwaysPopoverModifier(isPresented: isPresented, contentBlock: content))
+#else
+        self
 #endif
     }
 }
