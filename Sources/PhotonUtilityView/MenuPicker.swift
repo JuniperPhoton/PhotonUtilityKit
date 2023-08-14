@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if os(iOS) || os(macOS)
 @available(iOS 15.0, macOS 12.0, *)
 public extension MenuPicker {
     init(selection: Binding<Selection>,
@@ -95,3 +96,4 @@ public struct MenuPicker<Selection: Identifiable & Hashable & Localizable, Label
         .controlSize(.large)
     }
 }
+#endif
