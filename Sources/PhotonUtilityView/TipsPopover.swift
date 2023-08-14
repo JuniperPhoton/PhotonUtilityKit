@@ -37,7 +37,12 @@ private struct TipsPopover: View {
             }
             Text(LocalizedStringKey(text))
                 .multilineTextAlignment(.center)
-        }.padding().frame(maxWidth: 300)
+        }.padding()
+#if os(iOS)
+            .frame(maxWidth: 300)
+#else
+            .frame(width: 300)
+#endif
     }
 }
 
