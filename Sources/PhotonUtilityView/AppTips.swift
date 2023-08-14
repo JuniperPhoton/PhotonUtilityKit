@@ -27,7 +27,7 @@ public protocol AppTipContent: Equatable {
 /// An object to publish and recieve tips changes.
 /// You don't create this object manually, use ``shared`` to get the default instance.
 ///
-/// Use ``showTip`` to publish a tip.
+/// Use ``showTip`` or ``showTipIfNotShown(_:setShown:)`` to publish a tip.
 /// Use ``currentTipContent`` to receive changes.
 ///
 /// In your view, use ``View/popoverTips`` to show tips.
@@ -40,8 +40,15 @@ public class AppTipsCenter: ObservableObject {
         // empty
     }
     
+    public func showTipIfNotShown(_ content: any AppTipContent, setShown: Bool = true) {
+        if AppTipsPreference.shared.isTipShown(key: type(of: content).key) {
+            return
+        }
+        
+        showTip(content, setShown: setShown)
+    }
+    
     public func showTip(_ content: any AppTipContent, setShown: Bool = true) {
-        print("show tip \(String(describing: content))")
         self.currentTipContent = content
         
         if setShown {
