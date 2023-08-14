@@ -9,15 +9,15 @@ import Foundation
 
 /// Describe the content of a tips.
 public protocol AppTipContent: Equatable {
+    /// The key acts as a identifier of a tips kind
+    static var key: String { get }
+    
     /// The main text to be displayed in the popover
     var text: String { get }
     
     /// The icon above the text. If it's nil, the icon won't be displayed
     var icon: String? { get }
-    
-    /// The key acts as a identifier of a tips kind
-    var key: String { get }
-    
+        
     /// The associated object key of this tip. Used to identify a specifiy view item.
     /// For example, views in a List should have different ``associatedObjectKey``
     /// while they may have the same ``key``
@@ -40,9 +40,13 @@ public class AppTipsCenter: ObservableObject {
         // empty
     }
     
-    public func showTip(_ content: any AppTipContent) {
+    public func showTip(_ content: any AppTipContent, setShown: Bool = true) {
         print("show tip \(String(describing: content))")
         self.currentTipContent = content
+        
+        if setShown {
+            AppTipsPreference.shared.setTipShown(key: type(of: content).key)
+        }
         
         DispatchQueue.main.async {
             self.reset()
@@ -67,8 +71,10 @@ public class AppTipsPreference {
     
     /// Register a key refering to a tip.
     /// By doing so when you call ``resetAll`` the key will be removed from the UserDefaults.
-    public func register(key: String) {
-        self.keys.insert(key)
+    public func register(tips: any AppTipContent.Type...) {
+        for tip in tips {
+            self.keys.insert(tip.key)
+        }
     }
     
     /// Check if a tip with the key is already shown or not.
@@ -89,8 +95,9 @@ public class AppTipsPreference {
 }
 
 private struct EmptyAppTipContent: AppTipContent {
+    static var key: String = ""
+
     var text: String = ""
     var icon: String? = nil
-    var key: String = ""
     var associatedObjectKey: String = "empty"
 }

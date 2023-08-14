@@ -54,7 +54,7 @@ private struct PopoverTipsModifier: ViewModifier {
                 TipsPopover(text: tipKey.text, icon: tipKey.icon)
             }
             .onReceive(tipsCenter.$currentTipContent) { output in
-                if output.key == tipKey.key && output.associatedObjectKey == tipKey.associatedObjectKey {
+                if type(of: output).key == type(of: tipKey).key && output.associatedObjectKey == tipKey.associatedObjectKey {
                     DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                         showTips = true
                     }
