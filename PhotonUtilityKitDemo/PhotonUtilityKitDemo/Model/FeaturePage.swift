@@ -13,6 +13,7 @@ enum FeaturePage: String, FeaturePageTrait {
     case animatableGradient = "Animatable Gradient"
     case animatableNumber = "Animatable Number"
     case actionButton = "Action button"
+    case tips = "Tips"
     case toast = "Toast"
     case appSegmentTabBar = "Tab bar"
     case fullscreenContent = "Fullscreen content"
@@ -33,6 +34,8 @@ enum FeaturePage: String, FeaturePageTrait {
             return "square.stack.3d.down.right"
         case .actionButton:
             return "hammer"
+        case .tips:
+            return "bubble.middle.top"
         case .toast:
             return "hammer"
         case .appSegmentTabBar:
@@ -66,6 +69,8 @@ extension FeaturePage {
             UnevenRoundedRectDemoView()
         case .animatableNumber:
             AnimatedNumberDemoView()
+        case .tips:
+            TipsDemoView()
         case .bridgedPageView:
             BridgedPageViewDemoView()
         case .animatableGradient:

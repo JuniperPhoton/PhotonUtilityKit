@@ -40,6 +40,7 @@ func generateAllCatagories() -> [CatalogyPage] {
                          .animatableGradient,
                          .animatableNumber,
                          .actionButton,
+                         .tips,
                          .toast,
                          .appSegmentTabBar,
                          .fullscreenContent,
