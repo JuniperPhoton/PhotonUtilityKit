@@ -59,10 +59,17 @@ private struct PopoverTipsModifier: ViewModifier {
                 TipsPopover(text: tipKey.text, icon: tipKey.icon)
             }
             .onReceive(tipsCenter.$currentTipContent) { output in
+                print("AppTipsCenter on receive changed \(type(of: output).key), current is \(type(of: tipKey).key)")
                 if type(of: output).key == type(of: tipKey).key && output.associatedObjectKey == tipKey.associatedObjectKey {
                     DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                         showTips = true
                     }
+                }
+            }
+            .onChange(of: showTips) { newValue in
+                if !newValue {
+                    tipsCenter.reset()
+                    tipsCenter.showNextIfEmpty()
                 }
             }
     }

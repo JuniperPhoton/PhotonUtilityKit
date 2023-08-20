@@ -27,7 +27,7 @@ public protocol AppTipContent: Equatable {
 /// An object to publish and recieve tips changes.
 /// You don't create this object manually, use ``shared`` to get the default instance.
 ///
-/// Use ``showTip`` or ``showTipIfNotShown(_:setShown:)`` to publish a tip.
+/// Use ``enqueueTip`` or ``enqueueTipIfNotShown(_:setShown:)`` to publish a tip.
 /// Use ``currentTipContent`` to receive changes.
 ///
 /// In your view, use ``View/popoverTips`` to show tips.
@@ -36,32 +36,55 @@ public class AppTipsCenter: ObservableObject {
     
     @Published public private(set) var currentTipContent: (any AppTipContent) = EmptyAppTipContent()
     
+    private var tipContents: [any AppTipContent] = []
+    
     private init() {
         // empty
     }
     
-    public func showTipIfNotShown(_ content: any AppTipContent, setShown: Bool = true) {
+    /// Enqueue a tip of it's not shown before.
+    /// The tip passed here is not guaranteed to be displayed immediately, which the word "enqueue" would implies that.
+    /// If there is a tip being shown, this tip will be shown after that one is dismissed.
+    ///
+    /// - parameter setShown: Whether to set shown in the user defaults or not.
+    public func enqueueTipIfNotShown(_ content: any AppTipContent, setShown: Bool = true) {
         if AppTipsPreference.shared.isTipShown(key: type(of: content).key) {
+            print("AppTipsCenter enqueueTipIfNotShown but is shown \(type(of: content).key)")
             return
         }
         
-        showTip(content, setShown: setShown)
+        enqueueTip(content, setShown: setShown)
     }
     
-    public func showTip(_ content: any AppTipContent, setShown: Bool = true) {
-        self.currentTipContent = content
+    /// Enqueue a tip.
+    /// The tip passed here is not guaranteed to be displayed immediately, which the word "enqueue" would implies that.
+    /// If there is a tip being shown, this tip will be shown after that one is dismissed.
+    ///
+    /// - parameter setShown: Whether to set shown in the user defaults or not.
+    public func enqueueTip(_ content: any AppTipContent, setShown: Bool = true) {
+        print("AppTipsCenter enqueue tip \(type(of: content).key)")
+
+        tipContents.append(content)
+        showNextIfEmpty()
         
         if setShown {
             AppTipsPreference.shared.setTipShown(key: type(of: content).key)
         }
-        
-        DispatchQueue.main.async {
-            self.reset()
+    }
+    
+    func showNextIfEmpty() {
+        if type(of: currentTipContent) == EmptyAppTipContent.self {
+            if !tipContents.isEmpty {
+                let first = tipContents.removeFirst()
+                currentTipContent = first
+                print("AppTipsCenter showNext tip: \(currentTipContent)")
+            }
         }
     }
     
-    private func reset() {
+    func reset() {
         currentTipContent = EmptyAppTipContent()
+        print("AppTipsCenter reset currentTipContent")
     }
 }
 
@@ -102,7 +125,7 @@ public class AppTipsPreference {
 }
 
 private struct EmptyAppTipContent: AppTipContent {
-    static var key: String = ""
+    static var key: String = "EmptyAppTipContent"
 
     var text: String = ""
     var icon: String? = nil
