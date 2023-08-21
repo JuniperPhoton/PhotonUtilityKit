@@ -68,7 +68,7 @@ public class AppProduct: ObservableObject {
         self.onProductRevocated = onProductRevocated
     }
     
-    public func restore() async {
+    public func restore() async throws {
         withDefaultAnimation {
             self.isLoading = true
         }
@@ -87,6 +87,7 @@ public class AppProduct: ObservableObject {
             storeLogger.log("finish restore")
         } catch {
             storeLogger.log("error on restore \(error)")
+            throw error
         }
     }
     
@@ -112,7 +113,7 @@ public class AppProduct: ObservableObject {
         }
     }
     
-    public func purchase(product: Product) async {
+    public func purchase(product: Product) async throws {
         do {
             storeLogger.log("begin purchase \(product.displayName)")
             
@@ -153,6 +154,8 @@ public class AppProduct: ObservableObject {
             withDefaultAnimation {
                 self.isLoading = false
             }
+            
+            throw error
         }
     }
     
