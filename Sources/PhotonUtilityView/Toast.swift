@@ -188,9 +188,11 @@ fileprivate struct ToastContentView: View {
             }
             Text(LocalizedStringKey(toast))
                 .foregroundColor(colors.foregroundColor)
+                .matchWidth(.leading)
+                .multilineTextAlignment(.center)
         }.padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             .background(Capsule().fill(colors.backgroundColor).addShadow())
-            .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
+            .padding(8)
             .transition(.move(edge: .top).combined(with: .opacity))
             .animation(.default, value: style.showIcon)
             .onAppear {
