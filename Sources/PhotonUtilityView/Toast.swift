@@ -188,7 +188,6 @@ fileprivate struct ToastContentView: View {
             }
             Text(LocalizedStringKey(toast))
                 .foregroundColor(colors.foregroundColor)
-                .matchWidth(.leading)
                 .multilineTextAlignment(.center)
         }.padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             .background(Capsule().fill(colors.backgroundColor).addShadow())
