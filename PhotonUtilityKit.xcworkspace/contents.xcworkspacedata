@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:Sources"
+      name = "Sources">
+      <Group
+         location = "group:PhotonUtilityLayout"
+         name = "PhotonUtilityLayout">
+         <FileRef
+            location = "group:StaggeredGrid.swift">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:PhotonUtilityView"
+         name = "PhotonUtilityView">
+         <FileRef
+            location = "group:IndicatorView.swift">
+         </FileRef>
+         <FileRef
+            location = "group:AppSegmentTabBar.swift">
+         </FileRef>
+         <Group
+            location = "group:Compat"
+            name = "Compat">
+            <FileRef
+               location = "group:SheetCompat.swift">
+            </FileRef>
+            <FileRef
+               location = "group:ScrollableTextViewCompat.swift">
+            </FileRef>
+            <FileRef
+               location = "group:PopoverCompat.swift">
+            </FileRef>
+            <FileRef
+               location = "group:SwiftUIView.swift">
+            </FileRef>
+            <FileRef
+               location = "group:CustomTextView.swift">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:PickerCompatView.swift">
+         </FileRef>
+         <FileRef
+            location = "group:AppTips.swift">
+         </FileRef>
+         <Group
+            location = "group:Resources"
+            name = "Resources">
+            <FileRef
+               location = "group:myersplash2.png">
+            </FileRef>
+            <Group
+               location = "group:zh-Hans.lproj"
+               name = "zh-Hans.lproj">
+               <FileRef
+                  location = "group:Localizable.strings">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:ja.lproj"
+               name = "ja.lproj">
+               <FileRef
+                  location = "group:Localizable.strings">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:en.lproj"
+               name = "en.lproj">
+               <FileRef
+                  location = "group:Localizable.strings">
+               </FileRef>
+            </Group>
+            <FileRef
+               location = "group:myerlist.png">
+            </FileRef>
+            <FileRef
+               location = "group:myertidy.png">
+            </FileRef>
+            <Group
+               location = "group:zh-Hant.lproj"
+               name = "zh-Hant.lproj">
+               <FileRef
+                  location = "group:Localizable.strings">
+               </FileRef>
+            </Group>
+            <FileRef
+               location = "group:myersplash.png">
+            </FileRef>
+            <FileRef
+               location = "group:photonai.png">
+            </FileRef>
+            <FileRef
+               location = "group:apple_b.png">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:AnimatableGradientShape.swift">
+         </FileRef>
+         <FileRef
+            location = "group:UnevenRoundedRectangle.swift">
+         </FileRef>
+         <FileRef
+            location = "group:BottomSheet.swift">
+         </FileRef>
+         <Group
+            location = "group:iOS"
+            name = "iOS">
+            <FileRef
+               location = "group:UIPageView.swift">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:StickyHeaderFooterScrollView.swift">
+         </FileRef>
+         <Group
+            location = "group:Mac"
+            name = "Mac">
+            <FileRef
+               location = "group:NSPageView.swift">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:TipsPopover.swift">
+         </FileRef>
+         <FileRef
+            location = "group:FullscreenPresentation.swift">
+         </FileRef>
+         <FileRef
+            location = "group:MenuPicker.swift">
+         </FileRef>
+         <FileRef
+            location = "group:ActionButton.swift">
+         </FileRef>
+         <FileRef
+            location = "group:BridgedPageView.swift">
+         </FileRef>
+         <FileRef
+            location = "group:AllAppsView.swift">
+         </FileRef>
+         <FileRef
+            location = "group:AnimatedNumberView.swift">
+         </FileRef>
+         <FileRef
+            location = "group:Localizable.swift">
+         </FileRef>
+         <FileRef
+            location = "group:Toast.swift">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:PhotonUtility"
+         name = "PhotonUtility">
+         <FileRef
+            location = "group:LinksDetector.swift">
+         </FileRef>
+         <Group
+            location = "group:Compat"
+            name = "Compat">
+            <FileRef
+               location = "group:ControlSizeCompat.swift">
+            </FileRef>
+            <FileRef
+               location = "group:LoginItemCompat.swift">
+            </FileRef>
+            <FileRef
+               location = "group:ViewCompat.swift">
+            </FileRef>
+            <FileRef
+               location = "group:WidgetCenterCompat.swift">
+            </FileRef>
+            <FileRef
+               location = "group:ContentTransitionCompact.swift">
+            </FileRef>
+            <FileRef
+               location = "group:DeviceCompat.swift">
+            </FileRef>
+            <FileRef
+               location = "group:HoverEffectCompact.swift">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:Introspect"
+            name = "Introspect">
+            <FileRef
+               location = "group:NSScrollViewExtension.swift">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:File"
+            name = "File">
+            <FileRef
+               location = "group:File.swift">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:ScopedURLContent.swift">
+         </FileRef>
+         <FileRef
+            location = "group:SwipeToAction.swift">
+         </FileRef>
+         <Group
+            location = "group:Resources"
+            name = "Resources">
+            <Group
+               location = "group:zh-Hans.lproj"
+               name = "zh-Hans.lproj">
+               <FileRef
+                  location = "group:Localizable.strings">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:ja.lproj"
+               name = "ja.lproj">
+               <FileRef
+                  location = "group:Localizable.strings">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:en.lproj"
+               name = "en.lproj">
+               <FileRef
+                  location = "group:Localizable.strings">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:zh-Hant.lproj"
+               name = "zh-Hant.lproj">
+               <FileRef
+                  location = "group:Localizable.strings">
+               </FileRef>
+            </Group>
+         </Group>
+         <FileRef
+            location = "group:AppPasteboard.swift">
+         </FileRef>
+         <FileRef
+            location = "group:KeyboardFrameObserver.swift">
+         </FileRef>
+         <FileRef
+            location = "group:AppFeedback.swift">
+         </FileRef>
+         <Group
+            location = "group:Image"
+            name = "Image">
+            <FileRef
+               location = "group:ScreenshotProvider.swift">
+            </FileRef>
+            <FileRef
+               location = "group:ImageIO.swift">
+            </FileRef>
+            <FileRef
+               location = "group:AppWindowService.swift">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:Supabase"
+            name = "Supabase">
+            <FileRef
+               location = "group:PhotonSupabaseClient.swift">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:Extensions"
+            name = "Extensions">
+            <FileRef
+               location = "group:CollectionsExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:ViewExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:UserDefaultsExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:NumberExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:PrimaryExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:LayoutExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:ScenePhaseExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:NSItemProviderExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:ColorExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:URLExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:AlignmentExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:DateExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:UTTypeExtensions.swift">
+            </FileRef>
+            <FileRef
+               location = "group:ShapeExtensions.swift">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:AppLockScreenTimer.swift">
+         </FileRef>
+         <FileRef
+            location = "group:CustomFont.swift">
+         </FileRef>
+         <FileRef
+            location = "group:TextExtractor.swift">
+         </FileRef>
+         <Group
+            location = "group:Store"
+            name = "Store">
+            <FileRef
+               location = "group:AppProduct.swift">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:URILauncher.swift">
+         </FileRef>
+         <FileRef
+            location = "group:AppAnimation.swift">
+         </FileRef>
+      </Group>
+   </Group>
+   <FileRef
+      location = "group:PhotonUtilityKitDemo/PhotonUtilityKitDemo.xcodeproj">
+   </FileRef>
+</Workspace>
