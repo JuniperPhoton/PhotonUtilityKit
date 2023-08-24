@@ -24,6 +24,12 @@ public protocol AppTipContent: Equatable {
     var associatedObjectKey: String { get }
 }
 
+public extension AppTipContent {
+    var isEmpty: Bool {
+        type(of: self) == EmptyAppTipContent.self
+    }
+}
+
 /// An object to publish and recieve tips changes.
 /// You don't create this object manually, use ``shared`` to get the default instance.
 ///
@@ -64,25 +70,32 @@ public class AppTipsCenter: ObservableObject {
     public func enqueueTip(_ content: any AppTipContent, setShown: Bool = true) {
         print("AppTipsCenter enqueue tip \(type(of: content).key)")
 
-        tipContents.append(content)
-        showNextIfEmpty()
-        
-        if setShown {
-            AppTipsPreference.shared.setTipShown(key: type(of: content).key)
+        let contains = tipContents.first { type(of: $0).key == type(of: content).key } != nil
+        if contains {
+            print("AppTipsCenter enqueue tip \(type(of: content).key) but already queued")
+            return
         }
+        
+        tipContents.append(content)
+        showNextIfEmpty(setShown: setShown)
     }
     
-    func showNextIfEmpty() {
+    func showNextIfEmpty(setShown: Bool) {
         if type(of: currentTipContent) == EmptyAppTipContent.self {
             if !tipContents.isEmpty {
                 let first = tipContents.removeFirst()
                 currentTipContent = first
+                
+                if setShown {
+                    AppTipsPreference.shared.setTipShown(key: type(of: first).key)
+                }
+                
                 print("AppTipsCenter showNext tip: \(currentTipContent)")
             }
         }
     }
     
-    func reset() {
+    func resetToEmpty() {
         currentTipContent = EmptyAppTipContent()
         print("AppTipsCenter reset currentTipContent")
     }

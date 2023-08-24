@@ -68,8 +68,8 @@ private struct PopoverTipsModifier: ViewModifier {
             }
             .onChange(of: showTips) { newValue in
                 if !newValue {
-                    tipsCenter.reset()
-                    tipsCenter.showNextIfEmpty()
+                    tipsCenter.resetToEmpty()
+                    tipsCenter.showNextIfEmpty(setShown: true)
                 }
             }
     }
