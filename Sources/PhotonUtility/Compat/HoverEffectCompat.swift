@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 @frozen
-public enum HoverEffectCompact {
+public enum HoverEffectCompat {
     case automatic
     case highlight
     case lift
@@ -31,7 +31,7 @@ public enum HoverEffectCompact {
 public extension View {
     /// Compact version of ``hoverEffect``.
     /// It's available for iPad only.
-    func hoverEffectCompact(_ effect: HoverEffectCompact = .automatic) -> some View {
+    func hoverEffectCompat(_ effect: HoverEffectCompat = .automatic) -> some View {
 #if os(iOS)
         self.hoverEffect(effect.wrappedEffect)
 #else
