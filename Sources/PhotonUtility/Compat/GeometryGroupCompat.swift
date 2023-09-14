@@ -10,7 +10,7 @@ import SwiftUI
 public extension View {
     @ViewBuilder
     func geometryGroupCompat() -> some View {
-        if #available(iOS 17.0, macOS 14.0, *) {
+        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, *) {
             self.geometryGroup()
         } else {
             self
