@@ -60,6 +60,11 @@ public class AppTipsCenter: ObservableObject {
         self.displayingTipContent = content
     }
     
+    func resetScheduledTipContent() {
+        print("AppTipsCenter resetScheduledTipContent to EmptyAppTipContent")
+        self.scheduledNextTipContent = EmptyAppTipContent()
+    }
+    
     /// Enqueue a tip of it's not shown before.
     /// The tip passed here is not guaranteed to be displayed immediately, which the word "enqueue" would implies that.
     /// If there is a tip being shown, this tip will be shown after that one is dismissed.
@@ -89,10 +94,11 @@ public class AppTipsCenter: ObservableObject {
         print("AppTipsCenter enqueue tip \(type(of: content).key)")
         
         tipContents.append(content)
-        showNextIfEmpty(setShown: setShown)
+        scheduleNextIfEmpty(setShown: setShown)
     }
     
-    public func showNextIfMatched(with content: any AppTipContent.Type, setShown: Bool) {
+    @discardableResult
+    public func scheduleNextIfCurrentMatched(with content: any AppTipContent.Type, setShown: Bool) -> (any AppTipContent)? {
         print("AppTipsCenter showNextIfMatched with \(content), current displaying: \(displayingTipContent)")
         
         if type(of: displayingTipContent) == content {
@@ -106,12 +112,16 @@ public class AppTipsCenter: ObservableObject {
                 }
                 
                 print("AppTipsCenter update scheduledNextTipContent: \(scheduledNextTipContent)")
+                return scheduledNextTipContent
             }
         }
+        
+        return nil
     }
     
-    func showNextIfEmpty(setShown: Bool) {
-        showNextIfMatched(with: EmptyAppTipContent.self, setShown: setShown)
+    @discardableResult
+    func scheduleNextIfEmpty(setShown: Bool) -> (any AppTipContent)? {
+        return scheduleNextIfCurrentMatched(with: EmptyAppTipContent.self, setShown: setShown)
     }
 }
 

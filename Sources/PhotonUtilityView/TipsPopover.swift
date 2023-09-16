@@ -70,7 +70,10 @@ private struct PopoverTipsModifier: ViewModifier {
             .onChange(of: showTips) { newValue in
                 if !newValue {
                     tipsCenter.setCurrentDisplayingTipContent(EmptyAppTipContent())
-                    tipsCenter.showNextIfEmpty(setShown: true)
+                    let scheduled = tipsCenter.scheduleNextIfEmpty(setShown: true)
+                    if scheduled == nil {
+                        tipsCenter.resetScheduledTipContent()
+                    }
                 }
             }
             .onAppear {
