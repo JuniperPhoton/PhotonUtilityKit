@@ -10,15 +10,15 @@ import Foundation
 
 public extension View {
     /// Shows popover tips if the view receives the notifiaction from ``AppTipsContoller``.
-    /// - parameter tipKey: The instance of ``AppTipKey`` protocol
+    /// - parameter tipContent: The instance of ``AppTipContent`` protocol
     /// - parameter enabled: Enabled or not
     /// - parameter delay: The delay measured in seconds for this tips to show
     @ViewBuilder
-    func popoverTips(tipKey: any AppTipContent, enabled: Bool, delay: TimeInterval = 0.0) -> some View {
+    func popoverTips(tipContent: any AppTipContent, enabled: Bool, delay: TimeInterval = 0.0) -> some View {
         if !enabled {
             self
         } else {
-            self.modifier(PopoverTipsModifier(tipKey: tipKey, delay: delay))
+            self.modifier(PopoverTipsModifier(tipContent: tipContent, delay: delay))
         }
     }
 }
@@ -50,17 +50,18 @@ private struct PopoverTipsModifier: ViewModifier {
     @EnvironmentObject private var tipsCenter: AppTipsCenter
     @State private var showTips = false
     
-    let tipKey: any AppTipContent
+    let tipContent: any AppTipContent
     let delay: TimeInterval
     
     func body(content: Content) -> some View {
         content
             .popoverCompat(isPresented: $showTips) {
-                TipsPopover(text: tipKey.text, icon: tipKey.icon)
+                TipsPopover(text: tipContent.text, icon: tipContent.icon)
             }
-            .onReceive(tipsCenter.$currentTipContent) { output in
-                print("AppTipsCenter on receive changed \(type(of: output).key), current is \(type(of: tipKey).key)")
-                if type(of: output).key == type(of: tipKey).key && output.associatedObjectKey == tipKey.associatedObjectKey {
+            .onReceive(tipsCenter.$scheduledNextTipContent) { output in
+                print("AppTipsCenter on receive: \(type(of: output).key), current associated: \(type(of: tipContent).key)")
+                if type(of: output).key == type(of: tipContent).key && output.associatedObjectKey == tipContent.associatedObjectKey {
+                    tipsCenter.setCurrentDisplayingTipContent(tipContent)
                     DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                         showTips = true
                     }
@@ -68,9 +69,12 @@ private struct PopoverTipsModifier: ViewModifier {
             }
             .onChange(of: showTips) { newValue in
                 if !newValue {
-                    tipsCenter.resetToEmpty()
+                    tipsCenter.setCurrentDisplayingTipContent(EmptyAppTipContent())
                     tipsCenter.showNextIfEmpty(setShown: true)
                 }
+            }
+            .onAppear {
+                print("PopoverTipsModifier onAppear, tip: \(tipContent)")
             }
     }
 }

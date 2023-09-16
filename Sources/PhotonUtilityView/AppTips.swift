@@ -34,18 +34,30 @@ public extension AppTipContent {
 /// You don't create this object manually, use ``shared`` to get the default instance.
 ///
 /// Use ``enqueueTip`` or ``enqueueTipIfNotShown(_:setShown:)`` to publish a tip.
-/// Use ``currentTipContent`` to receive changes.
+/// Use ``scheduledNextTipContent`` to receive changes.
+///
+/// Note that the ``scheduledNextTipContent`` is the scheduled tip content to be displayed,
+/// but it may not be displayed since no view is associated with this tip content.
+///
+/// To get the current displaying tip content, use ``displayingTipContent``. You may
+/// use this property to disable your UI when if it's not the instance of ``EmptyAppTipContent``(or use ``AppTipContent/isEmpty``).
 ///
 /// In your view, use ``View/popoverTips`` to show tips.
 public class AppTipsCenter: ObservableObject {
     static public let shared = AppTipsCenter()
     
-    @Published public private(set) var currentTipContent: (any AppTipContent) = EmptyAppTipContent()
+    @Published public private(set) var scheduledNextTipContent: (any AppTipContent) = EmptyAppTipContent()
+    @Published public private(set) var displayingTipContent: (any AppTipContent) = EmptyAppTipContent()
     
     private var tipContents: [any AppTipContent] = []
     
     private init() {
         // empty
+    }
+    
+    func setCurrentDisplayingTipContent(_ content: any AppTipContent) {
+        print("AppTipsCenter setCurrentDisplayingTipContent \(type(of: content).key)")
+        self.displayingTipContent = content
     }
     
     /// Enqueue a tip of it's not shown before.
@@ -68,36 +80,38 @@ public class AppTipsCenter: ObservableObject {
     ///
     /// - parameter setShown: Whether to set shown in the user defaults or not.
     public func enqueueTip(_ content: any AppTipContent, setShown: Bool = true) {
-        print("AppTipsCenter enqueue tip \(type(of: content).key)")
-
         let contains = tipContents.first { type(of: $0).key == type(of: content).key } != nil
         if contains {
             print("AppTipsCenter enqueue tip \(type(of: content).key) but already queued")
             return
         }
         
+        print("AppTipsCenter enqueue tip \(type(of: content).key)")
+        
         tipContents.append(content)
         showNextIfEmpty(setShown: setShown)
     }
     
-    func showNextIfEmpty(setShown: Bool) {
-        if type(of: currentTipContent) == EmptyAppTipContent.self {
+    public func showNextIfMatched(with content: any AppTipContent.Type, setShown: Bool) {
+        print("AppTipsCenter showNextIfMatched with \(content), current displaying: \(displayingTipContent)")
+        
+        if type(of: displayingTipContent) == content {
             if !tipContents.isEmpty {
                 let first = tipContents.removeFirst()
-                currentTipContent = first
+                scheduledNextTipContent = first
                 
                 if setShown {
+                    print("AppTipsCenter setShown: \(scheduledNextTipContent)")
                     AppTipsPreference.shared.setTipShown(key: type(of: first).key)
                 }
                 
-                print("AppTipsCenter showNext tip: \(currentTipContent)")
+                print("AppTipsCenter update scheduledNextTipContent: \(scheduledNextTipContent)")
             }
         }
     }
     
-    func resetToEmpty() {
-        currentTipContent = EmptyAppTipContent()
-        print("AppTipsCenter reset currentTipContent")
+    func showNextIfEmpty(setShown: Bool) {
+        showNextIfMatched(with: EmptyAppTipContent.self, setShown: setShown)
     }
 }
 
@@ -137,7 +151,7 @@ public class AppTipsPreference {
     }
 }
 
-private struct EmptyAppTipContent: AppTipContent {
+struct EmptyAppTipContent: AppTipContent {
     static var key: String = "EmptyAppTipContent"
 
     var text: String = ""

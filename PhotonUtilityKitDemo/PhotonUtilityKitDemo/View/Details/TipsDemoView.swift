@@ -27,7 +27,7 @@ struct TipsDemoView: View {
     ToolbarItem(placement: .navigation) {
         Image(systemName: "gear").asButton {
             toast.showToast("Press gear button")
-        }.popoverTips(tipKey: ToolbarButtonTip(associatedObjectKey: "first"), enabled: true)
+        }.popoverTips(tipContent: ToolbarButtonTip(associatedObjectKey: "first"), enabled: true)
     }
     """)
     
@@ -35,7 +35,7 @@ struct TipsDemoView: View {
         VStack {
             Text("Show tips manually").asButton {
                 AppTipsCenter.shared.enqueueTip(ToolbarButtonTip(associatedObjectKey: "first"))
-            }.popoverTips(tipKey: ManuallyPressButton(), enabled: true)
+            }.popoverTips(tipContent: ManuallyPressButton(), enabled: true)
             
             HighliableCodeView(code: code, maxHeight: 400)
                 .padding(.horizontal)
@@ -46,12 +46,12 @@ struct TipsDemoView: View {
             ToolbarItem(placement: .navigation) {
                 Image(systemName: "gear").asButton {
                     toast.showToast("Press gear button")
-                }.popoverTips(tipKey: ToolbarButtonTip(associatedObjectKey: "first"), enabled: true)
+                }.popoverTips(tipContent: ToolbarButtonTip(associatedObjectKey: "first"), enabled: true)
             }
             ToolbarItem(placement: .primaryAction) {
                 Image(systemName: "mic.fill").asButton {
                     toast.showToast("Press mic button")
-                }.popoverTips(tipKey: ToolbarButtonTip(associatedObjectKey: "primary"), enabled: true)
+                }.popoverTips(tipContent: ToolbarButtonTip(associatedObjectKey: "primary"), enabled: true)
             }
         }
         .onAppear {
