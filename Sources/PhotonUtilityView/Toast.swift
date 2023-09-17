@@ -46,17 +46,27 @@ public class AppToast: ObservableObject {
     
     @MainActor
     public func callAsFunction(_ notification: Binding<String>) {
-        withDefaultAnimation {
-            self.toast = notification.wrappedValue
-        }
-        
-        pendingWorkItem?.cancel()
-        pendingWorkItem = DispatchWorkItem(block: {
+        let toastContent = notification.wrappedValue
+        if toastContent.isEmpty {
             withDefaultAnimation {
                 self.toast = ""
                 notification.wrappedValue = ""
             }
-        })
+            return
+        }
+        
+        withDefaultAnimation {
+            self.toast = toastContent
+        }
+        
+        pendingWorkItem?.cancel()
+        pendingWorkItem = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+            withDefaultAnimation {
+                self.toast = ""
+                notification.wrappedValue = ""
+            }
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: pendingWorkItem!)
     }
     
@@ -120,7 +130,7 @@ public extension View {
 ///
 /// - parameter appToast: the app toast state used to show or dismiss toast.
 public extension View {
-    func withToast(_ appToast: AppToast = AppToast()) -> some View {
+    func withToast(_ appToast: AppToast) -> some View {
         ZStack {
             self.zIndex(1)
             
