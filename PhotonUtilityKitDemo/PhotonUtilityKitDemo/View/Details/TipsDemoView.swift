@@ -9,6 +9,7 @@ import SwiftUI
 import PhotonUtilityView
 
 struct TipsDemoView: View {
+    @ObservedObject private var tipsCenter = AppTipsCenter.shared
     @StateObject private var toast = AppToast()
     
     @State private var code = HighliableCode(code: """
@@ -30,7 +31,7 @@ struct TipsDemoView: View {
         }.popoverTips(tipContent: ToolbarButtonTip(associatedObjectKey: "first"), enabled: true)
     }
     """)
-    
+        
     var body: some View {
         VStack {
             Text("Show tips manually").asButton {
@@ -42,6 +43,7 @@ struct TipsDemoView: View {
         }
         .withToast(toast)
         .navigationTitle("Tips demo")
+        .disabled(!tipsCenter.displayingTipContent.isEmpty)
         .toolbar {
             ToolbarItem(placement: .navigation) {
                 Image(systemName: "gear").asButton {
@@ -59,7 +61,7 @@ struct TipsDemoView: View {
             AppTipsCenter.shared.enqueueTip(ToolbarButtonTip(associatedObjectKey: "primary"))
             AppTipsCenter.shared.enqueueTip(ManuallyPressButton())
         }
-        .environmentObject(AppTipsCenter.shared)
+        .environmentObject(tipsCenter)
     }
 }
 

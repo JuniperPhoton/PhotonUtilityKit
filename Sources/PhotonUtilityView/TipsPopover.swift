@@ -69,15 +69,23 @@ private struct PopoverTipsModifier: ViewModifier {
             }
             .onChange(of: showTips) { newValue in
                 if !newValue {
-                    tipsCenter.setCurrentDisplayingTipContent(EmptyAppTipContent())
-                    let scheduled = tipsCenter.scheduleNextIfEmpty(setShown: true)
-                    if scheduled == nil {
-                        tipsCenter.resetScheduledTipContent()
-                    }
+                    onDismiss()
                 }
             }
             .onAppear {
                 print("PopoverTipsModifier onAppear, tip: \(tipContent)")
             }
+            .onDisappear {
+                showTips = false
+                onDismiss()
+            }
+    }
+    
+    private func onDismiss() {
+        tipsCenter.setCurrentDisplayingTipContent(EmptyAppTipContent())
+        let scheduled = tipsCenter.scheduleNextIfEmpty(setShown: true)
+        if scheduled == nil {
+            tipsCenter.resetScheduledTipContent()
+        }
     }
 }
