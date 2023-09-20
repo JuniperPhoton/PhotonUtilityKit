@@ -45,3 +45,14 @@ public class KeyboardFrameObserver: ObservableObject {
     }
 #endif
 }
+
+/// Hide keyboard globally by sending resignFirstResponder action on iOS and iPadOS.
+/// On macOS, this method will do nothing.
+public func hideKeyboardGlobally() {
+#if os(iOS)
+    UIApplication
+        .shared
+        .sendAction(#selector(UIApplication.resignFirstResponder),
+                    to: nil, from: nil, for: nil)
+#endif
+}
