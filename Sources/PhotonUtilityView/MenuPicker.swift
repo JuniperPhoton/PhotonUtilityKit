@@ -60,7 +60,7 @@ public struct MenuPicker<Selection: Identifiable & Hashable & Localizable, Label
     
     public var body: some View {
         Menu {
-            ForEach(selections, id: \.self) { s in
+            ForEach(selections, id: \.id) { s in
                 HStack {
                     Text(s.localizedStringKey)
                     Image(systemName: selection.wrappedValue == s ? "checkmark" : "")
