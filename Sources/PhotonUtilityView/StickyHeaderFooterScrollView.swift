@@ -14,6 +14,8 @@ import SwiftUI
 /// This view itself adds a Spacer as a stub view to the `ScrollView` sharing the same height of the provided header/footer view.
 ///
 public struct StickyHeaderFooterScrollView<Content: View, Header: View, Footer: View>: View {
+    let showsIndicators: Bool
+    
     @ViewBuilder
     var contentView: () -> Content
     
@@ -26,13 +28,15 @@ public struct StickyHeaderFooterScrollView<Content: View, Header: View, Footer: 
     @State private var topHeaderHeight: CGFloat = 0
     @State private var bottomFooterHeight: CGFloat = 0
     
-    public init(@ViewBuilder contentView: @escaping () -> Content,
+    public init(showsIndicators: Bool = false,
+                @ViewBuilder contentView: @escaping () -> Content,
                 @ViewBuilder headerView: @escaping () -> Header = { EmptyView() },
                 @ViewBuilder footerView: @escaping () -> Footer = { EmptyView() }
     ) {
         self.headerView = headerView
         self.footerView = footerView
         self.contentView = contentView
+        self.showsIndicators = showsIndicators
     }
     
     public var body: some View {
@@ -42,7 +46,7 @@ public struct StickyHeaderFooterScrollView<Content: View, Header: View, Footer: 
                 .listenHeightChanged { self.topHeaderHeight = $0 }
                 .matchHeight(.top)
             
-            ScrollView {
+            ScrollView(showsIndicators: showsIndicators) {
                 Spacer().frame(height: topHeaderHeight)
                 contentView()
                 Spacer().frame(height: bottomFooterHeight)
