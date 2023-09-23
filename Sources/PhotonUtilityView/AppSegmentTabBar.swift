@@ -142,7 +142,11 @@ class FrameState<T: Hashable>: ObservableObject {
     
     func updateSelectedFrame(item: T) {
         let itemFrame = itemFrames[item]
-        self.selectedCapsuleFrame = itemFrame ?? .zero
+        if selectedCapsuleFrame != itemFrame {
+            withDefaultAnimation {
+                self.selectedCapsuleFrame = itemFrame ?? .zero
+            }
+        }
     }
 }
 
@@ -160,7 +164,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
 #endif
     let label: (T) -> V
     
-    @State var autoScrollState = AutoScrollState<T>(value: nil)
+    @State private var autoScrollState = AutoScrollState<T>(value: nil)
     
 #if !os(tvOS)
     public init(selection: Binding<T>,
@@ -217,9 +221,9 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
         }
     }
     
+    @ViewBuilder
     private var content: some View {
         HStack(spacing: 2) {
-            Spacer().frame(width: horizontalInset)
             ForEach(sources, id: \.hashValue) { item in
                 label(item).contentShape(Rectangle())
                     .asPlainButton {
@@ -247,8 +251,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                             frameState.updateSelectedFrame(item: newValue)
                         }
                     }
-            }
-            Spacer().frame(width: horizontalInset)
+            }.padding(.horizontal, horizontalInset)
         }.padding(3)
             .background(ZStack(alignment: .topLeading) {
                 Capsule().fill(backgroundColor)
