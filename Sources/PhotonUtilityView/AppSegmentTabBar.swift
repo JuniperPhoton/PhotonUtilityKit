@@ -143,6 +143,11 @@ class FrameState<T: Hashable>: ObservableObject {
     func updateSelectedFrame(item: T) {
         let itemFrame = itemFrames[item]
         if selectedCapsuleFrame != itemFrame {
+            // When the view first appears, the minY of the frame will be negative,
+            // setting this frame will cause weird animation, so we skip it.
+            if itemFrame?.minY ?? 0 < 0 {
+                return
+            }
             withDefaultAnimation {
                 self.selectedCapsuleFrame = itemFrame ?? .zero
             }
