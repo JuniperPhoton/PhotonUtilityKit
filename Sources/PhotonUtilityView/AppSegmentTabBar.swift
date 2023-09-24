@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by Photon Juniper on 2023/2/13.
 //
@@ -251,8 +251,9 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                             frameState.updateSelectedFrame(item: newValue)
                         }
                     }
-            }.padding(.horizontal, horizontalInset)
-        }.padding(3)
+            }
+        }.padding(.horizontal, horizontalInset)
+            .padding(backgroundColor == .clear ? 0 : 3)
             .background(ZStack(alignment: .topLeading) {
                 Capsule().fill(backgroundColor)
                 
@@ -306,7 +307,7 @@ struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable 
 struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable & Hashable {
     @ObservedObject var state: AutoScrollState<T>
     @State var nsScrollView: NSScrollView? = nil
-        
+    
     func body(content: Content) -> some View {
         ScrollViewReader { proxy in
             content.onChange(of: state.value) { newValue in

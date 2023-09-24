@@ -48,11 +48,14 @@ public struct BottomSheetView<Content: View>: View {
     @StateObject private var controller: BottomSheetController = BottomSheetController()
     
     private let backgroundColor: Color
+    private let enableGesture: Bool
     private let content: () -> Content
     
     public init(backgroundColor: Color,
+                enableGesture: Bool = true,
                 @ViewBuilder content: @escaping () -> Content) {
         self.content = content
+        self.enableGesture = enableGesture
         self.backgroundColor = backgroundColor
     }
     
@@ -126,7 +129,7 @@ public struct BottomSheetView<Content: View>: View {
                         controller.dragOffsetY = 0
                     }
                 }
-            })
+            }, including: enableGesture ? .all : .subviews)
 #endif
             .onTapGestureCompact {
                 // ignored
