@@ -148,9 +148,7 @@ class FrameState<T: Hashable>: ObservableObject {
             if itemFrame?.minY ?? 0 < 0 {
                 return
             }
-            withDefaultAnimation {
-                self.selectedCapsuleFrame = itemFrame ?? .zero
-            }
+            self.selectedCapsuleFrame = itemFrame ?? .zero
         }
     }
 }
