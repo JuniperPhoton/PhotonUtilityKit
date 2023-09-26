@@ -231,10 +231,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                 label(item).contentShape(Rectangle())
                     .asPlainButton {
                         DeviceCompat.triggerVibrationFeedback()
-                        
-                        withDefaultAnimation {
-                            selection.wrappedValue = item
-                        }
+                        selection.wrappedValue = item
                     }
 #if !os(tvOS)
                     .runIf(condition: keyboardShortcut != nil) { v in
@@ -250,7 +247,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                         }
                     }
                     .onChange(of: selection.wrappedValue) { newValue in
-                        withDefaultAnimation {
+                        withTransaction(selection.transaction) {
                             frameState.updateSelectedFrame(item: newValue)
                         }
                     }

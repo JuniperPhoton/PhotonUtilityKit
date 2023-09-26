@@ -67,7 +67,7 @@ struct TabBarDemoView: View {
             
             HighliableCodeView(code: viewModel.textAppSegmentTabBarCode)
             
-            TextAppSegmentTabBar(selection: $selected,
+            TextAppSegmentTabBar(selection: $selected.animation(.default.speed(1.3)),
                                  sources: tabs,
                                  scrollable: true,
                                  foregroundColor: .accentColor,
@@ -80,7 +80,7 @@ struct TabBarDemoView: View {
             
             HighliableCodeView(code: viewModel.appSegmentTabBarCode)
 
-            AppSegmentTabBar(selection: $selected, sources: tabs,
+            AppSegmentTabBar(selection: $selected.animation(.default.speed(1.3)), sources: tabs,
                              scrollable: true,
                              foregroundColor: .accentColor,
                              backgroundColor: .accentColor.opacity(0.1),
