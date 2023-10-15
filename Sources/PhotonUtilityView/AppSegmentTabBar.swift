@@ -267,7 +267,6 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                                 y: frameState.relativeY)
                 }
             }, alignment: .topLeading)
-            .animation(nil, value: frameState.contentFrame)
             .listenFrameChanged(coordinateSpace: .named(nameSpaceName)) { rect in
                 frameState.updateContentFrame(rect: rect)
             }
