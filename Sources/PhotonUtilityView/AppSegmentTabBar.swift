@@ -145,7 +145,7 @@ class FrameState<T: Hashable>: ObservableObject {
         if selectedCapsuleFrame != itemFrame {
             // When the view first appears, the minY of the frame will be negative,
             // setting this frame will cause weird animation, so we skip it.
-            if itemFrame?.minY ?? 0 < 0 {
+            if Int(itemFrame?.minY ?? 0) < 0 {
                 return
             }
             self.selectedCapsuleFrame = itemFrame ?? .zero
