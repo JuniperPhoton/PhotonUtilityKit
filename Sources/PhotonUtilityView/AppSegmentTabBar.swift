@@ -129,7 +129,7 @@ class FrameState<T: Hashable>: ObservableObject {
         return selectedCapsuleFrame.minY - contentFrame.minY
     }
     
-    private var contentFrame: CGRect = .zero
+    private(set) var contentFrame: CGRect = .zero
     private var itemFrames: [T: CGRect] = [:]
     
     func updateContentFrame(rect: CGRect) {
@@ -152,6 +152,8 @@ class FrameState<T: Hashable>: ObservableObject {
         }
     }
 }
+
+private let nameSpaceName = "AppSegmentTabBar"
 
 public struct AppSegmentTabBar<T: Hashable, V: View>: View {
     @StateObject private var frameState = FrameState<T>()
@@ -206,8 +208,8 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
 #endif
     
     public var body: some View {
-        if scrollable {
-            ScrollViewReader { reader in
+        ZStack {
+            if scrollable {
                 ScrollView(.horizontal, showsIndicators: false) {
                     content
                 }
@@ -218,10 +220,10 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                         self.autoScrollState.value = newValue
                     }
                 }
+            } else {
+                content
             }
-        } else {
-            content
-        }
+        }.coordinateSpace(name: "AppSegmentTabBar")
     }
     
     @ViewBuilder
@@ -239,7 +241,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                     }
 #endif
                     .id(item)
-                    .listenFrameChanged { rect in
+                    .listenFrameChanged(coordinateSpace: .named(nameSpaceName)) { rect in
                         frameState.updateItemFrame(item: item, frame: rect)
                         
                         if selection.wrappedValue == item {
@@ -264,7 +266,9 @@ public struct AppSegmentTabBar<T: Hashable, V: View>: View {
                         .offset(x: frameState.relativeX,
                                 y: frameState.relativeY)
                 }
-            }, alignment: .topLeading).listenFrameChanged { rect in
+            }, alignment: .topLeading)
+            .animation(nil, value: frameState.contentFrame)
+            .listenFrameChanged(coordinateSpace: .named(nameSpaceName)) { rect in
                 frameState.updateContentFrame(rect: rect)
             }
     }

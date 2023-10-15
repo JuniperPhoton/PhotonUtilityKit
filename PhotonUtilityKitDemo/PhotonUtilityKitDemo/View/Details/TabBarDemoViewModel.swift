@@ -60,6 +60,7 @@ struct TabBarDemoView: View {
     
     @State private var tabs = Tabs.allCases
     @State private var selected = Tabs.cursive
+    @State private var showSheet = false
     
     var body: some View {
         VStack {
@@ -69,7 +70,7 @@ struct TabBarDemoView: View {
             
             TextAppSegmentTabBar(selection: $selected.animation(.default.speed(1.3)),
                                  sources: tabs,
-                                 scrollable: true,
+                                 scrollable: false,
                                  foregroundColor: .accentColor,
                                  backgroundColor: .accentColor.opacity(0.1),
                                  textKeyPath: \.rawValue)
@@ -94,5 +95,13 @@ struct TabBarDemoView: View {
         .matchHeight(.topLeading)
         .padding()
         .navigationTitle("TabBar")
+        .toolbar {
+            Button("ShowSheet") {
+                showSheet.toggle()
+            }
+        }
+        .sheetCompat(isPresented: $showSheet) {
+            Text("A sheet")
+        }
     }
 }
