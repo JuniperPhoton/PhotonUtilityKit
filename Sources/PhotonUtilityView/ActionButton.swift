@@ -22,21 +22,30 @@ fileprivate struct ActionButtonStyle {
     var foregroundColor: Color
     var backgroundColor: Color
     var useContinuousStyle: Bool
+    var radius: CGFloat
     
     func adaptOnUISizeClassChanged(_ adapt: Bool) -> ActionButtonStyle {
-        ActionButtonStyle(adaptOnUISizeClassChanged: adapt,
-                          stretchToWidth: stretchToWidth,
-                          foregroundColor: foregroundColor,
-                          backgroundColor: backgroundColor,
-                          useContinuousStyle: useContinuousStyle)
+        ActionButtonStyle(
+            adaptOnUISizeClassChanged: adapt,
+            stretchToWidth: stretchToWidth,
+            foregroundColor: foregroundColor,
+            backgroundColor: backgroundColor,
+            useContinuousStyle: useContinuousStyle,
+            radius: radius
+        )
     }
 }
 
 fileprivate struct ActionButtonStyleKey: EnvironmentKey {
     static var defaultValue: ActionButtonStyle {
-        ActionButtonStyle(adaptOnUISizeClassChanged: false, stretchToWidth: false,
-                          foregroundColor: .primary, backgroundColor: .accentColor,
-                          useContinuousStyle: false)
+        ActionButtonStyle(
+            adaptOnUISizeClassChanged: false,
+            stretchToWidth: false,
+            foregroundColor: .primary,
+            backgroundColor: .accentColor,
+            useContinuousStyle: false,
+            radius: ActionButton.defaultRadius
+        )
     }
 }
 
@@ -59,14 +68,20 @@ struct ActionButtonStyleModifier: ViewModifier {
     var foregroundColor: Color? = nil
     var backgroundColor: Color? = nil
     var useContinuousStyle: Bool? = nil
+    var radius: CGFloat? = nil
     
     func body(content: Content) -> some View {
-        content.environment(\.actionButtonStyle,
-                             ActionButtonStyle(adaptOnUISizeClassChanged: adaptOnUISizeClassChanged ?? actionButtonStyle.adaptOnUISizeClassChanged,
-                                               stretchToWidth: stretchToWidth ?? actionButtonStyle.stretchToWidth,
-                                               foregroundColor: foregroundColor ?? actionButtonStyle.foregroundColor,
-                                               backgroundColor: backgroundColor ?? actionButtonStyle.backgroundColor,
-                                               useContinuousStyle: useContinuousStyle ?? actionButtonStyle.useContinuousStyle))
+        content.environment(
+            \.actionButtonStyle,
+             ActionButtonStyle(
+                adaptOnUISizeClassChanged: adaptOnUISizeClassChanged ?? actionButtonStyle.adaptOnUISizeClassChanged,
+                stretchToWidth: stretchToWidth ?? actionButtonStyle.stretchToWidth,
+                foregroundColor: foregroundColor ?? actionButtonStyle.foregroundColor,
+                backgroundColor: backgroundColor ?? actionButtonStyle.backgroundColor,
+                useContinuousStyle: useContinuousStyle ?? actionButtonStyle.useContinuousStyle,
+                radius: radius ?? actionButtonStyle.radius
+             )
+        )
     }
 }
 
@@ -114,10 +129,13 @@ public extension View {
 ///
 /// You must set the ``onClick`` to response the tap gesture.
 public struct ActionButton: View {
+    public static let defaultRadius: CGFloat = 8
+    
     @Environment(\.actionButtonStyle) private var style
     
     public let title: LocalizedStringKey?
     public let icon: String?
+    public let radius: CGFloat
     
     public var isLoading: Binding<Bool>
     
@@ -125,12 +143,14 @@ public struct ActionButton: View {
     
     public init(title: LocalizedStringKey? = nil,
                 icon: String? = nil,
+                radius: CGFloat = 8,
                 isLoading: Binding<Bool> = .constant(false),
                 onClick: (() -> Void)? = nil) {
         self.title = title
         self.icon = icon
         self.onClick = onClick
         self.isLoading = isLoading
+        self.radius = radius
     }
     
     public var body: some View {
@@ -177,7 +197,7 @@ public struct ActionButton: View {
         .padding(DeviceCompat.isMac() ? 10 : 12)
         .frame(minHeight: 30)
         .matchParent(axis: style.stretchToWidth ? .width : .none, alignment: .center)
-        .background(RoundedRectangle(cornerRadius: 8, style: style.useContinuousStyle ? .continuous : .circular)
+        .background(RoundedRectangle(cornerRadius: radius, style: style.useContinuousStyle ? .continuous : .circular)
             .fill(style.backgroundColor))
         .disabled(isLoading.wrappedValue)
         .opacity(isLoading.wrappedValue ? 0.5 : 1.0)
