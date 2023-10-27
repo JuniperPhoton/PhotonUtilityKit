@@ -48,12 +48,18 @@ public class PhotoLibraryIO {
     }
 #endif
     
-    public func saveMediaFileToAlbum(rawURL: URL, processedURL: URL? = nil, deleteOnComplete: Bool) async -> Bool {
+    public func saveMediaFileToAlbum(
+        rawURL: URL,
+        processedURL: URL? = nil,
+        location: CLLocation? = nil,
+        deleteOnComplete: Bool
+    ) async -> Bool {
         return await withCheckedContinuation { continuation in
             print("saveMediaFileToAlbum, main of rawURL, processedURL: \(String(describing: processedURL))")
 
             PHPhotoLibrary.shared().performChanges {
                 let creationRequest = PHAssetCreationRequest.forAsset()
+                creationRequest.location = location
                 
                 let options = PHAssetResourceCreationOptions()
                 options.shouldMoveFile = true
@@ -90,12 +96,18 @@ public class PhotoLibraryIO {
         }
     }
     
-    public func saveMediaFileToAlbum(processedURL: URL, rawURL: URL? = nil, deleteOnComplete: Bool) async -> Bool {
+    public func saveMediaFileToAlbum(
+        processedURL: URL,
+        rawURL: URL? = nil,
+        location: CLLocation? = nil,
+        deleteOnComplete: Bool
+    ) async -> Bool {
         return await withCheckedContinuation { continuation in
             LibLogger.shared.libDefault.log("saveMediaFileToAlbum, main of processedURL, raw: \(String(describing: rawURL))")
             
             PHPhotoLibrary.shared().performChanges {
                 let creationRequest = PHAssetCreationRequest.forAsset()
+                creationRequest.location = location
                 
                 let options = PHAssetResourceCreationOptions()
                 options.shouldMoveFile = true
@@ -130,13 +142,19 @@ public class PhotoLibraryIO {
         }
     }
     
-    public func saveMediaFileToAlbum(file: URL, deleteOnComplete: Bool) async -> Bool {
+    public func saveMediaFileToAlbum(
+        file: URL,
+        location: CLLocation? = nil,
+        deleteOnComplete: Bool
+    ) async -> Bool {
         return await withCheckedContinuation { continuation in
             PHPhotoLibrary.shared().performChanges {
                 if file.isImage() {
-                    let _ = PHAssetCreationRequest.creationRequestForAssetFromImage(atFileURL: file.absoluteURL)
+                    let creation = PHAssetCreationRequest.creationRequestForAssetFromImage(atFileURL: file.absoluteURL)
+                    creation?.location = location
                 } else {
-                    let _ = PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: file.absoluteURL)
+                    let creation = PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: file.absoluteURL)
+                    creation?.location = location
                 }
             } completionHandler: { success, error in
                 LibLogger.shared.libDefault.log("save media result: \(success) error: \(String(describing: error)), deleteOnComplete: \(deleteOnComplete)")
