@@ -342,3 +342,11 @@ public extension View {
         }.clipped()
     }
 }
+
+public extension View {
+    @ViewBuilder
+    func disabledBy(_ disabled: Bool) -> some View {
+        self.disabled(disabled).opacity(disabled ? 0.5 : 1)
+            .animation(.default, value: disabled)
+    }
+}
