@@ -8,6 +8,11 @@
 import Foundation
 import CoreMotion
 import Combine
+import AVFoundation
+
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public enum DeviceOrientation: Int {
     case unknown = 0
@@ -17,6 +22,42 @@ public enum DeviceOrientation: Int {
     case landscapeRight = 4 // Device oriented horizontally, home button on the left
     case faceUp = 5 // Device oriented flat, face up
     case faceDown = 6 // Device oriented flat, face down
+    
+    public func toAVCaptureVideoOrientation() -> AVCaptureVideoOrientation {
+        switch self {
+        case .portrait:
+            return .portrait
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
+        case .landscapeLeft:
+            return .landscapeLeft
+        case .landscapeRight:
+            return .landscapeRight
+        default:
+            return .portrait
+        }
+    }
+    
+#if canImport(UIKit)
+    public func toUIDeviceOrientation() -> UIDeviceOrientation {
+        switch self {
+        case .unknown:
+            return .unknown
+        case .portrait:
+            return .portrait
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
+        case .landscapeLeft:
+            return .landscapeLeft
+        case .landscapeRight:
+            return .landscapeRight
+        case .faceUp:
+            return .faceUp
+        case .faceDown:
+            return .faceDown
+        }
+    }
+#endif
     
     public var orientationAngleInDegrees: Double {
         switch self {
