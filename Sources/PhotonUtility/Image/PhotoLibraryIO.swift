@@ -48,18 +48,98 @@ public class PhotoLibraryIO {
     }
 #endif
     
+    public func saveMediaFileToAlbum(rawURL: URL, processedURL: URL? = nil, deleteOnComplete: Bool) async -> Bool {
+        return await withCheckedContinuation { continuation in
+            print("saveMediaFileToAlbum, main of rawURL, processedURL: \(String(describing: processedURL))")
+
+            PHPhotoLibrary.shared().performChanges {
+                let creationRequest = PHAssetCreationRequest.forAsset()
+                
+                let options = PHAssetResourceCreationOptions()
+                options.shouldMoveFile = true
+                creationRequest.addResource(
+                    with: .photo,
+                    fileURL: rawURL,
+                    options: options
+                )
+                
+                if let processedURL = processedURL {
+                    let options = PHAssetResourceCreationOptions()
+                    options.shouldMoveFile = true
+                    creationRequest.addResource(
+                        with: .alternatePhoto,
+                        fileURL: processedURL,
+                        options: options
+                    )
+                }
+            } completionHandler: { success, error in
+                print("save media result: \(success) error: \(String(describing: error))")
+                
+                if deleteOnComplete {
+                    do {
+                        if let processedURL = processedURL {
+                            try FileManager.default.removeItem(at: processedURL.absoluteURL)
+                        }
+                    } catch {
+                        // ignored
+                    }
+                }
+                
+                continuation.resume(returning: success)
+            }
+        }
+    }
+    
+    public func saveMediaFileToAlbum(processedURL: URL, rawURL: URL? = nil, deleteOnComplete: Bool) async -> Bool {
+        return await withCheckedContinuation { continuation in
+            LibLogger.shared.libDefault.log("saveMediaFileToAlbum, main of processedURL, raw: \(String(describing: rawURL))")
+            
+            PHPhotoLibrary.shared().performChanges {
+                let creationRequest = PHAssetCreationRequest.forAsset()
+                
+                let options = PHAssetResourceCreationOptions()
+                options.shouldMoveFile = true
+                creationRequest.addResource(
+                    with: .photo,
+                    fileURL: processedURL,
+                    options: options
+                )
+                
+                if let rawURL = rawURL {
+                    let options = PHAssetResourceCreationOptions()
+                    options.shouldMoveFile = true
+                    creationRequest.addResource(
+                        with: .alternatePhoto,
+                        fileURL: rawURL,
+                        options: options
+                    )
+                }
+            } completionHandler: { success, error in
+                LibLogger.shared.libDefault.log("save media result: \(success) error: \(String(describing: error))")
+                
+                if deleteOnComplete {
+                    do {
+                        try FileManager.default.removeItem(at: processedURL.absoluteURL)
+                    } catch {
+                        // ignored
+                    }
+                }
+                
+                continuation.resume(returning: success)
+            }
+        }
+    }
+    
     public func saveMediaFileToAlbum(file: URL, deleteOnComplete: Bool) async -> Bool {
         return await withCheckedContinuation { continuation in
             PHPhotoLibrary.shared().performChanges {
                 if file.isImage() {
-                    print("creationRequestForAssetFromImage for url \(file.absoluteURL)")
                     let _ = PHAssetCreationRequest.creationRequestForAssetFromImage(atFileURL: file.absoluteURL)
                 } else {
-                    print("creationRequestForAssetFromVideo for url \(file.absoluteURL)")
                     let _ = PHAssetCreationRequest.creationRequestForAssetFromVideo(atFileURL: file.absoluteURL)
                 }
             } completionHandler: { success, error in
-                print("save media result: \(success) error: \(String(describing: error)), deleteOnComplete: \(deleteOnComplete)")
+                LibLogger.shared.libDefault.log("save media result: \(success) error: \(String(describing: error)), deleteOnComplete: \(deleteOnComplete)")
                 
                 if deleteOnComplete {
                     do {
@@ -111,7 +191,7 @@ public class PhotoLibraryIO {
             print("error on create cache url for file")
             return nil
         }
-                
+        
         guard let name = NSString(string: originalFilename).deletingPathExtension
             .addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed) else {
             print("createTempFileToSave failed for name \(originalFilename)")
@@ -121,7 +201,6 @@ public class PhotoLibraryIO {
         let fileName = name  + "." + extensions
         
         let url = URL(string: "\(cacheDir.absoluteString)\(fileName)")
-        print("createTempFileToSave in \(cacheDir), for name \(fileName), output: \(url != nil)")
         
         if let url = url, FileManager.default.fileExists(atPath: url.path) {
             try? FileManager.default.removeItem(at: url)
