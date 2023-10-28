@@ -62,7 +62,7 @@ public class PhotoLibraryIO {
                 creationRequest.location = location
                 
                 let options = PHAssetResourceCreationOptions()
-                options.shouldMoveFile = true
+                options.shouldMoveFile = deleteOnComplete
                 creationRequest.addResource(
                     with: .photo,
                     fileURL: rawURL,
@@ -71,7 +71,7 @@ public class PhotoLibraryIO {
                 
                 if let processedURL = processedURL {
                     let options = PHAssetResourceCreationOptions()
-                    options.shouldMoveFile = true
+                    options.shouldMoveFile = deleteOnComplete
                     creationRequest.addResource(
                         with: .alternatePhoto,
                         fileURL: processedURL,
@@ -85,7 +85,8 @@ public class PhotoLibraryIO {
                     do {
                         if let processedURL = processedURL {
                             try FileManager.default.removeItem(at: processedURL.absoluteURL)
-                        }
+                        }                            
+                        try FileManager.default.removeItem(at: rawURL.absoluteURL)
                     } catch {
                         // ignored
                     }
@@ -110,7 +111,7 @@ public class PhotoLibraryIO {
                 creationRequest.location = location
                 
                 let options = PHAssetResourceCreationOptions()
-                options.shouldMoveFile = true
+                options.shouldMoveFile = deleteOnComplete
                 creationRequest.addResource(
                     with: .photo,
                     fileURL: processedURL,
@@ -119,7 +120,7 @@ public class PhotoLibraryIO {
                 
                 if let rawURL = rawURL {
                     let options = PHAssetResourceCreationOptions()
-                    options.shouldMoveFile = true
+                    options.shouldMoveFile = deleteOnComplete
                     creationRequest.addResource(
                         with: .alternatePhoto,
                         fileURL: rawURL,
@@ -131,6 +132,9 @@ public class PhotoLibraryIO {
                 
                 if deleteOnComplete {
                     do {
+                        if let rawURL = rawURL {
+                            try FileManager.default.removeItem(at: rawURL.absoluteURL)
+                        }
                         try FileManager.default.removeItem(at: processedURL.absoluteURL)
                     } catch {
                         // ignored
@@ -201,13 +205,29 @@ public class PhotoLibraryIO {
         return createTempFileToSave(originalFilename: originalFilename, extensions: extensions)
     }
     
-    public func createTempFileToSave(originalFilename: String, extensions: String) -> URL? {
-        guard let cacheDir = try? FileManager.default.url(for: .documentDirectory,
-                                                          in: .userDomainMask,
-                                                          appropriateFor: nil,
-                                                          create: true) else {
+    public func createTempFileToSave(
+        originalFilename: String,
+        subDirName: String? = nil,
+        extensions: String
+    ) -> URL? {
+        guard var cacheDir = try? FileManager.default.url(
+            for: .documentDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        ) else {
             print("error on create cache url for file")
             return nil
+        }
+        
+        if let subDirName = subDirName,
+           let dir = URL(string: "\(cacheDir.absoluteString)\(subDirName)/") {
+            do {
+                try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+                cacheDir = dir
+            } catch {
+                return nil
+            }
         }
         
         guard let name = NSString(string: originalFilename).deletingPathExtension
@@ -219,7 +239,7 @@ public class PhotoLibraryIO {
         let fileName = name  + "." + extensions
         
         let url = URL(string: "\(cacheDir.absoluteString)\(fileName)")
-        
+                
         if let url = url, FileManager.default.fileExists(atPath: url.path) {
             try? FileManager.default.removeItem(at: url)
         }
