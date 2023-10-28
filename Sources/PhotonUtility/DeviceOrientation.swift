@@ -1,12 +1,11 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Photon Juniper on 2023/10/27.
 //
 
 import Foundation
-import CoreMotion
 import Combine
 import AVFoundation
 
@@ -14,6 +13,11 @@ import AVFoundation
 import UIKit
 #endif
 
+#if canImport(CoreMotion)
+import CoreMotion
+#endif
+
+/// The device orientation used in ``DeviceOrientationInfo``.
 public enum DeviceOrientation: Int {
     case unknown = 0
     case portrait = 1 // Device oriented vertically, home button on the bottom
@@ -23,6 +27,7 @@ public enum DeviceOrientation: Int {
     case faceUp = 5 // Device oriented flat, face up
     case faceDown = 6 // Device oriented flat, face down
     
+#if !os(tvOS)
     public func toAVCaptureVideoOrientation() -> AVCaptureVideoOrientation {
         switch self {
         case .portrait:
@@ -37,8 +42,9 @@ public enum DeviceOrientation: Int {
             return .portrait
         }
     }
+#endif
     
-#if canImport(UIKit)
+#if os(iOS)
     public func toUIDeviceOrientation() -> UIDeviceOrientation {
         switch self {
         case .unknown:
@@ -73,18 +79,34 @@ public enum DeviceOrientation: Int {
     }
 }
 
+/// Observe and publish device orientation info.
+///
+/// This orientation info is independent to the device lock which may be turned on by users.
+/// The orientation will be useful when detecting orientation while building a camera app.
+///
+/// You don't create the instance of this. Instead, please use ``shared`` to get a singleton of it.
+///
+/// Note that the observation only supports iOS. For macOS and tvOS, the ``orientation``
+/// will always be ``DeviceOrientation.portrait`` and the ``start`` or ``stop`` methods
+/// won't do anyting.
 public class DeviceOrientationInfo: ObservableObject {
+    /// Get the shared instance of ``DeviceOrientationInfo``.
     public static let shared = DeviceOrientationInfo()
     
+#if os(iOS)
     private var motionManager: CMMotionManager? = nil
+#endif
     
+    /// Get or observe the lastest orientation.
     @Published public var orientation = DeviceOrientation.portrait
     
     private init() {
         // empty
     }
     
+    /// Start the detection. Please remember to ``stop`` when inactive.
     public func start() {
+#if os(iOS)
         LibLogger.shared.libDefault.log("start detecting orientation")
         
         stop()
@@ -116,11 +138,15 @@ public class DeviceOrientationInfo: ObservableObject {
         }
         
         self.motionManager = motionManager
+#endif
     }
     
+    /// Stop the detection.
     public func stop() {
+#if os(iOS)
         LibLogger.shared.libDefault.log("stop detecting orientation")
         motionManager?.stopAccelerometerUpdates()
         motionManager = nil
+#endif
     }
 }
