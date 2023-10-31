@@ -45,6 +45,7 @@
 		2200C6A02A480505005BA91E /* StaggeredGridDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaggeredGridDemoView.swift; sourceTree = "<group>"; };
 		2200C6A22A480523005BA91E /* IconGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconGeneratorView.swift; sourceTree = "<group>"; };
 		220DE8742A73964E0044089D /* AnimatedNumberDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedNumberDemoView.swift; sourceTree = "<group>"; };
+		221E5EBE2AF0DA5A0009039D /* PhotonMediaKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PhotonMediaKit; path = ../../PhotonMediaKit; sourceTree = "<group>"; };
 		222FC5FE2A470EA400E32672 /* PhotonUtilityKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotonUtilityKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222FC6012A470EA400E32672 /* PhotonUtilityKitDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotonUtilityKitDemoApp.swift; sourceTree = "<group>"; };
 		222FC6032A470EA400E32672 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -103,6 +104,7 @@
 		222FC5F52A470EA400E32672 = {
 			isa = PBXGroup;
 			children = (
+				221E5EBE2AF0DA5A0009039D /* PhotonMediaKit */,
 				225B61042A94ADEE00758532 /* Packages */,
 				222FC6002A470EA400E32672 /* PhotonUtilityKitDemo */,
 				222FC5FF2A470EA400E32672 /* Products */,
@@ -220,7 +222,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					222FC5FD2A470EA400E32672 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -327,9 +329,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -385,9 +389,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -411,6 +417,7 @@
 				CODE_SIGN_ENTITLEMENTS = PhotonUtilityKitDemo/PhotonUtilityKitDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 100;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PhotonUtilityKitDemo/Preview Content\"";
 				DEVELOPMENT_TEAM = 7GB9CHCB87;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -453,6 +460,7 @@
 				CODE_SIGN_ENTITLEMENTS = PhotonUtilityKitDemo/PhotonUtilityKitDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 100;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PhotonUtilityKitDemo/Preview Content\"";
 				DEVELOPMENT_TEAM = 7GB9CHCB87;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -523,8 +531,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JuniperPhoton/PhotonMediaKit";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 1.0.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

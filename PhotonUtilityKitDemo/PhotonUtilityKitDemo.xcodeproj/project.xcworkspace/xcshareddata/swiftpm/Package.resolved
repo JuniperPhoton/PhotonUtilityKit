@@ -10,12 +10,12 @@
       }
     },
     {
-      "identity" : "photonmediakit",
+      "identity" : "pinlayout",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/JuniperPhoton/PhotonMediaKit",
+      "location" : "https://github.com/layoutBox/PinLayout",
       "state" : {
-        "branch" : "main",
-        "revision" : "e0f8a74ff7f66b3a9c009ff2b523ef89b0c7df02"
+        "revision" : "ce929a6ecdc6701adee9bdf9d949e0036f567ca7",
+        "version" : "1.10.4"
       }
     },
     {

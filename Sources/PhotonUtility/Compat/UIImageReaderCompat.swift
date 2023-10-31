@@ -7,7 +7,7 @@
 
 import Foundation
 
-#if canImport(UIKit) && os(iOS)
+#if canImport(UIKit)
 import UIKit
 
 private protocol UIImageReaderProtocol {
@@ -25,7 +25,7 @@ public class UIImageReaderCompat: UIImageReaderProtocol {
     }
     
     public func uiImage(data: Data?) -> UIImage? {
-        if #available(iOS 17, *), useDynamicRange {
+        if #available(iOS 17, tvOS 17.0, *), useDynamicRange {
             return UIImageReaderWrapper().uiImage(data: data)
         } else {
             return UIImageReaderStub().uiImage(data: data)
@@ -33,7 +33,7 @@ public class UIImageReaderCompat: UIImageReaderProtocol {
     }
 }
 
-@available(iOS 17.0, *)
+@available(iOS 17.0, tvOS 17.0, *)
 private class UIImageReaderWrapper: UIImageReaderProtocol {
     // Set up a common reader for all UIImage read requests.
     private static let reader: UIImageReader = {

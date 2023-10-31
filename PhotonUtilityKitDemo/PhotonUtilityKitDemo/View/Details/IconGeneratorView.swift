@@ -23,7 +23,7 @@ class IconGeneratorViewModel: ObservableObject {
             return
         }
         
-        self.imageToDisplay = try? await ImageIO.shared.loadCGImage(data: data)
+        self.imageToDisplay = try? await CGImageIO.shared.loadCGImage(data: data)
     }
     
     @MainActor
@@ -47,7 +47,7 @@ class IconGeneratorViewModel: ObservableObject {
             var successCount = 0
             
             for size in sizeToScale {
-                guard let scaledImage = await ImageIO.shared.scaleCGImage(image: imageToDisplay, width: size, height: size) else {
+                guard let scaledImage = await CGImageIO.shared.scaleCGImage(image: imageToDisplay, width: size, height: size) else {
                     continue
                 }
                 let fileURL = url.appendingPathComponent("\(nameWithoutExtension)-\(Int(size))", conformingTo: targetUTType)
@@ -56,7 +56,7 @@ class IconGeneratorViewModel: ObservableObject {
                 }
                 
                 do {
-                    let _ = try await ImageIO.shared.saveToFile(file: fileURL, cgImage: scaledImage, utType: targetUTType)
+                    let _ = try await CGImageIO.shared.saveToFile(file: fileURL, cgImage: scaledImage, utType: targetUTType)
                     successCount += 1
                 } catch {
                     // ignored
