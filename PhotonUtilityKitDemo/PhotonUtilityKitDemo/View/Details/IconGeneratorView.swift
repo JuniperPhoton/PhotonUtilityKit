@@ -9,6 +9,7 @@ import SwiftUI
 import PhotonUtility
 import PhotonUtilityView
 import UniformTypeIdentifiers
+import PhotonMediaKit
 
 class IconGeneratorViewModel: ObservableObject {
     @Published var imageURL: URL? = nil
