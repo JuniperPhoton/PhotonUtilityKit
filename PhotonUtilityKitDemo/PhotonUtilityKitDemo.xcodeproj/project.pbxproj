@@ -23,12 +23,12 @@
 		222FC61C2A471EC200E32672 /* Highlightr in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = 222FC61B2A471EC200E32672 /* Highlightr */; };
 		222FC61E2A472A1800E32672 /* HighliableCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC61D2A472A1800E32672 /* HighliableCodeView.swift */; };
 		222FC6202A47311800E32672 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC61F2A47311800E32672 /* Styles.swift */; };
-		225B61082A94AE0300758532 /* PhotonUtilityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 225B61072A94AE0300758532 /* PhotonUtilityKit */; };
 		226BBD092A48205C00A4ECD1 /* ScreenshotDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226BBD082A48205C00A4ECD1 /* ScreenshotDemoView.swift */; };
 		226BC96A2A6F0FCC00BB0A9D /* BridgedPageViewDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226BC9692A6F0FCC00BB0A9D /* BridgedPageViewDemoView.swift */; };
 		229525A52A924C9F005E0E1B /* TipsDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229525A42A924C9F005E0E1B /* TipsDemoView.swift */; };
 		229A75472A5C601F00DF05CA /* AnimatableGradientDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229A75462A5C601F00DF05CA /* AnimatableGradientDemoView.swift */; };
 		22A5D1042AEFF6B90077E712 /* PhotonMediaKit in Frameworks */ = {isa = PBXBuildFile; productRef = 22A5D1032AEFF6B90077E712 /* PhotonMediaKit */; };
+		22BAAE032AF0EB5600D0BBC6 /* PhotonUtilityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 22BAAE022AF0EB5600D0BBC6 /* PhotonUtilityKit */; };
 		22DD0AD72A77F9D10063B053 /* Catagory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DD0AD62A77F9D10063B053 /* Catagory.swift */; };
 		22DD0AD92A77F9DD0063B053 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DD0AD82A77F9DD0063B053 /* Platform.swift */; };
 		22DD0ADB2A77F9EC0063B053 /* FeaturePageTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DD0ADA2A77F9EC0063B053 /* FeaturePageTrait.swift */; };
@@ -54,7 +54,6 @@
 		222FC6162A47165200E32672 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		222FC61D2A472A1800E32672 /* HighliableCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighliableCodeView.swift; sourceTree = "<group>"; };
 		222FC61F2A47311800E32672 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
-		225B61052A94ADEE00758532 /* PhotonUtilityKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PhotonUtilityKit; path = ..; sourceTree = "<group>"; };
 		226BBD082A48205C00A4ECD1 /* ScreenshotDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotDemoView.swift; sourceTree = "<group>"; };
 		226BC9692A6F0FCC00BB0A9D /* BridgedPageViewDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedPageViewDemoView.swift; sourceTree = "<group>"; };
 		229525A42A924C9F005E0E1B /* TipsDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsDemoView.swift; sourceTree = "<group>"; };
@@ -72,7 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				225B61082A94AE0300758532 /* PhotonUtilityKit in Frameworks */,
+				22BAAE032AF0EB5600D0BBC6 /* PhotonUtilityKit in Frameworks */,
 				22A5D1042AEFF6B90077E712 /* PhotonMediaKit in Frameworks */,
 				222FC61C2A471EC200E32672 /* Highlightr in Frameworks */,
 			);
@@ -163,7 +162,6 @@
 		225B61042A94ADEE00758532 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				225B61052A94ADEE00758532 /* PhotonUtilityKit */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -205,8 +203,8 @@
 			name = PhotonUtilityKitDemo;
 			packageProductDependencies = (
 				222FC61B2A471EC200E32672 /* Highlightr */,
-				225B61072A94AE0300758532 /* PhotonUtilityKit */,
 				22A5D1032AEFF6B90077E712 /* PhotonMediaKit */,
+				22BAAE022AF0EB5600D0BBC6 /* PhotonUtilityKit */,
 			);
 			productName = PhotonUtilityKitDemo;
 			productReference = 222FC5FE2A470EA400E32672 /* PhotonUtilityKitDemo.app */;
@@ -239,6 +237,7 @@
 			packageReferences = (
 				222FC61A2A471EC200E32672 /* XCRemoteSwiftPackageReference "Highlightr" */,
 				22A5D1022AEFF6B90077E712 /* XCRemoteSwiftPackageReference "PhotonMediaKit" */,
+				22BAAE012AF0EB5600D0BBC6 /* XCRemoteSwiftPackageReference "PhotonUtilityKit" */,
 			);
 			productRefGroup = 222FC5FF2A470EA400E32672 /* Products */;
 			projectDirPath = "";
@@ -533,6 +532,14 @@
 				version = 1.0.2;
 			};
 		};
+		22BAAE012AF0EB5600D0BBC6 /* XCRemoteSwiftPackageReference "PhotonUtilityKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JuniperPhoton/PhotonUtilityKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -541,14 +548,15 @@
 			package = 222FC61A2A471EC200E32672 /* XCRemoteSwiftPackageReference "Highlightr" */;
 			productName = Highlightr;
 		};
-		225B61072A94AE0300758532 /* PhotonUtilityKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = PhotonUtilityKit;
-		};
 		22A5D1032AEFF6B90077E712 /* PhotonMediaKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 22A5D1022AEFF6B90077E712 /* XCRemoteSwiftPackageReference "PhotonMediaKit" */;
 			productName = PhotonMediaKit;
+		};
+		22BAAE022AF0EB5600D0BBC6 /* PhotonUtilityKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 22BAAE012AF0EB5600D0BBC6 /* XCRemoteSwiftPackageReference "PhotonUtilityKit" */;
+			productName = PhotonUtilityKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
