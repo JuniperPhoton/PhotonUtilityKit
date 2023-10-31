@@ -113,22 +113,9 @@ public extension View {
     }
 }
 
-/// A button with default style.
-///
-/// Use ``title`` and ``icon`` to specifiy the visual elements in this button. Note that one of these can be nil.
-/// To customize the colors and other effects, use one of these methods:
-///
-/// - ``actionButtonForegroundColor(_:)``: Set the text and icon color.
-/// - ``actionButtonBackgroundColor(_:)``: Set the background color.
-/// - ``actionButtonStretchToWidth(_:)``: True if you want this button has infinity width limation.
-/// - ``actionButtonAdaptOnUISizeClassChanged(_:)``: On iOS, set this to true will adapt to horizontal class size.
-/// - ``actionButtonUseContinuousStyle(_:)``: Set the rounded style.
-///
-/// If this action supports loading, passing binding ``isLoading``.
-///  If it's in loading state, the button would be disabled and show a progress view.
-///
-/// You must set the ``onClick`` to response the tap gesture.
-public struct ActionButton: View {
+/// The label component of ``ActionButton``.
+/// Useful if you just want the style but not the button function.
+public struct ActionButtonLabel: View {
     public static let defaultRadius: CGFloat = 8
     
     @Environment(\.actionButtonStyle) private var style
@@ -138,37 +125,18 @@ public struct ActionButton: View {
     public let radius: CGFloat
     
     public var isLoading: Binding<Bool>
-    
-    public let onClick: (() -> Void)?
-    
+        
     public init(title: LocalizedStringKey? = nil,
                 icon: String? = nil,
                 radius: CGFloat = 8,
-                isLoading: Binding<Bool> = .constant(false),
-                onClick: (() -> Void)? = nil) {
+                isLoading: Binding<Bool> = .constant(false)) {
         self.title = title
         self.icon = icon
-        self.onClick = onClick
         self.isLoading = isLoading
         self.radius = radius
     }
     
     public var body: some View {
-        Button {
-            onClick?()
-        } label: {
-            labelContent
-        }.buttonStyle(ActionButtonCustomStyle())
-    }
-    
-    @available(*, deprecated, message: "Use labelContent property instead.")
-    public var content: some View {
-        labelContent
-    }
-    
-    /// Get the label content inside the button.
-    /// Useful if you just want the custom style of this button's label without wrapping it inside a button.
-    public var labelContent: some View {
         HStack(spacing: 12) {
             if isLoading.wrappedValue {
                 if #available(iOS 15.0, *) {
@@ -220,4 +188,58 @@ public struct ActionButton: View {
         return title != nil
     }
 #endif
+}
+
+/// A button with default style.
+///
+/// Use ``title`` and ``icon`` to specifiy the visual elements in this button. Note that one of these can be nil.
+/// To customize the colors and other effects, use one of these methods:
+///
+/// - ``actionButtonForegroundColor(_:)``: Set the text and icon color.
+/// - ``actionButtonBackgroundColor(_:)``: Set the background color.
+/// - ``actionButtonStretchToWidth(_:)``: True if you want this button has infinity width limation.
+/// - ``actionButtonAdaptOnUISizeClassChanged(_:)``: On iOS, set this to true will adapt to horizontal class size.
+/// - ``actionButtonUseContinuousStyle(_:)``: Set the rounded style.
+///
+/// If this action supports loading, passing binding ``isLoading``.
+///  If it's in loading state, the button would be disabled and show a progress view.
+///
+/// You must set the ``onClick`` to response the tap gesture.
+public struct ActionButton: View {
+    public static let defaultRadius: CGFloat = 8
+    
+    @Environment(\.actionButtonStyle) private var style
+    
+    public let title: LocalizedStringKey?
+    public let icon: String?
+    public let radius: CGFloat
+    
+    public var isLoading: Binding<Bool>
+    
+    public let onClick: (() -> Void)?
+    
+    public init(title: LocalizedStringKey? = nil,
+                icon: String? = nil,
+                radius: CGFloat = 8,
+                isLoading: Binding<Bool> = .constant(false),
+                onClick: (() -> Void)? = nil) {
+        self.title = title
+        self.icon = icon
+        self.onClick = onClick
+        self.isLoading = isLoading
+        self.radius = radius
+    }
+    
+    public var body: some View {
+        Button {
+            onClick?()
+        } label: {
+            ActionButtonLabel(
+                title: title,
+                icon: icon,
+                radius: radius,
+                isLoading: isLoading
+            )
+        }.buttonStyle(ActionButtonCustomStyle())
+    }
 }
