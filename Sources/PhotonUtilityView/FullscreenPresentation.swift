@@ -74,6 +74,7 @@ public class FullscreenPresentation: ObservableObject {
         withTransaction(createTranscation(animated: animated)) {
             self.presentedView = nil
             self.transition = transition
+            self.invokeOnDismiss()
         }
     }
     
