@@ -64,11 +64,12 @@ public struct MenuPicker<Selection: Identifiable & Hashable & Localizable, Label
             ForEach(selections, id: \.id) { s in
                 HStack {
                     Text(s.localizedStringKey)
-                    Image(systemName: selection.wrappedValue == s ? "checkmark" : "")
-                }.asButton {
-                    withTransaction(selection.transaction) {
-                        selection.wrappedValue = s
+                    
+                    if selection.wrappedValue == s {
+                        Image(systemName: "checkmark")
                     }
+                }.asButton {
+                    selection.wrappedValue = s
                 }
             }
             
