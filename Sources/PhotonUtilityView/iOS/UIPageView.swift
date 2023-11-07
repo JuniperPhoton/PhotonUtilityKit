@@ -8,7 +8,7 @@
 import SwiftUI
 import OSLog
 
-#if canImport(UIKit) && !targetEnvironment(macCatalyst)
+#if canImport(UIKit)
 import UIKit
 
 private let logger = Logger(subsystem: "com.juniperphoton.photonutilityview", category: "UIPageView")

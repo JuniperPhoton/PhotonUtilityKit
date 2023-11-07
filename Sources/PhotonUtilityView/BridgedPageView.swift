@@ -39,7 +39,7 @@ public struct BridgedPageView<T: Equatable, V: View>: View {
     }
     
     public var body: some View {
-        #if canImport(AppKit)
+        #if canImport(AppKit) && !targetEnvironment(macCatalyst)
         NSPageView(selection: selection, pageObjects: pageObjects,
                    idKeyPath: idKeyPath, onContentPrepared: onContentPrepared, contentView: contentView)
         #elseif canImport(UIKit)

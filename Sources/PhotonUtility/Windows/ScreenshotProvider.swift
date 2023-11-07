@@ -8,7 +8,7 @@
 import Foundation
 import CoreGraphics
 
-#if canImport(AppKit) && canImport(ScreenCaptureKit)
+#if canImport(AppKit) && canImport(ScreenCaptureKit) && !targetEnvironment(macCatalyst)
 import ScreenCaptureKit
 import AppKit
 

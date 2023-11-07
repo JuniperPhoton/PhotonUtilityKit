@@ -25,7 +25,7 @@ public func getFeedbackURL(subject: String, body: String) -> URL? {
 
 /// Get the full os version string with os name, like iOS 16.
 public func getOSNameVersion() -> String {
-    #if os(iOS)
+    #if os(iOS) && !targetEnvironment(macCatalyst)
     let osVersion = UIDevice.current.systemVersion
     return "iOS \(String(osVersion))"
     #elseif os(macOS)

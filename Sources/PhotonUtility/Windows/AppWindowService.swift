@@ -26,7 +26,7 @@ public class AppWindowService {
     
     /// Checks whether the current process already has screen capture access
     public func isScreenCaptureAccessEnabled() -> Bool {
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
         return CGPreflightScreenCaptureAccess()
 #else
         return false
@@ -36,7 +36,7 @@ public class AppWindowService {
     /// Requests event listening access if absent, potentially prompting
     @discardableResult
     public func requestScreenCaptureAccess() -> Bool {
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
         return CGRequestScreenCaptureAccess()
 #else
         return false
@@ -48,7 +48,7 @@ public class AppWindowService {
     /// - parameter croppedTo: a ``CGRect`` representing the cropped area
     @MainActor
     public func createScreenshot(croppedTo: CGRect?) async -> CGImage? {
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
         guard let cgImage = await createScreenshot(bestResolution: false) else {
             return nil
         }
@@ -80,7 +80,7 @@ public class AppWindowService {
     /// Create original screenshot.
     /// - parameter bestResolution: true to return the best resolution, which should be the same pixel size of the screen.
     public func createScreenshot(bestResolution: Bool) async -> CGImage? {
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
         var providers: [any ScreenshotProvider] = []
         
         if #available(macOS 13.0, *) {
