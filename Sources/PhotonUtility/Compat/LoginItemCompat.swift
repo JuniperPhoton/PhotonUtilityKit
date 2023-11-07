@@ -7,7 +7,7 @@
 
 import Foundation
 
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import ServiceManagement
 
 /// Provide a compat way to implement auto-login feature.

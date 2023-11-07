@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
 struct CustomInternalTextView: View {
     let text: String
     
