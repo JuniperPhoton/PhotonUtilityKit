@@ -14,6 +14,25 @@ public class LinksDetector {
         // empty
     }
     
+    public func detectURLScheme(content: String) -> URL? {
+        let pattern = "^(.*):\\/\\/(.*)"
+        
+        do {
+            let regex = try NSRegularExpression(pattern: pattern)
+            let results = regex.matches(in: content, range: NSRange(content.startIndex..., in: content))
+            let urlString = results.map {
+                String(content[Range($0.range, in: content)!])
+            }.first
+            if let urlString = urlString {
+                return URL(string: urlString)
+            }
+        } catch let error {
+            print("Invalid regex: \(error.localizedDescription)")
+        }
+        
+        return nil
+    }
+    
     public func detectLink(content: String) -> URL? {
         return detect(content: content)
     }
