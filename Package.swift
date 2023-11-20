@@ -42,5 +42,7 @@ let package = Package(
                 .process("Resources"),
             ]
         ),
+        .testTarget(name: "PhotonUtilityKitTests",
+                    dependencies: ["PhotonUtility"])
     ]
 )
