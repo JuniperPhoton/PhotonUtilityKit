@@ -53,7 +53,7 @@ public struct InterfaceOrientationMask : OptionSet {
 ///
 /// ```swift
 /// func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-///     return AppOrientation.shared.orientationLock.uiKitRepresentation
+///     return AppOrientationLocker.shared.orientationLock.uiKitRepresentation
 /// }
 /// ```
 ///
