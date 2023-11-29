@@ -100,8 +100,8 @@ public class DeviceOrientationInfo: ObservableObject {
     /// Get or observe the lastest orientation.
     @Published public var orientation = DeviceOrientation.portrait
     
-    /// Get or observe the underlying ``CMAcceleration``.
-    @Published public var acceleration: CMAcceleration? = nil
+    /// Get or observe the underlying ``CMDeviceMotion``.
+    @Published public var data: CMDeviceMotion? = nil
     
     private init() {
         // empty
@@ -116,8 +116,24 @@ public class DeviceOrientationInfo: ObservableObject {
         
         let motionManager = CMMotionManager()
         
+        if motionManager.isDeviceMotionAvailable {
+            motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
+            motionManager.startDeviceMotionUpdates(
+                using: .xArbitraryZVertical,
+                to: .main
+            ) { [weak self] data, error in
+                guard let data = data, let self = self else {
+                    return
+                }
+                                                
+                if self.data != data {
+                    self.data = data
+                }
+            }
+        }
+        
         if motionManager.isAccelerometerAvailable {
-            motionManager.accelerometerUpdateInterval = 1.0 / 24.0
+            motionManager.accelerometerUpdateInterval = 0.2
             motionManager.startAccelerometerUpdates(to: .main) { [weak self] data, error in
                 guard let data = data, let self = self else {
                     return
@@ -132,10 +148,6 @@ public class DeviceOrientationInfo: ObservableObject {
                     orientation = .portrait
                 } else if data.acceleration.y >= 0.75 {
                     orientation = .portraitUpsideDown
-                }
-                
-                if self.acceleration != data.acceleration {
-                    self.acceleration = data.acceleration
                 }
                 
                 if self.orientation != orientation {
@@ -153,8 +165,15 @@ public class DeviceOrientationInfo: ObservableObject {
 #if os(iOS)
         LibLogger.shared.libDefault.log("stop detecting orientation")
         motionManager?.stopAccelerometerUpdates()
+        motionManager?.stopDeviceMotionUpdates()
         motionManager = nil
 #endif
+    }
+}
+
+extension CMRotationRate: Equatable {
+    public static func == (lhs: CMRotationRate, rhs: CMRotationRate) -> Bool {
+        return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z
     }
 }
 
