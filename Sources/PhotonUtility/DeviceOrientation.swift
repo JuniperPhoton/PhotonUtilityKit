@@ -100,6 +100,9 @@ public class DeviceOrientationInfo: ObservableObject {
     /// Get or observe the lastest orientation.
     @Published public var orientation = DeviceOrientation.portrait
     
+    /// Get or observe the underlying ``CMAcceleration``.
+    @Published public var acceleration: CMAcceleration? = nil
+    
     private init() {
         // empty
     }
@@ -131,6 +134,10 @@ public class DeviceOrientationInfo: ObservableObject {
                     orientation = .portraitUpsideDown
                 }
                 
+                if self.acceleration != data.acceleration {
+                    self.acceleration = data.acceleration
+                }
+                
                 if self.orientation != orientation {
                     self.orientation = orientation
                 }
@@ -148,5 +155,11 @@ public class DeviceOrientationInfo: ObservableObject {
         motionManager?.stopAccelerometerUpdates()
         motionManager = nil
 #endif
+    }
+}
+
+extension CMAcceleration: Equatable {
+    public static func == (lhs: CMAcceleration, rhs: CMAcceleration) -> Bool {
+        return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z
     }
 }
