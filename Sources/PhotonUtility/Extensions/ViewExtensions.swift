@@ -334,16 +334,6 @@ public extension View {
 #endif
 
 public extension View {
-    /// Put this view inside a clipped ZStack.
-    /// Useful when you want to perform a move(edge:) transition to a view.
-    func clippedInside() -> some View {
-        ZStack {
-            self
-        }.clipped()
-    }
-}
-
-public extension View {
     @ViewBuilder
     func disabledBy(_ disabled: Bool) -> some View {
         self.disabled(disabled).opacity(disabled ? 0.5 : 1)
