@@ -43,7 +43,7 @@ fileprivate struct ActionButtonStyleKey: EnvironmentKey {
             stretchToWidth: false,
             foregroundColor: .primary,
             backgroundColor: .accentColor,
-            useContinuousStyle: false,
+            useContinuousStyle: true,
             radius: ActionButton.defaultRadius
         )
     }
