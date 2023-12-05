@@ -51,3 +51,23 @@ public extension View {
         }
     }
 }
+
+public extension View {
+    /// Set the navigation bar title's display mode to either inline or not.
+    func navigationBarTitleDisplayModeCompat(inline: Bool) -> some View {
+#if canImport(UIKit)
+        self.navigationBarTitleDisplayMode(inline ? .inline : .automatic)
+#else
+        self
+#endif
+    }
+    
+    /// Hide the status bar or not.
+    func statusBarHiddenCompat(hidden: Bool = true) -> some View {
+#if canImport(UIKit)
+        self.statusBarHidden(hidden)
+#else
+        self
+#endif
+    }
+}
