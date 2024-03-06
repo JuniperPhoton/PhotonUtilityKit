@@ -137,7 +137,15 @@ public class AppTipsPreference {
     }
     
     /// Register a key refering to a tip.
-    /// By doing so when you call ``resetAll`` the key will be removed from the UserDefaults.
+    /// By doing so, when you call ``resetAll`` the key will be removed from the UserDefaults.
+    public func register(tips: [any AppTipContent.Type]) {
+        for tip in tips {
+            self.keys.insert(tip.key)
+        }
+    }
+    
+    /// Register a key refering to a tip.
+    /// By doing so, when you call ``resetAll`` the key will be removed from the UserDefaults.
     public func register(tips: any AppTipContent.Type...) {
         for tip in tips {
             self.keys.insert(tip.key)
@@ -154,6 +162,7 @@ public class AppTipsPreference {
         UserDefaults.standard.set(true, forKey: key)
     }
     
+    /// Reset all keys. Note that this must be called after ``register(tips:)``.
     public func resetAll() {
         self.keys.forEach { key in
             UserDefaults.standard.set(false, forKey: key)
