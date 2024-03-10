@@ -15,7 +15,9 @@ public class AppLockScreenTimer {
     /// Disable lock screen automatically for iOS and iPadOS.
     public static func keepScreenOn(_ on: Bool) {
 #if os(iOS)
-        UIApplication.shared.isIdleTimerDisabled = on
+        DispatchQueue.main.async {
+            UIApplication.shared.isIdleTimerDisabled = on
+        }
 #endif
     }
 }
