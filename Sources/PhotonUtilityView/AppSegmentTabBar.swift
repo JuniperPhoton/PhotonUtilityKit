@@ -201,7 +201,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
 #endif
     let label: (T) -> V
     
-    @State private var autoScrollState = AutoScrollState<T>(value: nil)
+    @State private var autoScrollState: AutoScrollState<T>
     
 #if !os(tvOS)
     public init(selection: Binding<T>,
@@ -222,6 +222,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
         self.keyboardShortcut = keyboardShortcut
         self.shape = shape
         self.label = label
+        self._autoScrollState = State(initialValue: AutoScrollState(value: nil, in: sources))
     }
 #else
     public init(selection: Binding<T>,
@@ -276,7 +277,6 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
                         v.keyboardShortcut(keyboardShortcut!(item))
                     }
 #endif
-                    .id(item)
                     .listenFrameChanged(coordinateSpace: .named(nameSpaceName)) { rect in
                         frameState.updateItemFrame(item: item, frame: rect)
                         
@@ -289,6 +289,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
                             frameState.updateSelectedFrame(item: newValue)
                         }
                     }
+                    .id(item)
             }
         }.padding(.horizontal, horizontalInset)
             .padding(backgroundColor == .clear ? 0 : 3)
@@ -316,14 +317,31 @@ extension ScrollView {
 }
 
 class AutoScrollState<T>: ObservableObject where T: Equatable & Hashable {
+    private var lastValue: T? = nil
+    
     /// The value to trigger changed, normally the id of the view
-    @Published var value: T? = nil
+    @Published var value: T? = nil {
+        willSet {
+            lastValue = value
+        }
+    }
     
     /// The visible rect to scroll to.
     @Published var rect: CGRect
     
-    init(value: T?) {
+    private let values: [T]
+    
+    var anotherNextItemToScrollTo: T? {
+        if let lastValue = lastValue, let value = value {
+            findAnotherNextItemToScrollTo(current: lastValue, next: value, in: values)
+        } else {
+            nil
+        }
+    }
+    
+    init(value: T?, in values: [T]) {
         self.value = value
+        self.values = values
         self.rect = .zero
     }
 }
@@ -331,12 +349,12 @@ class AutoScrollState<T>: ObservableObject where T: Equatable & Hashable {
 #if canImport(UIKit)
 struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable & Hashable {
     @ObservedObject var state: AutoScrollState<T>
-    
+        
     func body(content: Content) -> some View {
         ScrollViewReader { proxy in
             content.onChange(of: state.value) { newValue in
                 withDefaultAnimation {
-                    proxy.scrollTo(state.value)
+                    proxy.scrollTo(state.anotherNextItemToScrollTo)
                 }
             }
         }
@@ -361,3 +379,20 @@ struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable 
     }
 }
 #endif
+
+private func findAnotherNextItemToScrollTo<T: Equatable>(current: T, next: T, in all: [T]) -> T? {
+    guard let currentIndex = all.firstIndex(of: current),
+          let nextIndex = all.firstIndex(of: next) else {
+        return nil
+    }
+    
+    if nextIndex > currentIndex {
+        let nextNextIndex = nextIndex + 1
+        return all[safeIndex: nextNextIndex]
+    } else if nextIndex < currentIndex {
+        let nextNextIndex = nextIndex - 1
+        return all[safeIndex: nextNextIndex]
+    }
+    
+    return nil
+}
