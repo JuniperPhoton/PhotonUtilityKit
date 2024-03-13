@@ -65,6 +65,10 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
     /// Key path to find the text of a specified item.
     let textKeyPath: KeyPath<T, String>
     
+    /// The bundle in which the ``Sources`` are located.
+    /// This could affect how the text resources are searched.
+    let sourcesBundle: Bundle
+    
     /// A block to get the text showing on help tooltips from a specified item.
     var helpTooltips: ((T) -> String)?
 #if !os(tvOS)
@@ -80,6 +84,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
                 backgroundColor: Color,
                 horizontalInset: CGFloat = 0,
                 textKeyPath: KeyPath<T, String>,
+                sourcesBundle: Bundle = Bundle.main,
                 shape: S,
                 helpTooltips: ((T) -> String)? = nil,
                 keyboardShortcut: ((T) -> KeyEquivalent)? = nil) {
@@ -91,6 +96,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
         self.backgroundColor = backgroundColor
         self.horizontalInset = horizontalInset
         self.textKeyPath = textKeyPath
+        self.sourcesBundle = sourcesBundle
         self.helpTooltips = helpTooltips
         self.shape = shape
         self.keyboardShortcut = keyboardShortcut
@@ -143,7 +149,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
 #endif
     
     private func bodyText(item: T) -> some View {
-        Text(LocalizedStringKey(item[keyPath: textKeyPath]))
+        Text(LocalizedStringKey(item[keyPath: textKeyPath]), bundle: sourcesBundle)
             .bold()
             .foregroundColor(selection.wrappedValue == item ? selectedForegroundColor : foregroundColor.opacity(0.7))
             .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
