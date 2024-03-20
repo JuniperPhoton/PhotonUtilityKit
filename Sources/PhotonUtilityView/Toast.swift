@@ -40,12 +40,12 @@ public class AppToast: ObservableObject {
     }
     
     @MainActor
-    public func showToast(_ notification: String) {
-        callAsFunction(Binding.constant(notification))
+    public func showToast(_ notification: String, dismissTimeout: TimeInterval = 2) {
+        callAsFunction(Binding.constant(notification), dismissTimeout: dismissTimeout)
     }
     
     @MainActor
-    public func callAsFunction(_ notification: Binding<String>) {
+    public func callAsFunction(_ notification: Binding<String>, dismissTimeout: TimeInterval = 2) {
         let toastContent = notification.wrappedValue
         if toastContent.isEmpty {
             withDefaultAnimation {
@@ -67,7 +67,7 @@ public class AppToast: ObservableObject {
                 notification.wrappedValue = ""
             }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: pendingWorkItem!)
+        DispatchQueue.main.asyncAfter(deadline: .now() + dismissTimeout, execute: pendingWorkItem!)
     }
     
     @MainActor
