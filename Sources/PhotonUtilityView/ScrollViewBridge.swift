@@ -7,8 +7,25 @@
 
 import SwiftUI
 
-/// Bridge to the UIScrollView from UIKit.
-/// 
+/// Bridge to the ``UIScrollView`` from UIKit for SwiftUI to use.
+///
+/// Example code:
+///
+/// ```Swift
+/// if let image = viewModel.inputImage {
+///     GeometryReader { proxy in
+///         ScrollViewBridge(
+///             actualContentAspectRatio: image.extent.size,
+///             scrollViewSize: proxy.size
+///         ) {
+///             MetalView(renderer: viewModel.renderer, enableSetNeedsDisplay: true)
+///                 .frame(width: proxy.size.width, height: proxy.size.height)
+///         }
+///     }.id(viewModel.inputImage)
+/// }
+/// ```
+/// If the aspect ratio of the content view will change, you should invalide this view and force it to reconstruct.
+/// For example, you can use ``id(_:)`` to invalide this view.
 public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
     let contentView: () -> ContentView
     
@@ -16,6 +33,15 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
     var actualContentAspectRatio: CGSize
     var scrollViewSize: CGSize
     
+    /// Initialize ``ScrollViewBridge``.
+    /// - parameter controller: The optional instance of ``ScrollViewBridgeController``.
+    /// If the size of ScrollView can be changed, use the method in ``ScrollViewBridgeController`` to notify UI changed.
+    ///
+    /// - parameter scrollViewSize: The size of this ``UIScrollView``. You should wrap this inside a ``GeometryReader`` to get the size of it.
+    /// The content view's frame should also be set to the size from ``GeometryReader``.
+    ///
+    /// - parameter actualContentAspectRatio: The aspect ratio of the content view. Currently the content view will be scaled to fit this scroll view.
+    /// - parameter contentView: Block to get the content view.
     public init(
         controller: ScrollViewBridgeController? = nil,
         actualContentAspectRatio: CGSize,
@@ -156,6 +182,7 @@ protocol ScrollViewBridgeControllerProtocol {
     func requestUpdateContentSize(scrollViewSize: CGSize)
 }
 
+/// A controller as a coordinator.
 public class ScrollViewBridgeController: ObservableObject, ScrollViewBridgeControllerProtocol {
     var onRequestUpdateContentSize: ((CGSize) -> Void)? = nil
     
@@ -165,6 +192,7 @@ public class ScrollViewBridgeController: ObservableObject, ScrollViewBridgeContr
         // ignored
     }
     
+    /// Call this method to update content size when the size of ScrollView changed.
     public func requestUpdateContentSize(scrollViewSize: CGSize) {
         self.delayItem?.cancel()
         let item = DispatchWorkItem { [weak self] in
