@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by Photon Juniper on 2024/3/24.
 //
@@ -82,6 +82,10 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
             centerView(scrollView, scrollViewSize: scrollViewSize)
         }
         
+        context.coordinator.onZoomed = { [weak controller] scale in
+            controller?.zoomScaleFactor = scale
+        }
+        
         return scrollView
     }
     
@@ -126,12 +130,19 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
 public class ScrollViewBridgeCoordinator: NSObject, UIScrollViewDelegate {
     var actualContentAspectRatio: CGSize = .zero
     
+    var onZoomed: ((CGFloat) -> Void)? = nil
+    
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return scrollView.subviews.first
     }
     
+    public func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        onZoomed?(scrollView.zoomScale)
+    }
+    
     public func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         centerView(scrollView)
+        onZoomed?(scale)
     }
     
     private func centerView(_ scrollView: UIScrollView) {
@@ -183,10 +194,15 @@ protocol ScrollViewBridgeControllerProtocol {
 }
 
 /// A controller as a coordinator.
+/// You can receive zoom scale factor changes via ``zoomScaleFactor``.
+///
+/// To notify the inner view to get update when the size of ScrollView changes, call ``requestUpdateContentSize``.
 public class ScrollViewBridgeController: ObservableObject, ScrollViewBridgeControllerProtocol {
     var onRequestUpdateContentSize: ((CGSize) -> Void)? = nil
     
     private var delayItem: DispatchWorkItem? = nil
+    
+    @Published public fileprivate(set) var zoomScaleFactor: CGFloat = 1.0
     
     public init() {
         // ignored
