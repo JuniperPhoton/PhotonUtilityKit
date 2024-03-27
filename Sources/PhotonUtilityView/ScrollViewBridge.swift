@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 /// Bridge to the ``UIScrollView`` from UIKit for SwiftUI to use.
 ///
 /// Example code:
@@ -218,3 +219,4 @@ public class ScrollViewBridgeController: ObservableObject, ScrollViewBridgeContr
         self.delayItem = item
     }
 }
+#endif
