@@ -1,4 +1,5 @@
 {
+  "originHash" : "e39a1df8f2874a7554aeea5836903dbe5cfa9b4ccc84cc3b396123f5f5240902",
   "pins" : [
     {
       "identity" : "highlightr",
@@ -24,7 +25,7 @@
       "location" : "https://github.com/JuniperPhoton/PhotonUtilityKit",
       "state" : {
         "branch" : "main",
-        "revision" : "8b706a2e47e98dfb2c72d273910a7a830322552b"
+        "revision" : "c507af7761e018b4232bd98db5d847032fb34ee7"
       }
     },
     {
@@ -46,5 +47,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

@@ -15,6 +15,7 @@
 		2200C6A12A480505005BA91E /* StaggeredGridDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C6A02A480505005BA91E /* StaggeredGridDemoView.swift */; };
 		2200C6A32A480523005BA91E /* IconGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200C6A22A480523005BA91E /* IconGeneratorView.swift */; };
 		220DE8752A73964E0044089D /* AnimatedNumberDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DE8742A73964E0044089D /* AnimatedNumberDemoView.swift */; };
+		222052A42BBACA1400B20FBB /* ScrollViewBridgeDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222052A32BBACA1400B20FBB /* ScrollViewBridgeDemoView.swift */; };
 		222FC6022A470EA400E32672 /* PhotonUtilityKitDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6012A470EA400E32672 /* PhotonUtilityKitDemoApp.swift */; };
 		222FC6042A470EA400E32672 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FC6032A470EA400E32672 /* ContentView.swift */; };
 		222FC6062A470EA400E32672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222FC6052A470EA400E32672 /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 		2200C6A02A480505005BA91E /* StaggeredGridDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaggeredGridDemoView.swift; sourceTree = "<group>"; };
 		2200C6A22A480523005BA91E /* IconGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconGeneratorView.swift; sourceTree = "<group>"; };
 		220DE8742A73964E0044089D /* AnimatedNumberDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedNumberDemoView.swift; sourceTree = "<group>"; };
+		222052A32BBACA1400B20FBB /* ScrollViewBridgeDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewBridgeDemoView.swift; sourceTree = "<group>"; };
 		222FC5FE2A470EA400E32672 /* PhotonUtilityKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotonUtilityKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222FC6012A470EA400E32672 /* PhotonUtilityKitDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotonUtilityKitDemoApp.swift; sourceTree = "<group>"; };
 		222FC6032A470EA400E32672 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				226BC9692A6F0FCC00BB0A9D /* BridgedPageViewDemoView.swift */,
 				220DE8742A73964E0044089D /* AnimatedNumberDemoView.swift */,
 				229525A42A924C9F005E0E1B /* TipsDemoView.swift */,
+				222052A32BBACA1400B20FBB /* ScrollViewBridgeDemoView.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -218,7 +221,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					222FC5FD2A470EA400E32672 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -271,6 +274,7 @@
 				222FC6042A470EA400E32672 /* ContentView.swift in Sources */,
 				2200C69F2A4804F3005BA91E /* FullscreenContentDemoView.swift in Sources */,
 				22DD0AD72A77F9D10063B053 /* Catagory.swift in Sources */,
+				222052A42BBACA1400B20FBB /* ScrollViewBridgeDemoView.swift in Sources */,
 				2200C6A32A480523005BA91E /* IconGeneratorView.swift in Sources */,
 				2200C6972A480485005BA91E /* UnevenRoundedRectDemoView.swift in Sources */,
 				222FC61E2A472A1800E32672 /* HighliableCodeView.swift in Sources */,
