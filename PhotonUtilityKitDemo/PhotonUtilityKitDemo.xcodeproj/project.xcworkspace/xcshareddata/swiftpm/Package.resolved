@@ -25,7 +25,7 @@
       "location" : "https://github.com/JuniperPhoton/PhotonUtilityKit",
       "state" : {
         "branch" : "main",
-        "revision" : "c507af7761e018b4232bd98db5d847032fb34ee7"
+        "revision" : "2f99bb5a08d278cba27dcdd1f3f29bffec8035c6"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/layoutBox/PinLayout",
       "state" : {
-        "revision" : "ce929a6ecdc6701adee9bdf9d949e0036f567ca7",
-        "version" : "1.10.4"
+        "revision" : "8eaa3a15e4dcabaca4c95aea4c0ff0c9b4a67213",
+        "version" : "1.10.5"
       }
     },
     {
