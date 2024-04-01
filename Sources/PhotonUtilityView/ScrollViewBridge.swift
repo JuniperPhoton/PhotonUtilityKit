@@ -65,13 +65,22 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
         let scrollView = UIScrollView()
         scrollView.delegate = context.coordinator
         
-        let frame = CGRect(x: 0, y: 0, width: scrollViewSize.width, height: scrollViewSize.height)
+        var frame = CGRect(x: 0, y: 0, width: scrollViewSize.width, height: scrollViewSize.height)
+        frame = frame.largestAspectFitRect(of: actualContentAspectRatio)
         
         let hostingController = UIHostingController(rootView: contentView())
-        hostingController.view.frame = frame
+        hostingController.view.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+        
+        let diffContentX = scrollViewSize.width - frame.width
+        let diffContentY = scrollViewSize.height - frame.height
         
         scrollView.addSubview(hostingController.view)
-        scrollView.contentInset = .zero
+        scrollView.contentInset = UIEdgeInsets(
+            top: diffContentY / 2,
+            left: diffContentX / 2,
+            bottom: diffContentY / 2,
+            right: diffContentX / 2
+        )
         scrollView.maximumZoomScale = 3
         scrollView.minimumZoomScale = 1
         scrollView.zoomScale = 1
@@ -138,10 +147,15 @@ public class ScrollViewBridgeCoordinator: NSObject, UIScrollViewDelegate {
     }
     
     public func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        // To get better snap-to-edge experience,
+        // we adjust the scrollView's content insets each time we scroll.
+        centerView(scrollView)
         onZoomed?(scrollView.zoomScale)
     }
     
     public func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        // To get better snap-to-edge experience,
+        // we adjust the scrollView's content insets each time we scroll.
         centerView(scrollView)
         onZoomed?(scale)
     }
@@ -151,19 +165,27 @@ public class ScrollViewBridgeCoordinator: NSObject, UIScrollViewDelegate {
             return
         }
         
+        let boundsSize = scrollView.bounds.size
+        
         if scrollView.zoomScale <= scrollView.minimumZoomScale {
+            var frame = CGRect(x: 0, y: 0, width: boundsSize.width, height: boundsSize.height)
+            frame = frame.largestAspectFitRect(of: actualContentAspectRatio)
+            
+            let xd = -(frame.width - boundsSize.width) / 2
+            let yd = -(frame.height - boundsSize.height) / 2
+            
             UIView.animate(withDuration: 0.2) {
-                scrollView.contentInset = .zero
+                scrollView.contentInset = UIEdgeInsets(top: yd, left: xd, bottom: yd, right: xd)
             }
             return
         }
         
-        let boundsSize = scrollView.bounds.size
+        // The contentView's frame may larger than the scrollView's frame. Since it's zoomed in.
         let contentsFrame = contentView.frame
         let contentsBodyFrame = contentsFrame.largestAspectFitRect(of: actualContentAspectRatio)
         
-        let diffContentX = max(0, contentsFrame.width - contentsBodyFrame.width)
-        let diffContentY = max(0, contentsFrame.height - contentsBodyFrame.height)
+        let diffContentX = contentsFrame.width - contentsBodyFrame.width
+        let diffContentY = contentsFrame.height - contentsBodyFrame.height
         
         if contentsBodyFrame.height < boundsSize.height || contentsBodyFrame.width < boundsSize.width {
             let diffX = diffContentX / 2 - max(0, boundsSize.width - contentsBodyFrame.width) / 2

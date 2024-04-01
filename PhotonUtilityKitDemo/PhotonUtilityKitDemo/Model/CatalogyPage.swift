@@ -44,6 +44,7 @@ func generateAllCatagories() -> [CatalogyPage] {
                          .toast,
                          .appSegmentTabBar,
                          .fullscreenContent,
+                         .scrollViewBridge
                      ]),
         CatalogyPage(.customLayout, [.staggeredGrid]),
         CatalogyPage(.utility, [.screenshot]),

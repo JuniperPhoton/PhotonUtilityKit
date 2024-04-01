@@ -81,11 +81,15 @@ struct TabBarDemoView: View {
             
             HighliableCodeView(code: viewModel.appSegmentTabBarCode)
 
-            AppSegmentTabBar(selection: $selected.animation(.default.speed(1.3)), sources: tabs,
-                             scrollable: true,
-                             foregroundColor: .accentColor,
-                             backgroundColor: .accentColor.opacity(0.1),
-                             horizontalInset: 0) { tab in
+            AppSegmentTabBar(
+                selection: $selected.animation(.default.speed(1.3)),
+                sources: tabs,
+                scrollable: true,
+                foregroundColor: .accentColor,
+                backgroundColor: .accentColor.opacity(0.1),
+                horizontalInset: 0,
+                shape: Capsule()
+            ) { tab in
                 HStack {
                     Image(systemName: tab.icon)
                     Text(tab.rawValue.uppercased()).bold()

@@ -21,6 +21,7 @@ enum FeaturePage: String, FeaturePageTrait {
     case iconGenerator = "Icon Generator"
     case screenshot = "Screenshot"
     case bridgedPageView = "Bridged PageView"
+    case scrollViewBridge = "ScrollView Bridge"
 
     var icon: String {
         switch self {
@@ -48,6 +49,8 @@ enum FeaturePage: String, FeaturePageTrait {
             return "viewfinder"
         case .screenshot:
             return "macwindow"
+        case .scrollViewBridge:
+            return "square.arrowtriangle.4.outward"
         }
     }
 
@@ -55,6 +58,8 @@ enum FeaturePage: String, FeaturePageTrait {
         switch self {
         case .iconGenerator, .screenshot:
             return [.macOS]
+        case .scrollViewBridge:
+            return [.iOS]
         default:
             return Platform.allCases
         }
@@ -89,6 +94,8 @@ extension FeaturePage {
             IconGeneratorView()
         case .screenshot:
             ScreenshotDemoView()
+        case .scrollViewBridge:
+            ScrollViewBridgeDemoView()
         }
     }
 }
