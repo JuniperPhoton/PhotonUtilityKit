@@ -30,9 +30,10 @@ import SwiftUI
 public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
     let contentView: () -> ContentView
     
-    var controller: ScrollViewBridgeController?
-    var actualContentAspectRatio: CGSize
-    var scrollViewSize: CGSize
+    let maxScale: CGFloat
+    let controller: ScrollViewBridgeController?
+    let actualContentAspectRatio: CGSize
+    let scrollViewSize: CGSize
     
     /// Initialize ``ScrollViewBridge``.
     /// - parameter controller: The optional instance of ``ScrollViewBridgeController``.
@@ -44,11 +45,13 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
     /// - parameter actualContentAspectRatio: The aspect ratio of the content view. Currently the content view will be scaled to fit this scroll view.
     /// - parameter contentView: Block to get the content view.
     public init(
+        maxScale: CGFloat = 3.0,
         controller: ScrollViewBridgeController? = nil,
         actualContentAspectRatio: CGSize,
         scrollViewSize: CGSize,
         contentView: @escaping () -> ContentView
     ) {
+        self.maxScale = maxScale
         self.contentView = contentView
         self.controller = controller
         self.scrollViewSize = scrollViewSize
@@ -81,7 +84,7 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
             bottom: diffContentY / 2,
             right: diffContentX / 2
         )
-        scrollView.maximumZoomScale = 3
+        scrollView.maximumZoomScale = maxScale
         scrollView.minimumZoomScale = 1
         scrollView.zoomScale = 1
         scrollView.showsVerticalScrollIndicator = false
@@ -90,6 +93,10 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
         controller?.onRequestUpdateContentSize = { [weak scrollView] scrollViewSize in
             guard let scrollView = scrollView else { return }
             centerView(scrollView, scrollViewSize: scrollViewSize)
+        }
+        controller?.onRequestZoom = { [weak scrollView] point, scale in
+            guard let scrollView = scrollView else { return }
+            zoom(scrollView, to: point, scaleFactor: scale)
         }
         
         context.coordinator.onZoomed = { [weak controller] scale in
@@ -104,6 +111,27 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
         guard let _ = uiView as? UIScrollView else {
             return
         }
+    }
+    
+    private func zoom(_ scrollView: UIScrollView, to point: CGPoint, scaleFactor: CGFloat) {
+        let bounds = scrollView.bounds
+        
+        let minScale = scrollView.minimumZoomScale
+        let maxScale = scrollView.maximumZoomScale
+        
+        let targetScale = minScale + (maxScale - minScale) * (scaleFactor - 1)
+        
+        let targetWidth = bounds.width / targetScale
+        let targetHeight = bounds.height / targetScale
+        
+        let targetRect = CGRect(
+            x: point.x * bounds.width,
+            y: point.y * bounds.height,
+            width: targetWidth,
+            height: targetHeight
+        ).offsetBy(dx: -targetWidth / 2, dy: -targetHeight / 2)
+        
+        scrollView.zoom(to: targetRect, animated: true)
     }
     
     private func centerView(_ scrollView: UIScrollView, scrollViewSize: CGSize) {
@@ -121,7 +149,7 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
         let minScale = min(widthScale, heightScale)
         
         scrollView.minimumZoomScale = minScale
-        scrollView.maximumZoomScale = 3 + (minScale < 1 ? (1 - minScale) : 0)
+        scrollView.maximumZoomScale = maxScale + (minScale < 1 ? (1 - minScale) : 0)
         
         let contentWidth = contentSize.width * minScale
         let contentHeight = contentSize.height * minScale
@@ -212,16 +240,19 @@ public class ScrollViewBridgeCoordinator: NSObject, UIScrollViewDelegate {
     }
 }
 
-protocol ScrollViewBridgeControllerProtocol {
+public protocol ScrollViewBridgeControllerProtocol {
     func requestUpdateContentSize(scrollViewSize: CGSize)
+    func requestZoom(to point: CGPoint, scaleFactor: CGFloat)
 }
 
 /// A controller as a coordinator.
 /// You can receive zoom scale factor changes via ``zoomScaleFactor``.
 ///
 /// To notify the inner view to get update when the size of ScrollView changes, call ``requestUpdateContentSize``.
+/// To zoom manually, call ``requestZoom(to:scaleFactor:)``.
 public class ScrollViewBridgeController: ObservableObject, ScrollViewBridgeControllerProtocol {
     var onRequestUpdateContentSize: ((CGSize) -> Void)? = nil
+    var onRequestZoom: ((CGPoint, CGFloat) -> Void)? = nil
     
     private var delayItem: DispatchWorkItem? = nil
     
@@ -239,6 +270,21 @@ public class ScrollViewBridgeController: ObservableObject, ScrollViewBridgeContr
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: item)
         self.delayItem = item
+    }
+    
+    /// Request the scroll view to scroll to the specified point with a scale factor.
+    ///
+    /// - parameter point: The point to be visible. Must be normalized to 0...1 and in the coordinate space of ScrollView.
+    /// That's, if the content view is smaller than the scrollView, then you need to calculate the offset.
+    ///
+    /// - parameter scaleFactor: The scale factor to be applied. Must be 1...maxScale.
+    public func requestZoom(to point: CGPoint, scaleFactor: CGFloat) {
+        self.onRequestZoom?(point, scaleFactor)
+    }
+    
+    /// Request the scroll view to reset zoom to min scale.
+    public func resetZoom() {
+        requestZoom(to: CGPoint(x: 0.5, y: 0.5), scaleFactor: 1.0)
     }
 }
 #endif

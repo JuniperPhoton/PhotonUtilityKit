@@ -1,5 +1,4 @@
 {
-  "originHash" : "e39a1df8f2874a7554aeea5836903dbe5cfa9b4ccc84cc3b396123f5f5240902",
   "pins" : [
     {
       "identity" : "highlightr",
@@ -17,15 +16,6 @@
       "state" : {
         "revision" : "d80ac73572569da2bdb2cdc57c90e34402ffc729",
         "version" : "1.0.2"
-      }
-    },
-    {
-      "identity" : "photonutilitykit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/JuniperPhoton/PhotonUtilityKit",
-      "state" : {
-        "branch" : "main",
-        "revision" : "2f99bb5a08d278cba27dcdd1f3f29bffec8035c6"
       }
     },
     {
@@ -47,5 +37,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
