@@ -60,6 +60,8 @@ enum FeaturePage: String, FeaturePageTrait {
             return [.macOS]
         case .scrollViewBridge:
             return [.iOS]
+        case .appSegmentTabBar:
+            return [.iOS, .macOS]
         default:
             return Platform.allCases
         }

@@ -27,7 +27,7 @@ public struct InterfaceOrientationMask : OptionSet {
     public static let all: InterfaceOrientationMask = [.portrait, .landscape, .portraitUpsideDown ]
     public static let allButUpsideDown: InterfaceOrientationMask = [.portrait, .landscape ]
     
-#if canImport(UIKit)
+#if os(iOS)
     public var uiKitRepresentation: UIInterfaceOrientationMask {
         var result: UIInterfaceOrientationMask = []
         if self.contains(.portrait) {
@@ -63,7 +63,7 @@ public class AppOrientationLocker: ObservableObject {
     
     @Published public var orientationLock = InterfaceOrientationMask.all {
         didSet {
-#if canImport(UIKit)
+#if os(iOS)
             if #available(iOS 16.0, *) {
                 UIApplication.shared.connectedScenes.forEach { scene in
                     if let windowScene = scene as? UIWindowScene {

@@ -100,9 +100,11 @@ public class DeviceOrientationInfo: ObservableObject {
     /// Get or observe the lastest orientation.
     @Published public var orientation = DeviceOrientation.portrait
     
+#if os(iOS)
     /// Get or observe the underlying ``CMDeviceMotion``.
     @Published public var data: CMDeviceMotion? = nil
-    
+#endif
+
     private init() {
         // empty
     }
@@ -171,6 +173,7 @@ public class DeviceOrientationInfo: ObservableObject {
     }
 }
 
+#if os(iOS)
 extension CMRotationRate: Equatable {
     public static func == (lhs: CMRotationRate, rhs: CMRotationRate) -> Bool {
         return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z
@@ -182,3 +185,4 @@ extension CMAcceleration: Equatable {
         return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z
     }
 }
+#endif

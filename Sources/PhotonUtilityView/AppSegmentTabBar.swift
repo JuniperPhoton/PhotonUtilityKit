@@ -9,6 +9,7 @@ import SwiftUI
 import PhotonUtility
 import SwiftUIIntrospect
 
+#if !os(tvOS)
 /// A ``AppSegmentTabBar`` which use ``Text`` as content view and Capsule as shape.
 extension TextAppSegmentTabBar where S == Capsule {
     public init(selection: Binding<T>,
@@ -30,7 +31,6 @@ extension TextAppSegmentTabBar where S == Capsule {
             backgroundColor: backgroundColor,
             horizontalInset: horizontalInset,
             textKeyPath: textKeyPath,
-            shape: Capsule(),
             helpTooltips: helpTooltips,
             keyboardShortcut: keyboardShortcut
         )
@@ -71,7 +71,6 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
     
     /// A block to get the text showing on help tooltips from a specified item.
     var helpTooltips: ((T) -> String)?
-#if !os(tvOS)
     
     /// A block to get the keyboard shortcut.
     var keyboardShortcut: ((T) -> KeyEquivalent)?
@@ -114,39 +113,6 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
             bodyText(item: item)
         }
     }
-#else
-    public init(selection: Binding<T>,
-                sources: [T],
-                scrollable: Bool,
-                foregroundColor: Color,
-                selectedForegroundColor: Color = .white,
-                backgroundColor: Color,
-                horizontalInset: CGFloat = 0,
-                shape: shape,
-                textKeyPath: KeyPath<T, String>) {
-        self.selection = selection
-        self.sources = sources
-        self.scrollable = scrollable
-        self.foregroundColor = foregroundColor
-        self.selectedForegroundColor = selectedForegroundColor
-        self.backgroundColor = backgroundColor
-        self.horizontalInset = horizontalInset
-        self.textKeyPath = textKeyPath
-        self.shape = shape
-    }
-    
-    public var body: some View {
-        AppSegmentTabBar(selection: selection,
-                         sources: sources,
-                         scrollable: scrollable,
-                         foregroundColor: foregroundColor,
-                         backgroundColor: backgroundColor,
-                         shape: shape,
-                         horizontalInset: horizontalInset) { item in
-            bodyText(item: item)
-        }
-    }
-#endif
     
     private func bodyText(item: T) -> some View {
         Text(LocalizedStringKey(item[keyPath: textKeyPath]), bundle: sourcesBundle)
@@ -202,14 +168,11 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
     var backgroundColor: Color
     var shape: S
     var horizontalInset: CGFloat = 12
-#if !os(tvOS)
     var keyboardShortcut: ((T) -> KeyEquivalent)?
-#endif
     let label: (T) -> V
     
     @State private var autoScrollState: AutoScrollState<T>
     
-#if !os(tvOS)
     public init(selection: Binding<T>,
                 sources: [T],
                 scrollable: Bool,
@@ -230,25 +193,6 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
         self.label = label
         self._autoScrollState = State(initialValue: AutoScrollState(value: nil, in: sources))
     }
-#else
-    public init(selection: Binding<T>,
-                sources: [T],
-                scrollable: Bool,
-                foregroundColor: Color,
-                backgroundColor: Color,
-                shape: S,
-                horizontalInset: CGFloat,
-                label: @escaping (T) -> V) {
-        self.selection = selection
-        self.sources = sources
-        self.scrollable = scrollable
-        self.foregroundColor = foregroundColor
-        self.backgroundColor = backgroundColor
-        self.horizontalInset = horizontalInset
-        self.shape = shape
-        self.label = label
-    }
-#endif
     
     public var body: some View {
         ZStack {
@@ -278,11 +222,9 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
                         DeviceCompat.triggerVibrationFeedback()
                         selection.wrappedValue = item
                     }
-#if !os(tvOS)
                     .runIf(condition: keyboardShortcut != nil) { v in
                         v.keyboardShortcut(keyboardShortcut!(item))
                     }
-#endif
                     .listenFrameChanged(coordinateSpace: .named(nameSpaceName)) { rect in
                         frameState.updateItemFrame(item: item, frame: rect)
                         
@@ -402,3 +344,4 @@ private func findAnotherNextItemToScrollTo<T: Equatable>(current: T, next: T, in
     
     return nil
 }
+#endif

@@ -63,6 +63,7 @@ struct TabBarDemoView: View {
     @State private var showSheet = false
     
     var body: some View {
+#if !os(tvOS)
         VStack {
             Text("TextAppSegmentTabBar").applySubTitle()
             
@@ -80,7 +81,7 @@ struct TabBarDemoView: View {
             Text("AppSegmentTabBar").applySubTitle()
             
             HighliableCodeView(code: viewModel.appSegmentTabBarCode)
-
+            
             AppSegmentTabBar(
                 selection: $selected.animation(.default.speed(1.3)),
                 sources: tabs,
@@ -107,5 +108,8 @@ struct TabBarDemoView: View {
         .sheetCompat(isPresented: $showSheet) {
             Text("A sheet")
         }
+#else
+        Text("Supports iOS and macOS only")
+#endif
     }
 }
