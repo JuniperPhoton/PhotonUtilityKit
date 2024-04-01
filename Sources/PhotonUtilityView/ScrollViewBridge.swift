@@ -63,8 +63,6 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
     }
     
     public func makeUIView(context: Context) -> some UIView {
-        context.coordinator.actualContentAspectRatio = actualContentAspectRatio
-        
         let scrollView = UIScrollView()
         scrollView.delegate = context.coordinator
         
@@ -90,13 +88,17 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         
+        // We should not reference properties from this UIViewRepresentable struct.
+        // Although it seems OK but refering properties will cause memory leak.
+        // For example, if we refer the maxScale from the ScrollViewBridge,
+        // the ScrollViewBridgeController will leak.
         controller?.onRequestUpdateContentSize = { [weak scrollView] scrollViewSize in
             guard let scrollView = scrollView else { return }
-            centerView(scrollView, scrollViewSize: scrollViewSize)
+            context.coordinator.centerViewOnNewSize(scrollView, scrollViewSize: scrollViewSize)
         }
         controller?.onRequestZoom = { [weak scrollView] point, scale in
             guard let scrollView = scrollView else { return }
-            zoom(scrollView, to: point, scaleFactor: scale)
+            context.coordinator.zoom(scrollView, to: point, scaleFactor: scale)
         }
         
         context.coordinator.onZoomed = { [weak controller] scale in
@@ -111,9 +113,36 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
         guard let _ = uiView as? UIScrollView else {
             return
         }
+        
+        context.coordinator.actualContentAspectRatio = actualContentAspectRatio
+        context.coordinator.maxScale = maxScale
+    }
+}
+
+public class ScrollViewBridgeCoordinator: NSObject, UIScrollViewDelegate {
+    var actualContentAspectRatio: CGSize = .zero
+    var maxScale: CGFloat = 3.0
+    var onZoomed: ((CGFloat) -> Void)? = nil
+    
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return scrollView.subviews.first
     }
     
-    private func zoom(_ scrollView: UIScrollView, to point: CGPoint, scaleFactor: CGFloat) {
+    public func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        // To get better snap-to-edge experience,
+        // we adjust the scrollView's content insets each time we scroll.
+        centerView(scrollView)
+        onZoomed?(scrollView.zoomScale)
+    }
+    
+    public func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        // To get better snap-to-edge experience,
+        // we adjust the scrollView's content insets each time we scroll.
+        centerView(scrollView)
+        onZoomed?(scale)
+    }
+    
+    fileprivate func zoom(_ scrollView: UIScrollView, to point: CGPoint, scaleFactor: CGFloat) {
         let bounds = scrollView.bounds
         
         let minScale = scrollView.minimumZoomScale
@@ -134,7 +163,7 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
         scrollView.zoom(to: targetRect, animated: true)
     }
     
-    private func centerView(_ scrollView: UIScrollView, scrollViewSize: CGSize) {
+    fileprivate func centerViewOnNewSize(_ scrollView: UIScrollView, scrollViewSize: CGSize) {
         guard let contentView = scrollView.subviews.first else {
             return
         }
@@ -162,30 +191,6 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
             scrollView.zoomScale = minScale
             scrollView.contentInset = insets
         }
-    }
-}
-
-public class ScrollViewBridgeCoordinator: NSObject, UIScrollViewDelegate {
-    var actualContentAspectRatio: CGSize = .zero
-    
-    var onZoomed: ((CGFloat) -> Void)? = nil
-    
-    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return scrollView.subviews.first
-    }
-    
-    public func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        // To get better snap-to-edge experience,
-        // we adjust the scrollView's content insets each time we scroll.
-        centerView(scrollView)
-        onZoomed?(scrollView.zoomScale)
-    }
-    
-    public func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        // To get better snap-to-edge experience,
-        // we adjust the scrollView's content insets each time we scroll.
-        centerView(scrollView)
-        onZoomed?(scale)
     }
     
     private func centerView(_ scrollView: UIScrollView) {
