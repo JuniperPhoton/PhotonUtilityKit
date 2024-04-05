@@ -90,7 +90,7 @@ public enum ToastShape {
     case roundedRect(CGFloat)
     case capsule
     
-    @available(iOS 16.0, *)
+    @available(iOS 16.0, macOS 13.0, *)
     var toShape: AnyShape {
         switch self {
         case .roundedRect(let radius):
