@@ -86,8 +86,24 @@ public struct ToastColor {
     }
 }
 
+public enum ToastShape {
+    case roundedRect(CGFloat)
+    case capsule
+    
+    @available(iOS 16.0, *)
+    var toShape: AnyShape {
+        switch self {
+        case .roundedRect(let radius):
+            AnyShape(RoundedRectangle(cornerRadius: radius))
+        case .capsule:
+            AnyShape(Capsule())
+        }
+    }
+}
+
 fileprivate struct ToastStyle {
     var showIcon: Bool = true
+    var shape: ToastShape = .capsule
 }
 
 fileprivate struct ToastColorKey: EnvironmentKey {
@@ -123,6 +139,11 @@ public extension View {
     /// Shows/hides icon inside ``ToastView``.
     func toastShowIcon(_ showIcon: Bool) -> some View {
         self.environment(\.toastStyle, ToastStyle(showIcon: showIcon))
+    }
+    
+    /// Set the toast style.
+    func toastStyle(showIcon: Bool, shape: ToastShape) -> some View {
+        self.environment(\.toastStyle, ToastStyle(showIcon: showIcon, shape: shape))
     }
 }
 
@@ -200,7 +221,20 @@ fileprivate struct ToastContentView: View {
                 .foregroundColor(colors.foregroundColor)
                 .multilineTextAlignment(.center)
         }.padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
-            .background(Capsule().fill(colors.backgroundColor).addShadow())
+            .background {
+                Group {
+                    if #available(iOS 16.0, *) {
+                        style.shape.toShape.fill(colors.backgroundColor)
+                    } else {
+                        switch style.shape {
+                        case .roundedRect(let radius):
+                            RoundedRectangle(cornerRadius: radius).fill(colors.backgroundColor)
+                        case .capsule:
+                            Capsule().fill(colors.backgroundColor)
+                        }
+                    }
+                }.addShadow()
+            }
             .padding(8)
             .transition(.move(edge: .top).combined(with: .opacity))
             .animation(.default, value: style.showIcon)
