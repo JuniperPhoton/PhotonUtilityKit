@@ -31,6 +31,7 @@ extension TextAppSegmentTabBar where S == Capsule {
             backgroundColor: backgroundColor,
             horizontalInset: horizontalInset,
             textKeyPath: textKeyPath,
+            shape: Capsule(), 
             helpTooltips: helpTooltips,
             keyboardShortcut: keyboardShortcut
         )
