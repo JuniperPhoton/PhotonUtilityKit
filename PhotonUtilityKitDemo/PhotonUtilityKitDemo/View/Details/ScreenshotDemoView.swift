@@ -66,7 +66,7 @@ struct ScreenshotDemoView: View {
     }
 #else
     var body: some View {
-        Text("Not supported")
+        NotSupportedHintView(notSupportedPlatforms: [.iOS, .tvOS])
     }
 #endif
 }

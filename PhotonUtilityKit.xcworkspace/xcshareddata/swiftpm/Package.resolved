@@ -1,4 +1,5 @@
 {
+  "originHash" : "e39a1df8f2874a7554aeea5836903dbe5cfa9b4ccc84cc3b396123f5f5240902",
   "pins" : [
     {
       "identity" : "highlightr",
@@ -10,14 +11,41 @@
       }
     },
     {
+      "identity" : "photonmediakit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JuniperPhoton/PhotonMediaKit",
+      "state" : {
+        "revision" : "d80ac73572569da2bdb2cdc57c90e34402ffc729",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "photonutilitykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JuniperPhoton/PhotonUtilityKit",
+      "state" : {
+        "revision" : "17c8d28ee7c7a6366c0156c14d62bd5fd927a513",
+        "version" : "1.4.16"
+      }
+    },
+    {
+      "identity" : "pinlayout",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/layoutBox/PinLayout",
+      "state" : {
+        "revision" : "8eaa3a15e4dcabaca4c95aea4c0ff0c9b4a67213",
+        "version" : "1.10.5"
+      }
+    },
+    {
       "identity" : "swiftui-introspect",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/swiftui-introspect",
       "state" : {
-        "revision" : "1136c9a348329887844de9353107c787becc675b",
-        "version" : "0.11.0"
+        "revision" : "121c146fe591b1320238d054ae35c81ffa45f45a",
+        "version" : "0.12.0"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

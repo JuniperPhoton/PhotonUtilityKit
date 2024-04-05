@@ -171,7 +171,7 @@ struct IconGeneratorView: View {
             }
         }
 #else
-        Text("Not supported")
+        NotSupportedHintView(notSupportedPlatforms: [.iOS, .tvOS])
 #endif
     }
 }

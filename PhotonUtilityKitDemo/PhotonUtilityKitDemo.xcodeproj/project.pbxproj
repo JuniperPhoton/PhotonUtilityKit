@@ -35,6 +35,8 @@
 		22DD0ADB2A77F9EC0063B053 /* FeaturePageTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DD0ADA2A77F9EC0063B053 /* FeaturePageTrait.swift */; };
 		22DD0ADD2A77F9F70063B053 /* FeaturePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DD0ADC2A77F9F70063B053 /* FeaturePage.swift */; };
 		22DD0ADF2A77FA0A0063B053 /* CatalogyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DD0ADE2A77FA0A0063B053 /* CatalogyPage.swift */; };
+		22E6A2002BBFF26A00FCA350 /* NotSupportedHintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E6A1FF2BBFF26A00FCA350 /* NotSupportedHintView.swift */; };
+		22E6A2022BBFF30F00FCA350 /* TabBarDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E6A2012BBFF30F00FCA350 /* TabBarDemoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +68,8 @@
 		22DD0ADC2A77F9F70063B053 /* FeaturePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturePage.swift; sourceTree = "<group>"; };
 		22DD0ADE2A77FA0A0063B053 /* CatalogyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogyPage.swift; sourceTree = "<group>"; };
 		22DF44522A6D3F1B004C9753 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		22E6A1FF2BBFF26A00FCA350 /* NotSupportedHintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotSupportedHintView.swift; sourceTree = "<group>"; };
+		22E6A2012BBFF30F00FCA350 /* TabBarDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDemoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,7 +92,6 @@
 				2200C6962A480485005BA91E /* UnevenRoundedRectDemoView.swift */,
 				2200C6982A48049B005BA91E /* ActionButtonDemoView.swift */,
 				2200C69A2A4804C5005BA91E /* ToastDemoView.swift */,
-				2200C69C2A4804D8005BA91E /* TabBarDemoViewModel.swift */,
 				2200C69E2A4804F3005BA91E /* FullscreenContentDemoView.swift */,
 				2200C6A02A480505005BA91E /* StaggeredGridDemoView.swift */,
 				2200C6A22A480523005BA91E /* IconGeneratorView.swift */,
@@ -98,6 +101,7 @@
 				220DE8742A73964E0044089D /* AnimatedNumberDemoView.swift */,
 				229525A42A924C9F005E0E1B /* TipsDemoView.swift */,
 				222052A32BBACA1400B20FBB /* ScrollViewBridgeDemoView.swift */,
+				22E6A2012BBFF30F00FCA350 /* TabBarDemoView.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -150,6 +154,7 @@
 				222FC6032A470EA400E32672 /* ContentView.swift */,
 				222FC61D2A472A1800E32672 /* HighliableCodeView.swift */,
 				222FC61F2A47311800E32672 /* Styles.swift */,
+				22E6A1FF2BBFF26A00FCA350 /* NotSupportedHintView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -157,6 +162,7 @@
 		222FC6152A47164800E32672 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				2200C69C2A4804D8005BA91E /* TabBarDemoViewModel.swift */,
 				222FC6162A47165200E32672 /* MainViewModel.swift */,
 			);
 			path = ViewModel;
@@ -278,10 +284,12 @@
 				2200C6A32A480523005BA91E /* IconGeneratorView.swift in Sources */,
 				2200C6972A480485005BA91E /* UnevenRoundedRectDemoView.swift in Sources */,
 				222FC61E2A472A1800E32672 /* HighliableCodeView.swift in Sources */,
+				22E6A2002BBFF26A00FCA350 /* NotSupportedHintView.swift in Sources */,
 				222FC6022A470EA400E32672 /* PhotonUtilityKitDemoApp.swift in Sources */,
 				222FC6202A47311800E32672 /* Styles.swift in Sources */,
 				22DD0ADB2A77F9EC0063B053 /* FeaturePageTrait.swift in Sources */,
 				2200C6A12A480505005BA91E /* StaggeredGridDemoView.swift in Sources */,
+				22E6A2022BBFF30F00FCA350 /* TabBarDemoView.swift in Sources */,
 				222FC6172A47165200E32672 /* MainViewModel.swift in Sources */,
 				2200C69B2A4804C5005BA91E /* ToastDemoView.swift in Sources */,
 				229A75472A5C601F00DF05CA /* AnimatableGradientDemoView.swift in Sources */,
@@ -540,8 +548,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JuniperPhoton/PhotonUtilityKit";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 1.4.16;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
