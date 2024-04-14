@@ -549,7 +549,7 @@
 			repositoryURL = "https://github.com/JuniperPhoton/PhotonUtilityKit";
 			requirement = {
 				kind = exactVersion;
-				version = 1.4.16;
+				version = 1.4.32;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

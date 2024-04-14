@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/JuniperPhoton/PhotonUtilityKit",
       "state" : {
-        "branch" : "main",
-        "revision" : "a489d5ba2891628a2bcf07a9fc436949a5c8835a"
+        "revision" : "ce19f70f70b23d8550ae99858913bdd93cabc78b",
+        "version" : "1.4.31"
       }
     },
     {
