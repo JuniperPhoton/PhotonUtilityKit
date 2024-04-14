@@ -64,7 +64,7 @@ private struct ScrollViewContentView: View {
             
             Text(label)
                 .font(.title2)
-                .foregroundStyle(.white)
+                .foregroundColor(.white)
                 .matchParent(alignment: .topLeading)
                 .padding()
         }
