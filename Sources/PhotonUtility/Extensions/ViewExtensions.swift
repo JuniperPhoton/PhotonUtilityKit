@@ -334,9 +334,16 @@ public extension View {
 #endif
 
 public extension View {
+    /// Disable the view and set the opacity.
     @ViewBuilder
     func disabledBy(_ disabled: Bool) -> some View {
         self.disabled(disabled).opacity(disabled ? 0.5 : 1)
             .animation(.default, value: disabled)
+    }
+    
+    /// Apply a uniform scale factor to the view, affecting both width and height equally.
+    @ViewBuilder
+    func scale(_ factor: CGFloat, anchor: UnitPoint = .center) -> some View {
+        self.scaleEffect(CGSize(width: factor, height: factor), anchor: anchor)
     }
 }
