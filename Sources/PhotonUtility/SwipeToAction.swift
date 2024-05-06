@@ -30,7 +30,7 @@ public struct SwipeToAction: ViewModifier {
     /// Init this view with:
     /// - Parameter thresholdToAction: the distance in points to trigger the action block. Defaults to 100 points.
     /// - Parameter onTranslationXChanged: the block to be invoked on the translation x of the view is changed
-    /// - Parameter onAction: the block to be invoked when the swipe translation is greater than the thresholdToAction in points. Return true will restore  the translationx on action performed.
+    /// - Parameter onAction: the block to be invoked when the swipe translation is greater than the thresholdToAction in points. Return true will restore  the translation x on action performed.
     /// - Parameter onEnd: the block to be invoked when the gesture is ended
     init(axisMask: Axis,
          thresholdToAction: CGFloat,
@@ -117,7 +117,7 @@ public extension View {
     /// Apply swipe to perform action to this view.
     /// - Parameter thresholdToAction: the distance in points to trigger the action block. Defaults to 100 points.
     /// - Parameter onTranslationXChanged: the block to be invoked on the translation x of the view is changed
-    /// - Parameter onAction: the block to be invoked when the swipe translation is greater than the thresholdToAction in points. Return true will restore  the translationx on action performed.
+    /// - Parameter onAction: the block to be invoked when the swipe translation is greater than the thresholdToAction in points. Return true will restore  the translation x on action performed.
     /// - Parameter onEnd: the block to be invoked when the gesture is ended
     @ViewBuilder
     func swipeToAction(enabled: Bool = true,

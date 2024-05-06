@@ -40,10 +40,10 @@ public class PhotonSupabaseClient {
     
     /// Get the resources. If fails, it throws an error.
     ///
-    /// It returns the models based on your generic type, which should comform to ``Decodable`` protocol.
+    /// It returns the models based on your generic type, which should conform to ``Decodable`` protocol.
     ///
     /// - parameter select: columns to be select
-    /// - parameter filters: a dictionay containing how the fields are filtered, like `"id":"eq.1"` ,which means id should equals to 1.
+    /// - parameter filters: a dictionary containing how the fields are filtered, like `"id":"eq.1"` ,which means id should equals to 1.
     public func getResources<T: Decodable>(select: String = "*",
                                            filters: [String: String]) async throws -> T {
         guard let url = getURL(select: select, filters: filters) else {

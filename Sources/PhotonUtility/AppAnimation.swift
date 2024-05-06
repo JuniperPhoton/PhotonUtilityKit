@@ -20,7 +20,7 @@ public extension Binding {
 /// animation.
 ///
 /// The animation is fixed to using eastOut curve. And you can custom the ``duration``, ``delay`` of this animation.
-/// To perform task on the animation ended, you pass the ``onEnd`` to achive that. You use the ``onEndDelay`` to control how ``onEnd`` will be invoked
+/// To perform task on the animation ended, you pass the ``onEnd`` to achieve that. You use the ``onEndDelay`` to control how ``onEnd`` will be invoked
 /// after the original animation started.
 ///
 /// If you want to animate value from one to other, then from the other to another one, you can use the ``animate(value:from:to:duration:_:interval:)`` for convenience.
@@ -48,7 +48,7 @@ public func withEaseOutAnimation<Result>(duration: TimeInterval = 0.3,
 /// animation.
 ///
 /// The animation is fixed to using ``default`` curve. And you can custom the ``delay`` of this animation.
-/// To perform task on the animation ended, you pass the ``onEnd`` to achive that.
+/// To perform task on the animation ended, you pass the ``onEnd`` to achieve that.
 /// You use the ``onEndDelay`` to control how ``onEnd`` will be invoked
 /// after the original animation started.
 ///

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import PhotonUtility
 
-/// A controller that manage toast, coorporated with ``ToastView``.
+/// A controller that manages toast, corroborating with ``ToastView``.
 ///
 /// # Overview
 /// You call the object like a function to perform toast showing like:

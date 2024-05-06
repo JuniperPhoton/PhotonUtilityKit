@@ -36,7 +36,7 @@ private struct FullscreenRootView<V: View>: View {
                     }
             }
         }.ignoresSafeArea().environmentObject(fullscreenPresentation).transaction { current in
-            if let override = fullscreenPresentation.transcation {
+            if let override = fullscreenPresentation.transaction {
                 current = override
             }
         }
@@ -51,7 +51,7 @@ private struct FullscreenRootView<V: View>: View {
 public class FullscreenPresentation: ObservableObject {
     @Published public var presentedView: (any View)? = nil
     
-    @Published public var transcation: Transaction? = nil
+    @Published public var transaction: Transaction? = nil
     @Published public var transition: AnyTransition = .identity
     
     private var onDismiss: (() -> Void)? = nil
@@ -64,14 +64,14 @@ public class FullscreenPresentation: ObservableObject {
                         onDismiss: (() -> Void)? = nil) {
         self.onDismiss = onDismiss
         
-        withTransaction(createTranscation(animated: animated)) {
+        withTransaction(createTransaction(animated: animated)) {
             self.presentedView = view
             self.transition = transition
         }
     }
     
     public func dismissAll(animated: Bool = true, transition: AnyTransition = .opacity) {
-        withTransaction(createTranscation(animated: animated)) {
+        withTransaction(createTransaction(animated: animated)) {
             self.presentedView = nil
             self.transition = transition
             self.invokeOnDismiss()
@@ -83,7 +83,7 @@ public class FullscreenPresentation: ObservableObject {
         self.onDismiss = nil
     }
     
-    private func createTranscation(animated: Bool) -> Transaction {
+    private func createTransaction(animated: Bool) -> Transaction {
         if animated {
             return Transaction(animation: .easeOut)
         } else {

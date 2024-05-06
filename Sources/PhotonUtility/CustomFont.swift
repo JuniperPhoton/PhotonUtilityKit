@@ -16,8 +16,8 @@ public func isNotChineseLocalEnvironment() -> Bool {
 }
 
 /// A ViewModifier to apply to a ``Text`` to use a custom font.
-/// More specifily, for English, it uses ``DIN Condensed`` font, for Chinese, it uses the system font.
-public struct CustomFont: ViewModifier {    
+/// More specifically, for English, it uses ``DIN Condensed`` font, for Chinese, it uses the system font.
+public struct CustomFont: ViewModifier {
     let fixedEnglishFont: Bool
     let size: CGFloat
     let relativeTo: Font.TextStyle
@@ -63,13 +63,13 @@ public extension Text {
         self.bold().modifier(CustomFont(fixedEnglishFont: fixedEnglishFont, size: size, relativeTo: .title))
     }
     
-    /// Apply ``CustomFont`` to a ``Text`` with predefined text size optimzied for TV.
+    /// Apply ``CustomFont`` to a ``Text`` with predefined text size optimized for TV.
     func applyCustomTitleFont(fixedEnglishFont: Bool) -> some View {
         self.bold().modifier(CustomFont(fixedEnglishFont: fixedEnglishFont,
                                         size: DeviceCompat.isTV() ? 100 : 60, relativeTo: .title))
     }
     
-    /// Apply ``CustomFont`` to a ``Text`` with predefined text size optimzied for TV.
+    /// Apply ``CustomFont`` to a ``Text`` with predefined text size optimized for TV.
     func applyCustomSubTitleFont(fixedEnglishFont: Bool) -> some View {
         self.bold().modifier(CustomFont(fixedEnglishFont: fixedEnglishFont,
                                         size: DeviceCompat.isTV() ? 80 : 40, relativeTo: .title))

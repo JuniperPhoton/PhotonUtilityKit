@@ -56,7 +56,7 @@ public class CGWindowListScreenshotProvider: ScreenshotProvider {
             // The first parameter is screenBounds, which:
             // - If it is `.infinity`, then CGWindowListCreateImage will return the image contains all screens in all displays
             // - It's coordinate is the one with origin at the upper-left; y-value increasing downward
-            // - The NSScreen/frame is the one with origin at the bottom-left; y-value increasing upwawrd, so we need to transfer the coordinate
+            // - The NSScreen/frame is the one with origin at the bottom-left; y-value increasing upward, so we need to transfer the coordinate
             return CGWindowListCreateImage(clipRect, .optionOnScreenOnly, .zero, .bestResolution)
         } else {
             return nil

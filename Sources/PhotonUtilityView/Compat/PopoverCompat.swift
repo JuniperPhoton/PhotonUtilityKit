@@ -9,7 +9,7 @@ import SwiftUI
 
 public extension View {
     /// Shows a view inside a popover, anchoring to the current view.
-    /// This is availabe on iOS, iPadOS and macOS.
+    /// This is available on iOS, iPadOS and macOS.
     func popoverCompat<Content: View>(isPresented: Binding<Bool>,
                                       @ViewBuilder content: @escaping () -> Content) -> some View {
 #if os(macOS)

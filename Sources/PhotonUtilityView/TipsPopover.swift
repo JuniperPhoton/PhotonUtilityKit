@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 
 public extension View {
-    /// Shows popover tips if the view receives the notifiaction from ``AppTipsContoller``.
+    /// Shows popover tips if the view receives the notification from ``AppTipsController``.
     /// - parameter tipContent: The instance of ``AppTipContent`` protocol
     /// - parameter enabled: Enabled or not
     /// - parameter delay: The delay measured in seconds for this tips to show

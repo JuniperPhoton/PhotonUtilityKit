@@ -27,7 +27,7 @@ public class FileIO {
     ///
     /// Before calling this method, make sure you have access permission to it.
     ///
-    /// When in the SandBox environment, you must call URL's startAccessingSecurityScopedResource to get permisson.
+    /// When in the SandBox environment, you must call URL's startAccessingSecurityScopedResource to get permission.
     public func copyByStream(srcURL: URL, destURL: URL) throws {
         guard let stream = InputStream(url: srcURL),
               let outputStream = OutputStream(url: destURL, append: false) else {

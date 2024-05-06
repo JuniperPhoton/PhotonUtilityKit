@@ -14,7 +14,7 @@ private let logger = Logger(subsystem: "com.juniperphoton.photonutilityview", ca
 
 import AppKit
 /// A ``NSViewControllerRepresentable`` for showing ``NSPageController``.
-/// Use ``init(selection:pageObjects:idKeyPath:contentView:)`` to initialize a view and add it to a SwiftUI view hierachy.
+/// Use ``init(selection:pageObjects:idKeyPath:contentView:)`` to initialize a view and add it to a SwiftUI view hierarchy.
 public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
     let selection: Binding<Int>
     let pageObjects: [T]
@@ -54,7 +54,7 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
             guard let controller = controller else {
                 return nil
             }
-            // We should refer to controller.pageObjects to get the udpated objects, in which controller is a reference type.
+            // We should refer to controller.pageObjects to get the updated objects, in which controller is a reference type.
             // Since NSPageView is a struct type, which can't be captured in the block.
             return controller.pageObjects.first { page in
                 let pageId = page[keyPath: idKeyPath]

@@ -92,7 +92,7 @@ public extension View {
     }
     
     /// Set whether the ``ActionButton``'s label stretch to the width.
-    /// If true, this view will take the whole availabe width to layout.
+    /// If true, this view will take the whole available width to layout.
     func actionButtonStretchToWidth(_ stretchToWidth: Bool) -> some View {
         self.modifier(ActionButtonStyleModifier(stretchToWidth: stretchToWidth))
     }
@@ -192,12 +192,12 @@ public struct ActionButtonLabel: View {
 
 /// A button with default style.
 ///
-/// Use ``title`` and ``icon`` to specifiy the visual elements in this button. Note that one of these can be nil.
+/// Use ``title`` and ``icon`` to specify the visual elements in this button. Note that one of these can be nil.
 /// To customize the colors and other effects, use one of these methods:
 ///
 /// - ``actionButtonForegroundColor(_:)``: Set the text and icon color.
 /// - ``actionButtonBackgroundColor(_:)``: Set the background color.
-/// - ``actionButtonStretchToWidth(_:)``: True if you want this button has infinity width limation.
+/// - ``actionButtonStretchToWidth(_:)``: True if you want this button has infinity width limitation.
 /// - ``actionButtonAdaptOnUISizeClassChanged(_:)``: On iOS, set this to true will adapt to horizontal class size.
 /// - ``actionButtonUseContinuousStyle(_:)``: Set the rounded style.
 ///

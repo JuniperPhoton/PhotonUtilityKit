@@ -65,13 +65,13 @@ private struct MatchParent: ViewModifier {
 
 // MARK: Debug
 public extension View {
-    /// Add background to this view to help assit layout issue.
+    /// Add background to this view to help assist layout issue.
     @available(*, deprecated, message: "Renamed to .debug()")
     func assist() -> some View {
         self.background(Color.red)
     }
     
-    /// Add background to this view to help assit layout issue.
+    /// Add background to this view to help assist layout issue.
     func debug() -> some View {
         self.background(Color.red)
     }
@@ -202,7 +202,7 @@ private struct ViewSafeAreaWrapper<V: View>: View {
 public extension View {
     @available(iOS 15.0, macOS 12.0, *)
     func importFolderOrFiles(isPresented: Binding<Bool>, types: [UTType],
-                             allowsMultipleSelection: Bool, onSucess: @escaping ([URL])->Void) -> some View {
+                             allowsMultipleSelection: Bool, onSuccess: @escaping ([URL])->Void) -> some View {
 #if !os(tvOS)
         return self.fileImporter(isPresented: isPresented, allowedContentTypes: types,
                                  allowsMultipleSelection: allowsMultipleSelection) { result in
@@ -211,7 +211,7 @@ public extension View {
             }
             switch result {
             case .success(let urls):
-                onSucess(urls)
+                onSuccess(urls)
                 break
             case .failure(_):
                 break
@@ -231,7 +231,7 @@ public extension View {
     func asPlainButton(role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
         Button(role: role, action: action) {
             self
-        }.buttonStyle(CustomPlainButtonSytle())
+        }.buttonStyle(CustomPlainButtonStyle())
     }
     
     /// Wrap this view inside a button with automatic button style.
@@ -248,7 +248,7 @@ public extension View {
     func asPlainButton(action: @escaping () -> Void) -> some View {
         Button(action: action) {
             self
-        }.buttonStyle(CustomPlainButtonSytle())
+        }.buttonStyle(CustomPlainButtonStyle())
     }
     
     /// Wrap this view inside a button with automatic button style.
@@ -260,7 +260,7 @@ public extension View {
     }
 }
 
-fileprivate struct CustomPlainButtonSytle: ButtonStyle {
+fileprivate struct CustomPlainButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .brightness(configuration.isPressed ? -0.1 : 0.0)
@@ -319,7 +319,7 @@ public extension View {
     /// @FocusState var focus
     /// ```
     ///
-    /// You can use the underline one: _focous.
+    /// You can use the underline one: _focus.
     ///
     @available(iOS 15.0, macOS 12.0, *)
     func focusableByKeyboard(_ keyEquivalent: KeyEquivalent = "f",

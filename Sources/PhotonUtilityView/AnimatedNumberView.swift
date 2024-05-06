@@ -12,23 +12,23 @@ import PhotonUtility
 /// When the ``number`` changes, animations will be used to change each digit of this number.
 public struct AnimatedGroupNumberView: View {
     public let number: Int
-    public let transcation: Transaction
+    public let transaction: Transaction
     
     @State private var numbers: [NumberItem] = []
     
-    /// Initialzie the ``AnimatedGroupNumberView`` with:
+    /// Initialize the ``AnimatedGroupNumberView`` with:
     /// - parameter number: The number to be displayed.
-    /// - parameter transcation: The ``Transaction`` to be applied when animating.
-    public init(number: Int, transcation: Transaction) {
+    /// - parameter transaction: The ``Transaction`` to be applied when animating.
+    public init(number: Int, transaction: Transaction) {
         self.number = number
-        self.transcation = transcation
+        self.transaction = transaction
     }
     
     public var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 0) {
             HStack(spacing: 0) {
                 ForEach(numbers, id: \.id) { i in
-                    AnimatedNumberView(numberItem: i, transcation: transcation)
+                    AnimatedNumberView(numberItem: i, transaction: transaction)
                         .transition(.asymmetric(insertion: .scale.combined(with: .opacity).animation(.easeOut.speed(i.speed)),
                                                 removal: .scale))
                 }
@@ -99,13 +99,13 @@ fileprivate struct NumberItem {
 
 fileprivate struct AnimatedNumberView: View {
     let numberItem: NumberItem
-    let transcation: Transaction
+    let transaction: Transaction
     
     @StateObject private var stateHolder = NumberStateHolder()
     
-    public init(numberItem: NumberItem, transcation: Transaction) {
+    public init(numberItem: NumberItem, transaction: Transaction) {
         self.numberItem = numberItem
-        self.transcation = transcation
+        self.transaction = transaction
     }
     
     public var body: some View {
@@ -143,7 +143,7 @@ fileprivate struct AnimatedNumberView: View {
                 
                 stateHolder.newNumber = newValue
                                 
-                withTransaction(transcation) {
+                withTransaction(transaction) {
                     if stateHolder.increased {
                         stateHolder.newNumberOffsetY = 0
                         stateHolder.oldNumberOffsetY = stateHolder.fontHeight

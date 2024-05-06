@@ -88,7 +88,7 @@ public enum DeviceOrientation: Int {
 ///
 /// Note that the observation only supports iOS. For macOS and tvOS, the ``orientation``
 /// will always be ``DeviceOrientation.portrait`` and the ``start`` or ``stop`` methods
-/// won't do anyting.
+/// won't do anything.
 public class DeviceOrientationInfo: ObservableObject {
     /// Get the shared instance of ``DeviceOrientationInfo``.
     public static let shared = DeviceOrientationInfo()
@@ -97,7 +97,7 @@ public class DeviceOrientationInfo: ObservableObject {
     private var motionManager: CMMotionManager? = nil
 #endif
     
-    /// Get or observe the lastest orientation.
+    /// Get or observe the latest orientation.
     @Published public var orientation = DeviceOrientation.portrait
     
 #if os(iOS)

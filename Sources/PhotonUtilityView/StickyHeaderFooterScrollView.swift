@@ -9,7 +9,7 @@ import SwiftUI
 
 /// A scroll view that has sticky header and footer.
 ///
-/// You should NOT use .safeAreaInset(), which will block all the tap gesture in the safe area(even it's transaprent).
+/// You should NOT use .safeAreaInset(), which will block all the tap gesture in the safe area(even it's transparent).
 ///
 /// This view itself adds a Spacer as a stub view to the `ScrollView` sharing the same height of the provided header/footer view.
 ///

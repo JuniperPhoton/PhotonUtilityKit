@@ -25,8 +25,8 @@ import SwiftUI
 ///     }.id(viewModel.inputImage)
 /// }
 /// ```
-/// If the aspect ratio of the content view will change, you should invalide this view and force it to reconstruct.
-/// For example, you can use ``id(_:)`` to invalide this view.
+/// If the aspect ratio of the content view will change, you should invalidate this view and force it to reconstruct.
+/// For example, you can use ``id(_:)`` to invalidate this view.
 public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
     let contentView: () -> ContentView
     
@@ -89,7 +89,7 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
         scrollView.showsHorizontalScrollIndicator = false
         
         // We should not reference properties from this UIViewRepresentable struct.
-        // Although it seems OK but refering properties will cause memory leak.
+        // Although it seems OK but referring properties will cause memory leak.
         // For example, if we refer the maxScale from the ScrollViewBridge,
         // the ScrollViewBridgeController will leak.
         controller?.onRequestUpdateContentSize = { [weak scrollView] scrollViewSize in

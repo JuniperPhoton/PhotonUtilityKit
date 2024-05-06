@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 public extension Collection {
-    /// Return true if at least one element in this collection satisfly the condition.
+    /// Return true if at least one element in this collection satisfy the condition.
     func any(check: (Element) -> Bool) -> Bool {
         for e in self {
             if check(e) {
@@ -19,7 +19,7 @@ public extension Collection {
         return false
     }
     
-    /// Return true if all of elements in this collection satisfly the condition.
+    /// Return true if all of elements in this collection satisfy the condition.
     func all(check: (Element) -> Bool) -> Bool {
         for e in self {
             if !check(e) {
@@ -29,7 +29,7 @@ public extension Collection {
         return true
     }
     
-    /// Return the count of the element satisfly the condition.
+    /// Return the count of the element satisfy the condition.
     func countOf(check: (Element) -> Bool) -> Int {
         var count = 0
         forEach { e in
@@ -65,7 +65,7 @@ public extension Collection {
     }
     
     /// Join the element to a string with separator and custom toString.
-    func joinToString(sepatator: String = "_",
+    func joinToString(separator: String = "_",
                       toString: (Element) -> String) -> String {
         var output = ""
         
@@ -73,7 +73,7 @@ public extension Collection {
             let elementString = toString(e)
             output = output + elementString
             if index != self.count - 1 {
-                output = output + sepatator
+                output = output + separator
             }
         }
         return output
@@ -82,8 +82,8 @@ public extension Collection {
 
 public extension Collection where Element: CustomStringConvertible {
     /// Join the element that conforms to ``CustomStringConvertible`` protocol to a string with separator.
-    func joinToString(_ sepatator: String = "_") -> String {
-        return joinToString(sepatator: sepatator) { e in
+    func joinToString(_ separator: String = "_") -> String {
+        return joinToString(separator: separator) { e in
             e.description
         }
     }

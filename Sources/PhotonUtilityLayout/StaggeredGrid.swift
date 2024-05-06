@@ -8,13 +8,13 @@
 import Foundation
 import SwiftUI
 
-/// A view to layout children staggeredly like this:
+/// A view to layout children in a staggered way like this:
 ///
 /// With enough space:
 ///  [View1] [View2] [View3]
 ///  [View4]
 ///
-/// With not enought space:
+/// With not enough space:
 ///  [View1] [View2]
 ///  [View3] [View4]
 ///

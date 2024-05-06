@@ -18,7 +18,7 @@ public protocol AppTipContent: Equatable {
     /// The icon above the text. If it's nil, the icon won't be displayed
     var icon: String? { get }
         
-    /// The associated object key of this tip. Used to identify a specifiy view item.
+    /// The associated object key of this tip. Used to identify a specify view item.
     /// For example, views in a List should have different ``associatedObjectKey``
     /// while they may have the same ``key``
     var associatedObjectKey: String { get }
@@ -30,7 +30,7 @@ public extension AppTipContent {
     }
 }
 
-/// An object to publish and recieve tips changes.
+/// An object to publish and receive tips changes.
 /// You don't create this object manually, use ``shared`` to get the default instance.
 ///
 /// Use ``enqueueTip`` or ``enqueueTipIfNotShown(_:setShown:)`` to publish a tip.
@@ -136,7 +136,7 @@ public class AppTipsPreference {
         // empty
     }
     
-    /// Register a key refering to a tip.
+    /// Register a key referring to a tip.
     /// By doing so, when you call ``resetAll`` the key will be removed from the UserDefaults.
     public func register(tips: [any AppTipContent.Type]) {
         for tip in tips {
@@ -144,7 +144,7 @@ public class AppTipsPreference {
         }
     }
     
-    /// Register a key refering to a tip.
+    /// Register a key referring to a tip.
     /// By doing so, when you call ``resetAll`` the key will be removed from the UserDefaults.
     public func register(tips: any AppTipContent.Type...) {
         for tip in tips {

@@ -114,7 +114,7 @@ public struct BottomSheetView<Content: View>: View {
                     let velocity = deltaTime == 0 ? 20 : (deltaY / deltaTime / 100)
                     let fixedVelocity = velocity.clamp(to: 10...20)
                     
-                    print("velocity is \(velocity), fixed \(fixedVelocity), safa \(controller.safeArea)")
+                    print("velocity is \(velocity), fixed \(fixedVelocity), safeArea \(controller.safeArea)")
                     controller.startTime = nil
                     
                     withAnimation(.interpolatingSpring(stiffness: 70, damping: 272, initialVelocity: fixedVelocity)) {
