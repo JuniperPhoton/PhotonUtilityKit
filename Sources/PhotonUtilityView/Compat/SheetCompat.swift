@@ -41,7 +41,11 @@ private func fixContentViewTransformIssue() {
 #if os(iOS)
     // In case someone is not using Scene based lifecycle, we still use this deprecated
     // method to get the window
-    UIApplication.shared.windows.forEach { window in
+    UIApplication.shared.connectedScenes.compactMap { scene in
+        scene as? UIWindowScene
+    }.map { windowScene in
+        windowScene.windows
+    }.flatMap { $0 }.forEach { window in
         guard let view = window.rootViewController?.view else {
             return
         }
