@@ -92,9 +92,9 @@ public struct ScrollViewBridge<ContentView: View>: UIViewRepresentable {
         // Although it seems OK but referring properties will cause memory leak.
         // For example, if we refer the maxScale from the ScrollViewBridge,
         // the ScrollViewBridgeController will leak.
-        controller?.onRequestUpdateContentSize = { [weak scrollView] scrollViewSize in
+        controller?.onRequestUpdateContentSize = { [weak scrollView] (scrollViewSize, animated) in
             guard let scrollView = scrollView else { return }
-            context.coordinator.centerViewOnNewSize(scrollView, scrollViewSize: scrollViewSize)
+            context.coordinator.centerViewOnNewSize(scrollView, scrollViewSize: scrollViewSize, animated: animated)
         }
         controller?.onRequestZoom = { [weak scrollView] point, scale in
             guard let scrollView = scrollView else { return }
@@ -163,7 +163,7 @@ public class ScrollViewBridgeCoordinator: NSObject, UIScrollViewDelegate {
         scrollView.zoom(to: targetRect, animated: true)
     }
     
-    fileprivate func centerViewOnNewSize(_ scrollView: UIScrollView, scrollViewSize: CGSize) {
+    fileprivate func centerViewOnNewSize(_ scrollView: UIScrollView, scrollViewSize: CGSize, animated: Bool) {
         guard let contentView = scrollView.subviews.first else {
             return
         }
@@ -187,9 +187,17 @@ public class ScrollViewBridgeCoordinator: NSObject, UIScrollViewDelegate {
         
         let insets = UIEdgeInsets(top: offsetY, left: offsetX, bottom: offsetY, right: offsetX)
         
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
+        let action = {
             scrollView.zoomScale = minScale
             scrollView.contentInset = insets
+        }
+        
+        if animated {
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
+                action()
+            }
+        } else {
+            action()
         }
     }
     
@@ -246,7 +254,7 @@ public class ScrollViewBridgeCoordinator: NSObject, UIScrollViewDelegate {
 }
 
 public protocol ScrollViewBridgeControllerProtocol {
-    func requestUpdateContentSize(scrollViewSize: CGSize)
+    func requestUpdateContentSize(scrollViewSize: CGSize, animated: Bool, delay: TimeInterval)
     func requestZoom(to point: CGPoint, scaleFactor: CGFloat)
 }
 
@@ -256,7 +264,7 @@ public protocol ScrollViewBridgeControllerProtocol {
 /// To notify the inner view to get update when the size of ScrollView changes, call ``requestUpdateContentSize``.
 /// To zoom manually, call ``requestZoom(to:scaleFactor:)``.
 public class ScrollViewBridgeController: ObservableObject, ScrollViewBridgeControllerProtocol {
-    var onRequestUpdateContentSize: ((CGSize) -> Void)? = nil
+    var onRequestUpdateContentSize: ((CGSize, Bool) -> Void)? = nil
     var onRequestZoom: ((CGPoint, CGFloat) -> Void)? = nil
     
     private var delayItem: DispatchWorkItem? = nil
@@ -268,12 +276,12 @@ public class ScrollViewBridgeController: ObservableObject, ScrollViewBridgeContr
     }
     
     /// Call this method to update content size when the size of ScrollView changed.
-    public func requestUpdateContentSize(scrollViewSize: CGSize) {
+    public func requestUpdateContentSize(scrollViewSize: CGSize, animated: Bool = true, delay: TimeInterval = 0.2) {
         self.delayItem?.cancel()
         let item = DispatchWorkItem { [weak self] in
-            self?.onRequestUpdateContentSize?(scrollViewSize)
+            self?.onRequestUpdateContentSize?(scrollViewSize, animated)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: item)
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: item)
         self.delayItem = item
     }
     
