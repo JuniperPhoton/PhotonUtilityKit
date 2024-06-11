@@ -13,7 +13,6 @@ import SwiftUI
 ///
 /// This view itself adds a Spacer as a stub view to the `ScrollView` sharing the same height of the provided header/footer view.
 ///
-@available(*, deprecated, message: "Use safeAreaInset(edge:alignment:spacing:content:) API instead.")
 public struct StickyHeaderFooterScrollView<Content: View, Header: View, Footer: View>: View {
     let showsIndicators: Bool
     
