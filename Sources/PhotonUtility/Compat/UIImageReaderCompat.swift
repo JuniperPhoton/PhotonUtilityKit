@@ -16,16 +16,16 @@ private protocol UIImageReaderProtocol {
 
 /// Provides a compat way to decode image using high dynamic range.
 public class UIImageReaderCompat: UIImageReaderProtocol {
-    public let useDynamicRange: Bool
+    public let prefersHighDynamicRange: Bool
     
-    /// Construct ``UIImageReaderCompat`` specifying ``useDynamicRange`` config.
-    /// Note that ``useDynamicRange`` supports on iOS 17.0 or above.
-    public init(useDynamicRange: Bool) {
-        self.useDynamicRange = useDynamicRange
+    /// Construct ``UIImageReaderCompat`` specifying ``prefersHighDynamicRange`` config.
+    /// Note that ``prefersHighDynamicRange`` supports on iOS 17.0 or above.
+    public init(prefersHighDynamicRange: Bool) {
+        self.prefersHighDynamicRange = prefersHighDynamicRange
     }
     
     public func uiImage(data: Data?) -> UIImage? {
-        if #available(iOS 17, tvOS 17.0, *), useDynamicRange {
+        if #available(iOS 17, tvOS 17.0, *), prefersHighDynamicRange {
             return UIImageReaderWrapper().uiImage(data: data)
         } else {
             return UIImageReaderStub().uiImage(data: data)
