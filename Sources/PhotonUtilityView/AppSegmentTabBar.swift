@@ -319,7 +319,7 @@ struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable 
             content.onChange(of: state.value) { newValue in
                 self.nsScrollView?.scroll(toRect: state.rect)
             }
-            .introspect(.scrollView, on: .macOS(.v11, .v12, .v13, .v14)) { nsScrollView in
+            .introspect(.scrollView, on: .macOS(.v11, .v12, .v13, .v14, .v15)) { nsScrollView in
                 DispatchQueue.main.async {
                     self.nsScrollView = nsScrollView
                 }
