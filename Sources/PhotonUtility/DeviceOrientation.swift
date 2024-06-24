@@ -80,6 +80,15 @@ public enum DeviceOrientation: Int {
 }
 
 /// Observe and publish device orientation info.
+public class DeviceOrientationSimpleInfo: ObservableObject {
+    /// Get or observe the latest orientation.
+    @Published public fileprivate(set) var orientation = DeviceOrientation.portrait
+}
+
+/// Observe and publish device orientation info and orientation data.
+///
+/// The ``data`` will be updated frequently; therefore, if you are only concerned with the orientation (left, right, etc.),
+/// you should observe the ``DeviceOrientationSimpleInfo``.
 ///
 /// This orientation info is independent to the device lock which may be turned on by users.
 /// The orientation will be useful when detecting orientation while building a camera app.
@@ -97,13 +106,16 @@ public class DeviceOrientationInfo: ObservableObject {
     private var motionManager: CMMotionManager? = nil
 #endif
     
-    /// Get or observe the latest orientation.
-    @Published public var orientation = DeviceOrientation.portrait
-    
 #if os(iOS)
     /// Get or observe the underlying ``CMDeviceMotion``.
-    @Published public var data: CMDeviceMotion? = nil
+    @Published public private(set) var data: CMDeviceMotion? = nil
 #endif
+    
+    public var orientation: DeviceOrientation {
+        simpleInfo.orientation
+    }
+    
+    public let simpleInfo = DeviceOrientationSimpleInfo()
 
     private init() {
         // empty
@@ -141,7 +153,7 @@ public class DeviceOrientationInfo: ObservableObject {
                     return
                 }
                 
-                var orientation: DeviceOrientation = self.orientation
+                var orientation: DeviceOrientation = self.simpleInfo.orientation
                 if data.acceleration.x >= 0.75 {
                     orientation = .landscapeRight
                 } else if data.acceleration.x <= -0.75 {
@@ -152,8 +164,8 @@ public class DeviceOrientationInfo: ObservableObject {
                     orientation = .portraitUpsideDown
                 }
                 
-                if self.orientation != orientation {
-                    self.orientation = orientation
+                if self.simpleInfo.orientation != orientation {
+                    self.simpleInfo.orientation = orientation
                 }
             }
         }
