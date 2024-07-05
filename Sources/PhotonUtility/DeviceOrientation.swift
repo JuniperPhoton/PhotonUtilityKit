@@ -181,6 +181,13 @@ public class DeviceOrientationInfo: ObservableObject {
         motionManager?.stopAccelerometerUpdates()
         motionManager?.stopDeviceMotionUpdates()
         motionManager = nil
+        data = nil
+#endif
+    }
+    
+    public func invalidateData() {
+#if os(iOS)
+        data = nil
 #endif
     }
 }
