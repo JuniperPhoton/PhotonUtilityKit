@@ -171,17 +171,24 @@ public class DeviceOrientationInfo: ObservableObject {
         }
         
         self.motionManager = motionManager
+        
+        LibLogger.shared.libDefault.log("started detecting orientation")
 #endif
     }
     
     /// Stop the detection.
     public func stop() {
 #if os(iOS)
+        guard let motionManager = motionManager else {
+            return
+        }
+        
         LibLogger.shared.libDefault.log("stop detecting orientation")
-        motionManager?.stopAccelerometerUpdates()
-        motionManager?.stopDeviceMotionUpdates()
-        motionManager = nil
-        data = nil
+        motionManager.stopAccelerometerUpdates()
+        motionManager.stopDeviceMotionUpdates()
+        
+        self.motionManager = nil
+        self.data = nil
 #endif
     }
     
