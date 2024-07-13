@@ -337,7 +337,18 @@ public extension View {
     /// Disable the view and set the opacity.
     @ViewBuilder
     func disabledBy(_ disabled: Bool) -> some View {
-        self.disabled(disabled).opacity(disabled ? 0.5 : 1)
+        self.disabled(disabled).opacityByDisabled(disabled)
+            .animation(.default, value: disabled)
+    }
+    
+    /// Set the view's opacity based on the disable state.
+    ///
+    /// This won't actually disable the view; it only adjusts the opacity.
+    ///
+    /// To fully disable a view for a given state, use ``disabledBy(_:)``.
+    @ViewBuilder
+    func opacityByDisabled(_ disabled: Bool) -> some View {
+        self.opacity(disabled ? 0.5 : 1)
             .animation(.default, value: disabled)
     }
     
