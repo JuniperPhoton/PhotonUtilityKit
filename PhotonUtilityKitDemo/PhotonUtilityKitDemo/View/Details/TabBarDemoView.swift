@@ -28,7 +28,7 @@ struct TabBarDemoView: View {
                 sources: tabs,
                 scrollable: false,
                 foregroundColor: .accentColor,
-                backgroundColor: .accentColor.opacity(0.1),
+                backgroundStyle: .accentColor.opacity(0.1),
                 textKeyPath: \.rawValue
             )
             
@@ -43,7 +43,7 @@ struct TabBarDemoView: View {
                 sources: tabs,
                 scrollable: true,
                 foregroundColor: .accentColor,
-                backgroundColor: .accentColor.opacity(0.1),
+                backgroundStyle: .accentColor.opacity(0.1),
                 horizontalInset: 0,
                 shape: Capsule()
             ) { tab in

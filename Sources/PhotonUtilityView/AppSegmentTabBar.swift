@@ -17,7 +17,7 @@ extension TextAppSegmentTabBar where S == Capsule {
                 scrollable: Bool,
                 foregroundColor: Color,
                 selectedForegroundColor: Color = .white,
-                backgroundColor: Color,
+                backgroundStyle: BackgroundStyle,
                 horizontalInset: CGFloat = 0,
                 textKeyPath: KeyPath<T, String>,
                 helpTooltips: ((T) -> String)? = nil,
@@ -28,7 +28,7 @@ extension TextAppSegmentTabBar where S == Capsule {
             scrollable: scrollable,
             foregroundColor: foregroundColor,
             selectedForegroundColor: selectedForegroundColor,
-            backgroundColor: backgroundColor,
+            backgroundStyle: backgroundStyle,
             horizontalInset: horizontalInset,
             textKeyPath: textKeyPath,
             shape: Capsule(), 
@@ -39,7 +39,7 @@ extension TextAppSegmentTabBar where S == Capsule {
 }
 
 /// A ``AppSegmentTabBar`` which use ``Text`` as content view.
-public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
+public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: ShapeStyle>: View {
     /// Binding to the selected item. When an item is selected, the binding value will be changed.
     let selection: Binding<T>
     
@@ -55,8 +55,8 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
     /// The foreground color of the text when it's not selected.
     var selectedForegroundColor: Color
     
-    /// The background color of the whole view.
-    var backgroundColor: Color
+    /// The background style of the whole view.
+    var backgroundStyle: BackgroundStyle
     
     var shape: S
     
@@ -81,7 +81,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
                 scrollable: Bool,
                 foregroundColor: Color,
                 selectedForegroundColor: Color = .white,
-                backgroundColor: Color,
+                backgroundStyle: BackgroundStyle,
                 horizontalInset: CGFloat = 0,
                 textKeyPath: KeyPath<T, String>,
                 sourcesBundle: Bundle = Bundle.main,
@@ -93,7 +93,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
         self.scrollable = scrollable
         self.foregroundColor = foregroundColor
         self.selectedForegroundColor = selectedForegroundColor
-        self.backgroundColor = backgroundColor
+        self.backgroundStyle = backgroundStyle
         self.horizontalInset = horizontalInset
         self.textKeyPath = textKeyPath
         self.sourcesBundle = sourcesBundle
@@ -107,7 +107,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape>: View {
                          sources: sources,
                          scrollable: scrollable,
                          foregroundColor: foregroundColor,
-                         backgroundColor: backgroundColor,
+                         backgroundStyle: backgroundStyle,
                          horizontalInset: horizontalInset,
                          shape: shape,
                          keyboardShortcut: keyboardShortcut) { item in
@@ -159,14 +159,14 @@ class FrameState<T: Hashable>: ObservableObject {
 
 private let nameSpaceName = "AppSegmentTabBar"
 
-public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
+public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: ShapeStyle>: View {
     @StateObject private var frameState = FrameState<T>()
     
     let selection: Binding<T>
     let sources: [T]
     let scrollable: Bool
     var foregroundColor: Color
-    var backgroundColor: Color
+    var backgroundStyle: BackgroundStyle
     var shape: S
     var horizontalInset: CGFloat = 12
     var keyboardShortcut: ((T) -> KeyEquivalent)?
@@ -178,7 +178,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
                 sources: [T],
                 scrollable: Bool,
                 foregroundColor: Color,
-                backgroundColor: Color,
+                backgroundStyle: BackgroundStyle,
                 horizontalInset: CGFloat,
                 shape: S,
                 keyboardShortcut: ((T) -> KeyEquivalent)? = nil,
@@ -187,7 +187,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
         self.sources = sources
         self.scrollable = scrollable
         self.foregroundColor = foregroundColor
-        self.backgroundColor = backgroundColor
+        self.backgroundStyle = backgroundStyle
         self.horizontalInset = horizontalInset
         self.keyboardShortcut = keyboardShortcut
         self.shape = shape
@@ -241,9 +241,9 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape>: View {
                     .id(item)
             }
         }.padding(.horizontal, horizontalInset)
-            .padding(backgroundColor == .clear ? 0 : 3)
+            .padding((backgroundStyle as? Color) == .clear ? 0 : 3)
             .background(ZStack(alignment: .topLeading) {
-                shape.fill(backgroundColor)
+                shape.fill(backgroundStyle)
                 
                 if !frameState.selectedCapsuleFrame.isEmpty {
                     shape.fill(foregroundColor)

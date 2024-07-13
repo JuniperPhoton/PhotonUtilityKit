@@ -36,7 +36,7 @@ class TabBarDemoViewModel: ObservableObject {
                          sources: tabs,
                          scrollable: false,
                          foregroundColor: .accentColor,
-                         backgroundColor: .accentColor.opacity(0.1),
+                         backgroundStyle: .accentColor.opacity(0.1),
                          textKeyPath: \\.rawValue)
     """)
     
@@ -45,7 +45,7 @@ class TabBarDemoViewModel: ObservableObject {
         AppSegmentTabBar(selection: $selected, sources: tabs,
                          scrollable: false,
                          foregroundColor: .accentColor,
-                         backgroundColor: .accentColor.opacity(0.1),
+                         backgroundStyle: .accentColor.opacity(0.1),
                          horizontalInset: 0) { tab in
             HStack {
                 Image(systemName: tab.icon)
