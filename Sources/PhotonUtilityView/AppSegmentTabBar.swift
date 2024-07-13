@@ -31,7 +31,7 @@ extension TextAppSegmentTabBar where S == Capsule {
             backgroundStyle: backgroundStyle,
             horizontalInset: horizontalInset,
             textKeyPath: textKeyPath,
-            shape: Capsule(), 
+            shape: Capsule(),
             helpTooltips: helpTooltips,
             keyboardShortcut: keyboardShortcut
         )
@@ -58,6 +58,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: Shape
     /// The background style of the whole view.
     var backgroundStyle: BackgroundStyle
     
+    /// The shape of the background. The view will also be clipped to this shape.
     var shape: S
     
     /// The horizontal inset of this view. Default to 12pt.
@@ -76,18 +77,20 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: Shape
     /// A block to get the keyboard shortcut.
     var keyboardShortcut: ((T) -> KeyEquivalent)?
     
-    public init(selection: Binding<T>,
-                sources: [T],
-                scrollable: Bool,
-                foregroundColor: Color,
-                selectedForegroundColor: Color = .white,
-                backgroundStyle: BackgroundStyle,
-                horizontalInset: CGFloat = 0,
-                textKeyPath: KeyPath<T, String>,
-                sourcesBundle: Bundle = Bundle.main,
-                shape: S,
-                helpTooltips: ((T) -> String)? = nil,
-                keyboardShortcut: ((T) -> KeyEquivalent)? = nil) {
+    public init(
+        selection: Binding<T>,
+        sources: [T],
+        scrollable: Bool,
+        foregroundColor: Color,
+        selectedForegroundColor: Color = .white,
+        backgroundStyle: BackgroundStyle,
+        horizontalInset: CGFloat = 0,
+        textKeyPath: KeyPath<T, String>,
+        sourcesBundle: Bundle = Bundle.main,
+        shape: S,
+        helpTooltips: ((T) -> String)? = nil,
+        keyboardShortcut: ((T) -> KeyEquivalent)? = nil
+    ) {
         self.selection = selection
         self.sources = sources
         self.scrollable = scrollable
@@ -103,14 +106,16 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: Shape
     }
     
     public var body: some View {
-        AppSegmentTabBar(selection: selection,
-                         sources: sources,
-                         scrollable: scrollable,
-                         foregroundColor: foregroundColor,
-                         backgroundStyle: backgroundStyle,
-                         horizontalInset: horizontalInset,
-                         shape: shape,
-                         keyboardShortcut: keyboardShortcut) { item in
+        AppSegmentTabBar(
+            selection: selection,
+            sources: sources,
+            scrollable: scrollable,
+            foregroundColor: foregroundColor,
+            backgroundStyle: backgroundStyle,
+            horizontalInset: horizontalInset,
+            shape: shape,
+            keyboardShortcut: keyboardShortcut
+        ) { item in
             bodyText(item: item)
         }
     }
@@ -174,15 +179,17 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
     
     @State private var autoScrollState: AutoScrollState<T>
     
-    public init(selection: Binding<T>,
-                sources: [T],
-                scrollable: Bool,
-                foregroundColor: Color,
-                backgroundStyle: BackgroundStyle,
-                horizontalInset: CGFloat,
-                shape: S,
-                keyboardShortcut: ((T) -> KeyEquivalent)? = nil,
-                label: @escaping (T) -> V) {
+    public init(
+        selection: Binding<T>,
+        sources: [T],
+        scrollable: Bool,
+        foregroundColor: Color,
+        backgroundStyle: BackgroundStyle,
+        horizontalInset: CGFloat,
+        shape: S,
+        keyboardShortcut: ((T) -> KeyEquivalent)? = nil,
+        label: @escaping (T) -> V
+    ) {
         self.selection = selection
         self.sources = sources
         self.scrollable = scrollable
@@ -253,6 +260,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
                                 y: frameState.relativeY)
                 }
             }, alignment: .topLeading)
+            .clipShape(shape)
             .listenFrameChanged(coordinateSpace: .named(nameSpaceName)) { rect in
                 frameState.updateContentFrame(rect: rect)
             }
@@ -298,7 +306,7 @@ class AutoScrollState<T>: ObservableObject where T: Equatable & Hashable {
 #if canImport(UIKit)
 struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable & Hashable {
     @ObservedObject var state: AutoScrollState<T>
-        
+    
     func body(content: Content) -> some View {
         ScrollViewReader { proxy in
             content.onChange(of: state.value) { newValue in
