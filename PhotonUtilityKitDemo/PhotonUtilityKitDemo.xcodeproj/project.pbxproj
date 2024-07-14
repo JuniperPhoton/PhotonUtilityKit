@@ -447,7 +447,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.juniperphoton.PhotonUtilityKitDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -490,7 +490,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.juniperphoton.PhotonUtilityKitDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -541,7 +541,7 @@
 			repositoryURL = "https://github.com/JuniperPhoton/PhotonMediaKit";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.2;
+				version = 1.2.38;
 			};
 		};
 		22BAAE012AF0EB5600D0BBC6 /* XCRemoteSwiftPackageReference "PhotonUtilityKit" */ = {
@@ -549,7 +549,7 @@
 			repositoryURL = "https://github.com/JuniperPhoton/PhotonUtilityKit";
 			requirement = {
 				kind = exactVersion;
-				version = 1.4.32;
+				version = 1.4.47;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

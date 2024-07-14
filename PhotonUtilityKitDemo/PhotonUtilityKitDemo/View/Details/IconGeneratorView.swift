@@ -56,7 +56,12 @@ class IconGeneratorViewModel: ObservableObject {
                 }
                 
                 do {
-                    let _ = try await CGImageIO.shared.saveToFile(file: fileURL, cgImage: scaledImage, utType: targetUTType)
+                    let _ = try await CGImageIO.shared.saveToFile(
+                        file: fileURL,
+                        cgImage: scaledImage,
+                        utType: targetUTType,
+                        properties: nil
+                    )
                     successCount += 1
                 } catch {
                     // ignored

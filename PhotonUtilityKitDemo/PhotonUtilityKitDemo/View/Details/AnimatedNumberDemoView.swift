@@ -41,7 +41,7 @@ struct AnimatedNumberDemoView: View {
     @State private var animationType = AnimationType.spring
     
     @State private var code = HighliableCode(code: #"""
-    AnimatedGroupNumberView(number: index, transcation: Transaction(animation: .spring()))
+    AnimatedGroupNumberView(number: index, transaction: Transaction(animation: .spring()))
         .font(.system(size: 50).monospacedDigit().bold())
         .foregroundColor(.accentColor)
     """#)
@@ -51,12 +51,12 @@ struct AnimatedNumberDemoView: View {
             HighliableCodeView(code: code, maxHeight: 100).padding()
             
             if #available(iOS 15.0, macOS 12.0, tvOS 15.0, *) {
-                AnimatedGroupNumberView(number: index, transcation: Transaction(animation: animationType.getAnimation(duration)))
+                AnimatedGroupNumberView(number: index, transaction: Transaction(animation: animationType.getAnimation(duration)))
                     .font(.system(size: DeviceCompat.isiOS() ? 50 : 130).monospacedDigit().bold())
                     .foregroundStyle(.linearGradient(colors: [.accentColor, .accentColor.opacity(0.5)],
                                                      startPoint: .topLeading, endPoint: .trailing))
             } else {
-                AnimatedGroupNumberView(number: index, transcation: Transaction(animation: animationType.getAnimation(duration)))
+                AnimatedGroupNumberView(number: index, transaction: Transaction(animation: animationType.getAnimation(duration)))
                     .font(.system(size: DeviceCompat.isiOS() ? 50 : 130).monospacedDigit().bold())
                     .foregroundColor(.accentColor)
             }
