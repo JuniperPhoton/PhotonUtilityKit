@@ -182,25 +182,45 @@ public struct ToastView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            if !appToast.toast.isEmpty {
-                ToastContentView(toast: appToast.toast, colors: colors)
-                    .offset(y: dragYOffset)
-#if !os(tvOS)
-                    .gesture(DragGesture().onChanged({ v in
-                        if v.translation.height <= 0 {
-                            dragYOffset = v.translation.height
-                        }
-                    }).onEnded({ v in
-                        self.appToast.clear()
-                        self.dragYOffset = 0
-                    }))
-#endif
-            }
+            ToastContentView(appToast: appToast)
+                .transition(.move(edge: .top).combined(with: .opacity))
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 }
 
-fileprivate struct ToastContentView: View {
+/// The content of the ``ToastView`` containing the view that is interactive.
+///
+/// To use this view, you should consider put it in a container.
+public struct ToastContentView: View {
+    @Environment(\.toastColor) private var colors: ToastColor
+    
+    @ObservedObject var appToast: AppToast
+    
+    @State private var dragYOffset: CGFloat = 0
+    
+    public init(appToast: AppToast) {
+        self.appToast = appToast
+    }
+    
+    public var body: some View {
+        if !appToast.toast.isEmpty {
+            ToastContentViewInternal(toast: appToast.toast, colors: colors)
+                .offset(y: dragYOffset)
+#if !os(tvOS)
+                .gesture(DragGesture().onChanged({ v in
+                    if v.translation.height <= 0 {
+                        dragYOffset = v.translation.height
+                    }
+                }).onEnded({ v in
+                    self.appToast.clear()
+                    self.dragYOffset = 0
+                }))
+#endif
+        }
+    }
+}
+
+fileprivate struct ToastContentViewInternal: View {
     @Environment(\.toastStyle) private var style: ToastStyle
     
     @State var showBellAnimation = false
@@ -234,7 +254,6 @@ fileprivate struct ToastContentView: View {
                 }
             }.addShadow())
             .padding(8)
-            .transition(.move(edge: .top).combined(with: .opacity))
             .animation(.default, value: style.showIcon)
             .onAppear {
                 if style.showIcon {
