@@ -198,15 +198,18 @@ public struct ToastContentView: View {
     
     @State private var dragYOffset: CGFloat = 0
     
-    public init(appToast: AppToast) {
+    private var allowGestureToDismiss: Bool
+    
+    public init(appToast: AppToast, allowGestureToDismiss: Bool = true) {
         self.appToast = appToast
+        self.allowGestureToDismiss = allowGestureToDismiss
     }
     
     public var body: some View {
         if !appToast.toast.isEmpty {
             ToastContentViewInternal(toast: appToast.toast, colors: colors)
-                .offset(y: dragYOffset)
 #if !os(tvOS)
+                .offset(y: dragYOffset)
                 .gesture(DragGesture().onChanged({ v in
                     if v.translation.height <= 0 {
                         dragYOffset = v.translation.height
@@ -214,7 +217,7 @@ public struct ToastContentView: View {
                 }).onEnded({ v in
                     self.appToast.clear()
                     self.dragYOffset = 0
-                }))
+                }), including: allowGestureToDismiss ? .gesture : .none)
 #endif
         }
     }
@@ -241,6 +244,7 @@ fileprivate struct ToastContentViewInternal: View {
                 .foregroundColor(colors.foregroundColor)
                 .multilineTextAlignment(.center)
         }.padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+            .clipShape(Rectangle())
             .background(Group {
                 if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
                     style.shape.toShape.fill(colors.backgroundColor)
