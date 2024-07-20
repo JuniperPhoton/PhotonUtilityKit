@@ -227,7 +227,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					222FC5FD2A470EA400E32672 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -549,7 +549,7 @@
 			repositoryURL = "https://github.com/JuniperPhoton/PhotonUtilityKit";
 			requirement = {
 				kind = exactVersion;
-				version = 1.4.47;
+				version = 1.4.48;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
