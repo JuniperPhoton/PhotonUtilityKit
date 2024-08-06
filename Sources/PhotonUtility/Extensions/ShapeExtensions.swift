@@ -24,17 +24,17 @@ public extension CGRect {
         
         if targetAspectRatio > originalAspectRatio {
             // Width is the limiting factor, so match the width and scale the height
-            fitRect.size.width = self.width
-            fitRect.size.height = self.width / targetAspectRatio
+            fitRect.size.width = round(self.width)
+            fitRect.size.height = round(self.width / targetAspectRatio)
         } else {
             // Height is the limiting factor, so match the height and scale the width
-            fitRect.size.height = self.height
-            fitRect.size.width = self.height * targetAspectRatio
+            fitRect.size.height = round(self.height)
+            fitRect.size.width = round(self.height * targetAspectRatio)
         }
         
         // Center the new CGRect within the original CGRect
-        fitRect.origin.x = self.origin.x + (self.width - fitRect.width) / 2
-        fitRect.origin.y = self.origin.y + (self.height - fitRect.height) / 2
+        fitRect.origin.x = round(self.origin.x + (self.width - fitRect.width) / 2)
+        fitRect.origin.y = round(self.origin.y + (self.height - fitRect.height) / 2)
         
         return fitRect
     }
