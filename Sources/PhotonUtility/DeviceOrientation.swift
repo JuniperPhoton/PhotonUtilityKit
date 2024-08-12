@@ -18,7 +18,7 @@ import CoreMotion
 #endif
 
 /// The device orientation used in ``DeviceOrientationInfo``.
-public enum DeviceOrientation: Int {
+public enum DeviceOrientation: Int, CaseIterable {
     case unknown = 0
     case portrait = 1 // Device oriented vertically, home button on the bottom
     case portraitUpsideDown = 2 // Device oriented vertically, home button on the top
@@ -26,6 +26,10 @@ public enum DeviceOrientation: Int {
     case landscapeRight = 4 // Device oriented horizontally, home button on the left
     case faceUp = 5 // Device oriented flat, face up
     case faceDown = 6 // Device oriented flat, face down
+    
+    public var isLandscape: Bool {
+        self == .landscapeLeft || self == .landscapeRight
+    }
     
 #if !os(tvOS)
     public func toAVCaptureVideoOrientation() -> AVCaptureVideoOrientation {
