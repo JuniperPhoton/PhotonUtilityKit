@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension ScenePhase: CustomDebugStringConvertible {
+extension ScenePhase: @retroactive CustomDebugStringConvertible {
     /// Provide a  debugDescription for a``ScenePhase``.
     public var debugDescription: String {
         switch self {

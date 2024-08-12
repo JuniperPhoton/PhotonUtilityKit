@@ -26,14 +26,14 @@ public extension EdgeInsets {
     }
 }
 
-extension CGSize: CustomStringConvertible {
+extension CGSize: @retroactive CustomStringConvertible {
     public var description: String {
         return "\(self.width) x \(self.height)"
     }
 }
 
 @available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
-extension ProposedViewSize: CustomStringConvertible {
+extension ProposedViewSize: @retroactive CustomStringConvertible {
     public var description: String {
         return "\(String(describing: self.width)) x \(String(describing: self.height))"
     }

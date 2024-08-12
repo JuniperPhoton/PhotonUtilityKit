@@ -204,13 +204,13 @@ public class DeviceOrientationInfo: ObservableObject {
 }
 
 #if os(iOS)
-extension CMRotationRate: Equatable {
+extension CMRotationRate: @retroactive Equatable {
     public static func == (lhs: CMRotationRate, rhs: CMRotationRate) -> Bool {
         return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z
     }
 }
 
-extension CMAcceleration: Equatable {
+extension CMAcceleration: @retroactive Equatable {
     public static func == (lhs: CMAcceleration, rhs: CMAcceleration) -> Bool {
         return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z
     }
