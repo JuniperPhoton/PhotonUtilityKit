@@ -60,10 +60,7 @@ let package = Package(
             dependencies: ["PhotonUtility"]),
         .target(
             name: "PhotonUtilityView",
-            dependencies: ["PhotonUtility", .product(name: "SwiftUIIntrospect", package: "swiftui-introspect")],
-            resources: [
-                .process("Resources"),
-            ]
+            dependencies: ["PhotonUtility", .product(name: "SwiftUIIntrospect", package: "swiftui-introspect")]
         ),
         .testTarget(name: "PhotonUtilityKitTests",
                     dependencies: ["PhotonUtility"])
