@@ -16,7 +16,30 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "PhotonUtilityKit",
-            targets: ["PhotonUtility", "PhotonUtilityLayout", "PhotonUtilityView"]),
+            targets: [
+                "PhotonUtility",
+                "PhotonUtilityLayout",
+                "PhotonUtilityView"
+            ]
+        ),
+        .library(
+            name: "PhotonUtilityKit-Static",
+            type: .static,
+            targets: [
+                "PhotonUtility",
+                "PhotonUtilityLayout",
+                "PhotonUtilityView"
+            ]
+        ),
+        .library(
+            name: "PhotonUtilityKit-Dynamic",
+            type: .dynamic,
+            targets: [
+                "PhotonUtility",
+                "PhotonUtilityLayout",
+                "PhotonUtilityView"
+            ]
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
