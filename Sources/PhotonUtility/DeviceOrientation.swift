@@ -87,6 +87,9 @@ public enum DeviceOrientation: Int, CaseIterable {
 public class DeviceOrientationSimpleInfo: ObservableObject {
     /// Get or observe the latest orientation.
     @Published public fileprivate(set) var orientation = DeviceOrientation.portrait
+    
+    /// Get or observe whether the ``CMMotionManager`` is activated.
+    @Published public fileprivate(set) var activated: Bool = false
 }
 
 /// Observe and publish device orientation info and orientation data.
@@ -171,6 +174,8 @@ public class DeviceOrientationInfo: ObservableObject {
                 if self.simpleInfo.orientation != orientation {
                     self.simpleInfo.orientation = orientation
                 }
+                
+                self.simpleInfo.activated = true
             }
         }
         
@@ -193,6 +198,10 @@ public class DeviceOrientationInfo: ObservableObject {
         
         self.motionManager = nil
         self.data = nil
+        
+        if self.simpleInfo.activated {
+            self.simpleInfo.activated = true
+        }
 #endif
     }
     
