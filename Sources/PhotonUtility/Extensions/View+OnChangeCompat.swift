@@ -10,7 +10,7 @@ public extension View {
     /// A compat version of ``View/onChange(of:perform:)`` that takes single parameter.
     @ViewBuilder
     func onChangeCompat<V: Equatable>(of value: V, perform: @escaping (_ newValue: V) -> Void) -> some View {
-        if #available(iOS 17.0, *) {
+        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, *) {
             self.onChange(of: value) { _, newValue in
                 perform(newValue)
             }
@@ -22,7 +22,7 @@ public extension View {
     /// A compat version of ``View/onChange(of:perform:)`` that takes zero parameter.
     @ViewBuilder
     func onChangeCompat<V: Equatable>(of value: V, perform: @escaping () -> Void) -> some View {
-        if #available(iOS 17.0, *) {
+        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, *) {
             self.onChange(of: value) { _, _ in
                 perform()
             }
