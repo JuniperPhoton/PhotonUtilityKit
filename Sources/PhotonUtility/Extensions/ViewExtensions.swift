@@ -111,6 +111,21 @@ public extension View {
             self
         }
     }
+    
+    /// Run the block if the value is not nil.
+    ///
+    /// Be aware that this may destroy the identity of the view. Don't use this if you can switch state using ViewModifier.
+    ///
+    /// - Parameter value: the nullable value.
+    /// - Parameter block: the block to be executed if the value is not nil. This block capture the current view and should return some View.
+    @ViewBuilder
+    func take<T>(value: T?, block: (Self, T) -> some View) -> some View {
+        if let value = value {
+            block(self, value)
+        } else {
+            self
+        }
+    }
 }
 
 // MARK: Observe size changed
