@@ -19,6 +19,15 @@ import CoreMotion
 
 /// The device orientation used in ``DeviceOrientationInfo``.
 public enum DeviceOrientation: Int, CaseIterable {
+    public static var allCases: [DeviceOrientation] = [
+        .portrait,
+        .portraitUpsideDown,
+        .landscapeLeft,
+        .landscapeRight,
+        .faceDown,
+        .faceUp
+    ]
+    
     case unknown = 0
     case portrait = 1 // Device oriented vertically, home button on the bottom
     case portraitUpsideDown = 2 // Device oriented vertically, home button on the top
