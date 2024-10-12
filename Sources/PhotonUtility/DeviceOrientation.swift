@@ -184,7 +184,9 @@ public class DeviceOrientationInfo: ObservableObject {
                     self.simpleInfo.orientation = orientation
                 }
                 
-                self.simpleInfo.activated = true
+                if self.simpleInfo.activated != true {
+                    self.simpleInfo.activated = true
+                }
             }
         }
         
