@@ -87,16 +87,16 @@ fileprivate struct StaggeredGridLayout: Layout {
             // For min size, the layout behaves like VStack
             size.width = maxItemWidth
             size.height = maxItemHeight * CGFloat(subviews.count)
-        } else {
+        } else if let proposalWidth = proposal.width {
             // For exact size, use "staggered" style
-            size.width = min(proposal.width!, widthInOneLine)
+            size.width = round(min(proposalWidth, widthInOneLine))
             let w = size.width
             
             var availableW = w
             var accHeight = maxItemHeight
             
-            subviews.forEach { v in
-                let vW = v.sizeThatFits(.unspecified).width
+            for subView in subviews {
+                let vW = subView.sizeThatFits(.unspecified).width
                 
                 if availableW >= vW {
                     availableW -= vW
@@ -120,19 +120,19 @@ fileprivate struct StaggeredGridLayout: Layout {
         // Start positioning by the origin point, which should not be assumed to (0,0)
         var currentPosition = bounds.origin
         
-        subviews.forEach { v in
-            let d = v.sizeThatFits(.unspecified)
+        for subView in subviews {
+            let d = subView.sizeThatFits(.unspecified)
             
             if currentPosition.x + d.width <= bounds.maxX {
                 // If the current line can fit the item, we place it in this line and consume the available width
-                v.place(at: currentPosition, proposal: .unspecified)
+                subView.place(at: currentPosition, proposal: .unspecified)
                 currentPosition.x = currentPosition.x + d.width
             } else {
                 // The item does not fit the current line, we break the line
                 currentPosition.x = bounds.minX
                 currentPosition.y = currentPosition.y + maxItemHeight
                 
-                v.place(at: currentPosition, proposal: .unspecified)
+                subView.place(at: currentPosition, proposal: .unspecified)
                 
                 // Always to consume the x position after place(at:proposal)
                 currentPosition.x = currentPosition.x + d.width
