@@ -89,7 +89,7 @@ fileprivate struct StaggeredGridLayout: Layout {
             size.height = maxItemHeight * CGFloat(subviews.count)
         } else if let proposalWidth = proposal.width {
             // For exact size, use "staggered" style
-            size.width = round(min(proposalWidth, widthInOneLine))
+            size.width = ceil(min(proposalWidth, widthInOneLine))
             let w = size.width
             
             var availableW = w
