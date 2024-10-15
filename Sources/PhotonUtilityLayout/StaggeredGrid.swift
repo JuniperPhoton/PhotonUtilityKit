@@ -34,7 +34,7 @@ public struct StaggeredGrid<Content: View>: View {
     }
     
     public var body: some View {
-        VStack(alignment: .leading) {
+        ZStack(alignment: .leading) {
             GeometryReader { proxy in
                 Color.clear.onChange(of: proxy.size.width) { newValue in
                     if animated {
