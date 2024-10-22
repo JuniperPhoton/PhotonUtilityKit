@@ -162,6 +162,7 @@ public struct ActionButtonLabel: View {
                     .lineLimit(1)
             }
         }
+        .geometryGroupCompat()
         .padding(DeviceCompat.isMac() ? 10 : 12)
         .frame(minHeight: 30)
         .matchParent(axis: style.stretchToWidth ? .width : .none, alignment: .center)
