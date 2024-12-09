@@ -16,6 +16,10 @@ public class DeviceCompat {
         // private
     }
     
+    public static var isiOSAppOnMac: Bool = {
+        ProcessInfo.processInfo.isiOSAppOnMac
+    }()
+    
     /// Check if it's running on a Mac.
     public static func isMac() -> Bool {
 #if os(iOS)
