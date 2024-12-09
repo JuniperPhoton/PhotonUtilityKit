@@ -16,15 +16,27 @@ public class DeviceCompat {
         // private
     }
     
+    /// Check if it's running as an iOS/iPadOS app on Mac.
     public static var isiOSAppOnMac: Bool = {
         ProcessInfo.processInfo.isiOSAppOnMac
     }()
     
-    /// Check if it's running on a Mac.
+    /// Check if it's running natively on a Mac.
+    ///
+    /// > Note: To check if it's running on Mac using Catalyst technology, using ``isMacCatalyst()`` instead.
     public static func isMac() -> Bool {
 #if os(iOS)
         return false
 #elseif os(macOS)
+        return true
+#else
+        return false
+#endif
+    }
+    
+    /// Check if it's running on a Mac using Catalyst technology.
+    public static func isMacCatalyst() -> Bool {
+#if targetEnvironment(macCatalyst)
         return true
 #else
         return false
