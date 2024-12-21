@@ -119,7 +119,9 @@ public class DeviceOrientationInfo: ObservableObject {
     public static let shared = DeviceOrientationInfo()
     
 #if os(iOS)
-    private var motionManager: CMMotionManager? = nil
+    private lazy var motionManager: CMMotionManager = {
+        CMMotionManager()
+    }()
 #endif
     
 #if os(iOS)
@@ -132,7 +134,7 @@ public class DeviceOrientationInfo: ObservableObject {
     }
     
     public let simpleInfo = DeviceOrientationSimpleInfo()
-
+    
     private init() {
         // empty
     }
@@ -144,8 +146,6 @@ public class DeviceOrientationInfo: ObservableObject {
         
         stop()
         
-        let motionManager = CMMotionManager()
-        
         if motionManager.isDeviceMotionAvailable {
             motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
             motionManager.startDeviceMotionUpdates(
@@ -155,7 +155,7 @@ public class DeviceOrientationInfo: ObservableObject {
                 guard let data = data, let self = self else {
                     return
                 }
-                                                
+                
                 if self.data != data {
                     self.data = data
                 }
@@ -190,8 +190,6 @@ public class DeviceOrientationInfo: ObservableObject {
             }
         }
         
-        self.motionManager = motionManager
-        
         LibLogger.shared.libDefault.log("started detecting orientation")
 #endif
     }
@@ -199,15 +197,10 @@ public class DeviceOrientationInfo: ObservableObject {
     /// Stop the detection.
     public func stop() {
 #if os(iOS)
-        guard let motionManager = motionManager else {
-            return
-        }
-        
         LibLogger.shared.libDefault.log("stop detecting orientation")
         motionManager.stopAccelerometerUpdates()
         motionManager.stopDeviceMotionUpdates()
         
-        self.motionManager = nil
         self.data = nil
         
         if self.simpleInfo.activated {
