@@ -32,6 +32,7 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
     let pageObjects: [T]
     let idKeyPath: KeyPath<T, String>
     let transitionStyle: TransitionStyle
+    let isDoubleSided: Bool
     let onContentPrepared: ((T) -> Void)?
     let contentView: (T) -> V
     
@@ -39,12 +40,14 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
                 pageObjects: [T],
                 idKeyPath: KeyPath<T, String>,
                 transitionStyle: TransitionStyle = .scroll,
+                isDoubleSided: Bool = false,
                 onContentPrepared: ((T) -> Void)? = nil,
                 @ViewBuilder contentView: @escaping (T) -> V) {
         self.selection = selection
         self.pageObjects = pageObjects
         self.idKeyPath = idKeyPath
         self.transitionStyle = transitionStyle
+        self.isDoubleSided = isDoubleSided
         self.onContentPrepared = onContentPrepared
         self.contentView = contentView
     }
@@ -55,6 +58,7 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
             navigationOrientation: .horizontal,
             options: nil
         )
+        controller.isDoubleSided = isDoubleSided
         controller.onSelectionChanged = { index in
             withTransaction(selection.transaction) {
                 self.selection.wrappedValue = index
