@@ -14,6 +14,7 @@ public struct BridgedPageView<T: Equatable, V: View>: View {
     let selection: Binding<Int>
     let pageObjects: [T]
     let idKeyPath: KeyPath<T, String>
+    let transitionStyle: TransitionStyle
     let onContentPrepared: ((T) -> Void)?
     let contentView: (T) -> V
     
@@ -24,29 +25,43 @@ public struct BridgedPageView<T: Equatable, V: View>: View {
     ///                        Any changes to the selection will reflect the internal state, and the other way around.
     /// - parameter pageObjects: The objects to be displayed in pages.
     /// - parameter idKeyPath: The ``KeyPath`` to get the string type id of a page object.
+    /// - parameter transitionStyle: The transition style for the page view. This will be available only on iOS and iPadOS.
     /// - parameter onContentPrepared: When the view controller associated a page object is loaded, you can do some prefetch work.
     /// - parameter contentView: The block to return the view to display for each page object.
     public init(selection: Binding<Int>,
                 pageObjects: [T],
                 idKeyPath: KeyPath<T, String>,
+                transitionStyle: TransitionStyle = .scroll,
                 onContentPrepared: ((T) -> Void)? = nil,
                 @ViewBuilder contentView: @escaping (T) -> V) {
         self.selection = selection
         self.pageObjects = pageObjects
         self.idKeyPath = idKeyPath
+        self.transitionStyle = transitionStyle
         self.onContentPrepared = onContentPrepared
         self.contentView = contentView
     }
     
     public var body: some View {
-        #if canImport(AppKit) && !targetEnvironment(macCatalyst)
-        NSPageView(selection: selection, pageObjects: pageObjects,
-                   idKeyPath: idKeyPath, onContentPrepared: onContentPrepared, contentView: contentView)
-        #elseif canImport(UIKit)
-        UIPageView(selection: selection, pageObjects: pageObjects,
-                   idKeyPath: idKeyPath, onContentPrepared: onContentPrepared, contentView: contentView)
-        #else
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+        NSPageView(
+            selection: selection,
+            pageObjects: pageObjects,
+            idKeyPath: idKeyPath,
+            onContentPrepared: onContentPrepared,
+            contentView: contentView
+        )
+#elseif canImport(UIKit)
+        UIPageView(
+            selection: selection,
+            pageObjects: pageObjects,
+            idKeyPath: idKeyPath,
+            transitionStyle: transitionStyle,
+            onContentPrepared: onContentPrepared,
+            contentView: contentView
+        )
+#else
         EmptyView()
-        #endif
+#endif
     }
 }

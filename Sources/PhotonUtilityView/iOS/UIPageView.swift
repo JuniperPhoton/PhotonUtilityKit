@@ -13,29 +13,48 @@ import UIKit
 
 private let logger = Logger(subsystem: "com.juniperphoton.photonutilityview", category: "UIPageView")
 
+public enum TransitionStyle {
+    case pageCurl
+    case scroll
+    
+    var uiPageViewControllerTransitionStyle: UIPageViewController.TransitionStyle {
+        switch self {
+        case .pageCurl:
+            return .pageCurl
+        case .scroll:
+            return .scroll
+        }
+    }
+}
+
 public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
     let selection: Binding<Int>
     let pageObjects: [T]
     let idKeyPath: KeyPath<T, String>
+    let transitionStyle: TransitionStyle
     let onContentPrepared: ((T) -> Void)?
     let contentView: (T) -> V
     
     public init(selection: Binding<Int>,
                 pageObjects: [T],
                 idKeyPath: KeyPath<T, String>,
+                transitionStyle: TransitionStyle = .scroll,
                 onContentPrepared: ((T) -> Void)? = nil,
                 @ViewBuilder contentView: @escaping (T) -> V) {
         self.selection = selection
         self.pageObjects = pageObjects
         self.idKeyPath = idKeyPath
+        self.transitionStyle = transitionStyle
         self.onContentPrepared = onContentPrepared
         self.contentView = contentView
     }
     
     public func makeUIViewController(context: Context) -> some UIViewController {
-        let controller = CustomUIPageViewController<T, V>(transitionStyle: .scroll,
-                                                          navigationOrientation: .horizontal,
-                                                          options: nil)
+        let controller = CustomUIPageViewController<T, V>(
+            transitionStyle: transitionStyle.uiPageViewControllerTransitionStyle,
+            navigationOrientation: .horizontal,
+            options: nil
+        )
         controller.onSelectionChanged = { index in
             withTransaction(selection.transaction) {
                 self.selection.wrappedValue = index
