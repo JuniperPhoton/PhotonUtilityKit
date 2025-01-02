@@ -8,15 +8,11 @@
 import SwiftUI
 import OSLog
 
-#if canImport(UIKit)
-import UIKit
-
-private let logger = Logger(subsystem: "com.juniperphoton.photonutilityview", category: "UIPageView")
-
 public enum TransitionStyle {
     case pageCurl
     case scroll
     
+#if canImport(UIKit)
     var uiPageViewControllerTransitionStyle: UIPageViewController.TransitionStyle {
         switch self {
         case .pageCurl:
@@ -25,7 +21,13 @@ public enum TransitionStyle {
             return .scroll
         }
     }
+#endif
 }
+
+#if canImport(UIKit)
+import UIKit
+
+private let logger = Logger(subsystem: "com.juniperphoton.photonutilityview", category: "UIPageView")
 
 public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
     let selection: Binding<Int>
