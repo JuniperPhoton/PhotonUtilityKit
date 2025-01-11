@@ -18,7 +18,6 @@ let package = Package(
             name: "PhotonUtilityKit",
             targets: [
                 "PhotonUtility",
-                "PhotonUtilityLayout",
                 "PhotonUtilityView"
             ]
         ),
@@ -27,7 +26,6 @@ let package = Package(
             type: .static,
             targets: [
                 "PhotonUtility",
-                "PhotonUtilityLayout",
                 "PhotonUtilityView"
             ]
         ),
@@ -36,7 +34,6 @@ let package = Package(
             type: .dynamic,
             targets: [
                 "PhotonUtility",
-                "PhotonUtilityLayout",
                 "PhotonUtilityView"
             ]
         ),
@@ -55,9 +52,6 @@ let package = Package(
             resources: [
                 .process("Resources"),
             ]),
-        .target(
-            name: "PhotonUtilityLayout",
-            dependencies: ["PhotonUtility"]),
         .target(
             name: "PhotonUtilityView",
             dependencies: ["PhotonUtility", .product(name: "SwiftUIIntrospect", package: "swiftui-introspect")]
