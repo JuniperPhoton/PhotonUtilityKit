@@ -17,7 +17,6 @@ enum FeaturePage: String, FeaturePageTrait {
     case toast = "Toast"
     case appSegmentTabBar = "Tab bar"
     case fullscreenContent = "Fullscreen content"
-    case staggeredGrid = "Staggered Grid"
     case iconGenerator = "Icon Generator"
     case screenshot = "Screenshot"
     case bridgedPageView = "Bridged PageView"
@@ -43,8 +42,6 @@ enum FeaturePage: String, FeaturePageTrait {
             return "menubar.rectangle"
         case .fullscreenContent:
             return "hammer"
-        case .staggeredGrid:
-            return "grid"
         case .iconGenerator:
             return "viewfinder"
         case .screenshot:
@@ -90,8 +87,6 @@ extension FeaturePage {
             TabBarDemoView()
         case .fullscreenContent:
             FullscreenContentDemoView()
-        case .staggeredGrid:
-            StaggeredGridDemoView()
         case .iconGenerator:
             IconGeneratorView()
         case .screenshot:

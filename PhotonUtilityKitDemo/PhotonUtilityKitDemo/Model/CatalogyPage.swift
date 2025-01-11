@@ -46,7 +46,6 @@ func generateAllCatagories() -> [CatalogyPage] {
                          .fullscreenContent,
                          .scrollViewBridge
                      ]),
-        CatalogyPage(.customLayout, [.staggeredGrid]),
         CatalogyPage(.utility, [.screenshot]),
         CatalogyPage(.utilityTools, [.iconGenerator]),
     ].filter { c in
