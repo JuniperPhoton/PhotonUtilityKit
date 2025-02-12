@@ -11,6 +11,7 @@ public extension View {
     /// Shows a view inside a popover, anchoring to the current view.
     /// This is available on iOS, iPadOS and macOS.
     func popoverCompat<Content: View>(isPresented: Binding<Bool>,
+                                      config: TipsPopoverConfig = TipsPopoverConfig(),
                                       @ViewBuilder content: @escaping () -> Content) -> some View {
 #if os(macOS)
         self.disabled(isPresented.wrappedValue)
@@ -22,7 +23,13 @@ public extension View {
         // So we stick to the compat version of popover.
         // Sigh...
         self.disabled(isPresented.wrappedValue)
-            .modifier(AlwaysPopoverModifier(isPresented: isPresented, contentBlock: content))
+            .modifier(
+                AlwaysPopoverModifier(
+                    isPresented: isPresented,
+                    config: config,
+                    contentBlock: content
+                )
+            )
 #else
         self
 #endif
@@ -33,8 +40,11 @@ public extension View {
 private class ContentViewController<V: View>: UIHostingController<V>, UIPopoverPresentationControllerDelegate {
     var isPresented: Binding<Bool>
     
-    init(rootView: V, isPresented: Binding<Bool>) {
+    private var config: TipsPopoverConfig? = nil
+    
+    init(rootView: V, isPresented: Binding<Bool>, config: TipsPopoverConfig? = nil) {
         self.isPresented = isPresented
+        self.config = config
         super.init(rootView: rootView)
     }
     
@@ -47,6 +57,10 @@ private class ContentViewController<V: View>: UIHostingController<V>, UIPopoverP
                 
         let size = sizeThatFits(in: UIView.layoutFittingExpandedSize)
         preferredContentSize = size
+        
+        if let preferredColorScheme = config?.preferredColorScheme {
+            overrideUserInterfaceStyle = preferredColorScheme == .dark ? .dark : .light
+        }
     }
     
     func adaptivePresentationStyle(for controller: UIPresentationController,
@@ -68,6 +82,7 @@ private struct AlwaysPopoverModifier<PopoverContent: View>: ViewModifier {
     @State private var store = Store()
     
     let isPresented: Binding<Bool>
+    let config: TipsPopoverConfig?
     let contentBlock: () -> PopoverContent
     
     func body(content: Content) -> some View {
@@ -80,7 +95,11 @@ private struct AlwaysPopoverModifier<PopoverContent: View>: ViewModifier {
     }
     
     private func presentPopover() {
-        let contentController = ContentViewController(rootView: contentBlock(), isPresented: isPresented)
+        let contentController = ContentViewController(
+            rootView: contentBlock(),
+            isPresented: isPresented,
+            config: config
+        )
         contentController.modalPresentationStyle = .popover
         contentController.title = "PopoverContentViewController"
 

@@ -8,17 +8,39 @@
 import SwiftUI
 import Foundation
 
+public struct TipsPopoverConfig {
+    /// The preferred color scheme for the popover tips.
+    /// Currently supports iOS/iPadOS only.
+    public var preferredColorScheme: ColorScheme? = nil
+    
+    public init(preferredColorScheme: ColorScheme? = nil) {
+        self.preferredColorScheme = preferredColorScheme
+    }
+}
+
 public extension View {
     /// Shows popover tips if the view receives the notification from ``AppTipsController``.
     /// - parameter tipContent: The instance of ``AppTipContent`` protocol
     /// - parameter enabled: Enabled or not
     /// - parameter delay: The delay measured in seconds for this tips to show
+    /// - parameter config: The configuration for the popover tips. See ``TipsPopoverConfig`` for more details.
     @ViewBuilder
-    func popoverTips(tipContent: any AppTipContent, enabled: Bool, delay: TimeInterval = 0.0) -> some View {
+    func popoverTips(
+        tipContent: any AppTipContent,
+        enabled: Bool,
+        delay: TimeInterval = 0.0,
+        config: TipsPopoverConfig = TipsPopoverConfig()
+    ) -> some View {
         if !enabled {
             self
         } else {
-            self.modifier(PopoverTipsModifier(tipContent: tipContent, delay: delay))
+            self.modifier(
+                PopoverTipsModifier(
+                    tipContent: tipContent,
+                    delay: delay,
+                    config: config
+                )
+            )
         }
     }
 }
@@ -52,11 +74,17 @@ private struct PopoverTipsModifier: ViewModifier {
     
     let tipContent: any AppTipContent
     let delay: TimeInterval
+    let config: TipsPopoverConfig
     
     func body(content: Content) -> some View {
         content
-            .popoverCompat(isPresented: $showTips) {
-                TipsPopover(text: tipContent.text, icon: tipContent.icon)
+            .popoverCompat(isPresented: $showTips, config: config) {
+                if let preferredColorScheme = config.preferredColorScheme {
+                    TipsPopover(text: tipContent.text, icon: tipContent.icon)
+                        .colorScheme(preferredColorScheme)
+                } else {
+                    TipsPopover(text: tipContent.text, icon: tipContent.icon)
+                }
             }
             .onReceive(tipsCenter.$scheduledNextTipContent) { output in
                 print("AppTipsCenter on receive: \(type(of: output).key), current associated: \(type(of: tipContent).key)")

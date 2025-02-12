@@ -70,13 +70,16 @@ public class AppTipsCenter: ObservableObject {
     /// If there is a tip being shown, this tip will be shown after that one is dismissed.
     ///
     /// - parameter setShown: Whether to set shown in the user defaults or not.
-    public func enqueueTipIfNotShown(_ content: any AppTipContent, setShown: Bool = true) {
+    /// - returns: Whether the tip is enqueued or not.
+    @discardableResult
+    public func enqueueTipIfNotShown(_ content: any AppTipContent, setShown: Bool = true) -> Bool {
         if AppTipsPreference.shared.isTipShown(key: type(of: content).key) {
             print("AppTipsCenter enqueueTipIfNotShown but is shown \(type(of: content).key)")
-            return
+            return false
         }
         
         enqueueTip(content, setShown: setShown)
+        return true
     }
     
     /// Enqueue a tip.
