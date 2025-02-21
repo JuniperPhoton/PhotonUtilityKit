@@ -183,7 +183,7 @@ public struct ToastView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             ToastContentView(appToast: appToast)
-                .transition(.move(edge: .top).combined(with: .opacity))
+                .transition(.blurCompat().combined(with: .move(edge: .top)).combined(with: .opacity))
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 }
