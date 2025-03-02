@@ -373,3 +373,23 @@ public extension View {
         self.scaleEffect(CGSize(width: factor, height: factor), anchor: anchor)
     }
 }
+
+public extension View {
+    @ViewBuilder
+    func toggleHiddenDisabled(_ hidden: Bool) -> some View {
+        self.disabled(hidden)
+            .opacity(hidden ? 0 : 1)
+    }
+}
+
+public extension View {
+    func getSizeThatFits(_ containerSize: CGSize) -> CGSize {
+#if os(iOS)
+        let hosting = UIHostingController(rootView: self)
+        return hosting.view.sizeThatFits(containerSize)
+#elseif os(macOS)
+        let hosting = NSHostingController(rootView: self)
+        return hosting.view.fittingSize
+#endif
+    }
+}
