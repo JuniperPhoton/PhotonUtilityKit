@@ -24,3 +24,20 @@ public extension OSType {
         return String(bytes: bytes, encoding: .ascii)
     }
 }
+
+public extension String {
+    /// Convert a string to an OSType.
+    func stringToOSType() -> OSType? {
+        guard self.count == 4 else {
+            print("OSType must be exactly 4 characters long.")
+            return nil
+        }
+        
+        var type: OSType = 0
+        for (index, char) in self.utf8.enumerated() {
+            type |= OSType(char) << (24 - (8 * index))
+        }
+        
+        return type
+    }
+}
