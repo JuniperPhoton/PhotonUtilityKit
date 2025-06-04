@@ -18,8 +18,8 @@ import CoreMotion
 #endif
 
 /// The device orientation used in ``DeviceOrientationInfo``.
-public enum DeviceOrientation: Int, CaseIterable {
-    public static var allCases: [DeviceOrientation] = [
+public enum DeviceOrientation: Int, CaseIterable, Sendable {
+    public static let allCases: [DeviceOrientation] = [
         .portrait,
         .portraitUpsideDown,
         .landscapeLeft,
