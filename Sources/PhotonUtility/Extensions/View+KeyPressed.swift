@@ -24,6 +24,18 @@ public extension View {
             KeyHandlerView(supportedKeys: keys, action: action)
         }
     }
+    
+    /// Handle a specific key-pressing event from keyboard.
+    @ViewBuilder
+    func onPressed(for key: SystemKey, action: @escaping () -> Void) -> some View {
+        self.background {
+            KeyHandlerView(supportedKeys: [key]) { pressed in
+                if pressed == key {
+                    action()
+                }
+            }
+        }
+    }
 }
 
 public enum SystemKey {
@@ -32,6 +44,7 @@ public enum SystemKey {
     case inputArrowDown
     case inputArrowLeft
     case inputArrowRight
+    case inputDelete
     
     var uiKeyCommand: String {
         switch self {
@@ -45,6 +58,8 @@ public enum SystemKey {
             return UIKeyCommand.inputLeftArrow
         case .inputArrowRight:
             return UIKeyCommand.inputRightArrow
+        case .inputDelete:
+            return UIKeyCommand.inputDelete
         }
     }
 }
@@ -76,6 +91,8 @@ class KeyHandlerUIView: UIView {
             mappedKey = .inputArrowLeft
         } else if command.input == UIKeyCommand.inputRightArrow {
             mappedKey = .inputArrowRight
+        } else if command.input == UIKeyCommand.inputDelete {
+            mappedKey = .inputDelete
         }
         
         if let key = mappedKey, let action = action {
