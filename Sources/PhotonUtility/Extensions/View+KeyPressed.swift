@@ -6,6 +6,7 @@
 //
 import SwiftUI
 
+#if canImport(UIKit)
 public extension View {
     /// Handle back-pressed event by pressing the escape key from keyboard.
     @ViewBuilder
@@ -119,3 +120,4 @@ struct KeyHandlerView: UIViewRepresentable {
         }
     }
 }
+#endif
