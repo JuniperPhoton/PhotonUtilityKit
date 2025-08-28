@@ -35,10 +35,12 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
         }
         
         func register() {
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(onScroll),
-                                                   name: NSScrollView.willStartLiveScrollNotification,
-                                                   object: nil)
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(onScroll),
+                name: NSScrollView.willStartLiveScrollNotification,
+                object: nil
+            )
         }
         
         @objc
@@ -52,20 +54,24 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
     public let contentInsets: EdgeInsets?
     public let autoScrollToBottom: Bool
     
-    public init(text: NSAttributedString,
-                foregroundColorName: String?,
-                autoScrollToBottom: Bool,
-                contentInsets: EdgeInsets? = nil) {
+    public init(
+        text: NSAttributedString,
+        foregroundColorName: String?,
+        autoScrollToBottom: Bool,
+        contentInsets: EdgeInsets? = nil
+    ) {
         self.text = text
         self.foregroundColorName = foregroundColorName
         self.contentInsets = contentInsets
         self.autoScrollToBottom = autoScrollToBottom
     }
     
-    public init(text: String,
-                foregroundColorName: String?,
-                autoScrollToBottom: Bool,
-                contentInsets: EdgeInsets? = nil) {
+    public init(
+        text: String,
+        foregroundColorName: String?,
+        autoScrollToBottom: Bool,
+        contentInsets: EdgeInsets? = nil
+    ) {
         self.text = NSAttributedString(string: text)
         self.foregroundColorName = foregroundColorName
         self.contentInsets = contentInsets
@@ -86,12 +92,14 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
         
         if let insets = contentInsets {
             scrollView.automaticallyAdjustsContentInsets = false
-            scrollView.contentInsets = NSEdgeInsets(top: insets.top,
-                                                    left: insets.leading,
-                                                    bottom: insets.bottom,
-                                                    right: insets.trailing)
+            scrollView.contentInsets = NSEdgeInsets(
+                top: insets.top,
+                left: insets.leading,
+                bottom: insets.bottom,
+                right: insets.trailing
+            )
         }
-                
+        
         if autoScrollToBottom {
             context.coordinator.register()
         }
@@ -145,13 +153,16 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
 public struct ScrollableTextViewCompat: UIViewRepresentable {
     public class TextViewCoordinator: NSObject, UITextViewDelegate {
         fileprivate var autoScrollToBottom = true
-                
+        
         @objc
         func onScroll() {
             self.autoScrollToBottom = false
         }
         
-        public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        public func scrollViewDidEndDragging(
+            _ scrollView: UIScrollView,
+            willDecelerate decelerate: Bool
+        ) {
             autoScrollToBottom = false
         }
     }
@@ -161,20 +172,24 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
     let autoScrollToBottom: Bool
     let contentInsets: EdgeInsets?
     
-    public init(text: NSAttributedString,
-                foregroundColorName: String?,
-                autoScrollToBottom: Bool,
-                contentInsets: EdgeInsets? = nil) {
+    public init(
+        text: NSAttributedString,
+        foregroundColorName: String?,
+        autoScrollToBottom: Bool,
+        contentInsets: EdgeInsets? = nil
+    ) {
         self.text = text
         self.foregroundColorName = foregroundColorName
         self.autoScrollToBottom = autoScrollToBottom
         self.contentInsets = contentInsets
     }
     
-    public init(text: String,
-                foregroundColorName: String?,
-                autoScrollToBottom: Bool,
-                contentInsets: EdgeInsets? = nil) {
+    public init(
+        text: String,
+        foregroundColorName: String?,
+        autoScrollToBottom: Bool,
+        contentInsets: EdgeInsets? = nil
+    ) {
         self.text = NSAttributedString(string: text)
         self.foregroundColorName = foregroundColorName
         self.autoScrollToBottom = autoScrollToBottom
@@ -190,10 +205,12 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
         textView.delegate = context.coordinator
         
         if let insets = contentInsets {
-            textView.contentInset = UIEdgeInsets(top: insets.top,
-                                                 left: insets.leading,
-                                                 bottom: insets.bottom,
-                                                 right: insets.trailing)
+            textView.contentInset = UIEdgeInsets(
+                top: insets.top,
+                left: insets.leading,
+                bottom: insets.bottom,
+                right: insets.trailing
+            )
         }
         return textView
     }
@@ -218,20 +235,27 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
         
         let attributedString = NSMutableAttributedString(attributedString: self.text)
         let fullRange = NSRange(location: 0, length: attributedString.length)
-
-        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
-                                      value: paragraphStyle,
-                                      range: fullRange)
+        
+        attributedString.addAttribute(
+            NSAttributedString.Key.paragraphStyle,
+            value: paragraphStyle,
+            range: fullRange
+        )
         
         if let colorName = foregroundColorName,
            let color = UIColor(named: colorName) {
-            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color,
-                                          range: fullRange)
+            attributedString.addAttribute(
+                NSAttributedString.Key.foregroundColor,
+                value: color,
+                range: fullRange
+            )
         }
         
-        attributedString.addAttribute(NSAttributedString.Key.font,
-                                      value: UIFont.systemFont(ofSize: UIFont.labelFontSize),
-                                      range: fullRange)
+        attributedString.addAttribute(
+            NSAttributedString.Key.font,
+            value: UIFont.systemFont(ofSize: UIFont.labelFontSize),
+            range: fullRange
+        )
         textView.attributedText = attributedString
     }
 }
