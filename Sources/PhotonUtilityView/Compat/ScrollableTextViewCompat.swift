@@ -162,7 +162,8 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
         let textView = NSTextView()
         textView.drawsBackground = false
         textView.isEditable = false
-        
+        textView.autoresizingMask = [.width, .height]
+
         let scrollView = NSScrollView()
         scrollView.hasVerticalScroller = true
         scrollView.documentView = textView
@@ -198,9 +199,14 @@ public struct ScrollableTextViewCompat: NSViewRepresentable {
             return
         }
         
+        let selectedRange = textView.selectedRange()
+        
         textView.textStorage?.setAttributedString(self.text)
-        textView.autoresizingMask = [.width, .height]
         setStyles(for: textView)
+        
+        if selectedRange.lowerBound >= 0 && selectedRange.upperBound <= self.text.length {
+            textView.setSelectedRange(selectedRange)
+        }
         
         if context.coordinator.autoScrollToBottom {
             scrollView.documentView?.scroll(.init(x: 0, y: textView.bounds.height))
