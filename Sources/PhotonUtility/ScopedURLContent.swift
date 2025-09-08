@@ -43,4 +43,16 @@ public struct ScopedURLContent: CustomStringConvertible {
         
         return block()
     }
+    
+    public func tryAccess<T>(block: () async -> T) async -> T {
+        let access = parent?.startAccessingSecurityScopedResource() ?? false
+        
+        defer {
+            if access {
+                parent?.stopAccessingSecurityScopedResource()
+            }
+        }
+        
+        return await block()
+    }
 }
