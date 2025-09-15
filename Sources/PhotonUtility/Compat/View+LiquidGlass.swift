@@ -6,6 +6,24 @@
 //
 import SwiftUI
 
+public struct GlassContainerIfAvailable<ContentView: View>: View {
+    public var spacing: CGFloat?
+    @ViewBuilder public var content: () -> ContentView
+    
+    public init(spacing: CGFloat? = nil, content: @escaping () -> ContentView) {
+        self.spacing = spacing
+        self.content = content
+    }
+    
+    public var body: some View {
+        if #available(iOS 26, macOS 26, *) {
+            GlassEffectContainer(spacing: spacing, content: content)
+        } else {
+            content()
+        }
+    }
+}
+
 public extension View {
     @ViewBuilder
     func scrollEffectSoftIfAvailable(for edges: Edge.Set = .all) -> some View {
