@@ -112,6 +112,19 @@ public extension View {
         }
     }
     
+    @ViewBuilder
+    func ifMeet(
+        _ condition: Bool,
+        @ViewBuilder then: (Self) -> some View,
+        @ViewBuilder otherwise: (Self) -> some View
+    ) -> some View {
+        if condition {
+            then(self)
+        } else {
+            otherwise(self)
+        }
+    }
+    
     /// Run the block if the value is not nil.
     ///
     /// Be aware that this may destroy the identity of the view. Don't use this if you can switch state using ViewModifier.

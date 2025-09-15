@@ -38,6 +38,10 @@ extension TextAppSegmentTabBar where S == Capsule {
     }
 }
 
+public extension EnvironmentValues {
+    @Entry var appSegmentTabBarUsesLiquidGlass: Bool = false
+}
+
 /// A ``AppSegmentTabBar`` which use ``Text`` as content view.
 public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: ShapeStyle>: View {
     /// Binding to the selected item. When an item is selected, the binding value will be changed.
@@ -124,7 +128,8 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: Shape
         Text(LocalizedStringKey(item[keyPath: textKeyPath]), bundle: sourcesBundle)
             .bold()
             .foregroundColor(selection.wrappedValue == item ? selectedForegroundColor : foregroundColor.opacity(0.7))
-            .padding(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
             .lineLimit(1)
             .runIf(condition: helpTooltips != nil, block: { v in
                 v.help(LocalizedStringKey(helpTooltips!(item)))
@@ -165,6 +170,7 @@ class FrameState<T: Hashable>: ObservableObject {
 private let nameSpaceName = "AppSegmentTabBar"
 
 public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: ShapeStyle>: View {
+    @Environment(\.appSegmentTabBarUsesLiquidGlass) private var appSegmentTabBarUsesLiquidGlass
     @StateObject private var frameState = FrameState<T>()
     
     let selection: Binding<T>
@@ -209,6 +215,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
                     content
                 }
                 .autoScrollOnChanged(state: autoScrollState)
+                .scrollViewClipDisabledIfAvailable()
                 .onChange(of: selection.wrappedValue) { newValue in
                     DispatchQueue.main.async {
                         self.autoScrollState.rect = frameState.selectedCapsuleFrame
@@ -249,18 +256,37 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
             }
         }.padding(.horizontal, horizontalInset)
             .padding((backgroundStyle as? Color) == .clear ? 0 : 3)
-            .background(ZStack(alignment: .topLeading) {
-                shape.fill(backgroundStyle)
-                
-                if !frameState.selectedCapsuleFrame.isEmpty {
-                    shape.fill(foregroundColor)
-                        .frame(width: frameState.selectedCapsuleFrame.width,
-                               height: frameState.selectedCapsuleFrame.height)
-                        .offset(x: frameState.relativeX,
-                                y: frameState.relativeY)
+            .background(alignment: .topLeading) {
+                ZStack(alignment: .topLeading) {
+                    shape.fill(backgroundStyle)
+                    
+                    if !frameState.selectedCapsuleFrame.isEmpty {
+                        if appSegmentTabBarUsesLiquidGlass,
+                           #available(iOS 26, macOS 26, *) {
+                            Text("Item")
+                                .opacity(0)
+                                .frame(
+                                    width: frameState.selectedCapsuleFrame.width,
+                                    height: frameState.selectedCapsuleFrame.height
+                                )
+                                .glassEffect(.regular.tint(foregroundColor), in: shape)
+                                .offset(
+                                    x: frameState.relativeX,
+                                    y: frameState.relativeY
+                                )
+                        } else {
+                            shape.fill(foregroundColor).frame(
+                                width: frameState.selectedCapsuleFrame.width,
+                                height: frameState.selectedCapsuleFrame.height
+                            )
+                            .offset(
+                                x: frameState.relativeX,
+                                y: frameState.relativeY
+                            )
+                        }
+                    }
                 }
-            }, alignment: .topLeading)
-            .clipShape(shape)
+            }
             .listenFrameChanged(coordinateSpace: .named(nameSpaceName)) { rect in
                 frameState.updateContentFrame(rect: rect)
             }
@@ -270,6 +296,17 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
 extension ScrollView {
     func autoScrollOnChanged<T>(state: AutoScrollState<T>) -> some View where T: Equatable & Hashable {
         self.modifier(ScrollViewViewAutoScrollViewModifier(state: state))
+    }
+}
+
+fileprivate extension View {
+    @ViewBuilder
+    func scrollViewClipDisabledIfAvailable() -> some View {
+        if #available(iOS 17.0, macOS 14, *) {
+            self.scrollClipDisabled()
+        } else {
+            self
+        }
     }
 }
 
