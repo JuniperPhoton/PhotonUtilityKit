@@ -6,11 +6,39 @@
 //
 import SwiftUI
 
+public var isLiquidGlassAvailable: Bool {
+    if #available(iOS 26, macOS 26, *) {
+        return true
+    } else {
+        return false
+    }
+}
+
+public extension View {
+    @ViewBuilder
+    func applyGlassButtonStyleIfAvailable() -> some View {
+        if #available(iOS 26.0, *) {
+            self.buttonStyle(.glass)
+        } else {
+            self
+        }
+    }
+    
+    @ViewBuilder
+    func applyGlassProminentButtonStyleIfAvailable() -> some View {
+        if #available(iOS 26.0, *) {
+            self.buttonStyle(.glassProminent)
+        } else {
+            self
+        }
+    }
+}
+
 public struct GlassContainerIfAvailable<ContentView: View>: View {
     public var spacing: CGFloat?
     @ViewBuilder public var content: () -> ContentView
     
-    public init(spacing: CGFloat? = nil, content: @escaping () -> ContentView) {
+    public init(spacing: CGFloat? = nil, @ViewBuilder content: @escaping () -> ContentView) {
         self.spacing = spacing
         self.content = content
     }
@@ -20,6 +48,14 @@ public struct GlassContainerIfAvailable<ContentView: View>: View {
             GlassEffectContainer(spacing: spacing, content: content)
         } else {
             content()
+        }
+    }
+}
+
+public extension View {
+    func wrapInGlassContainerIfAvailable(spacing: CGFloat? = nil) -> some View {
+        GlassContainerIfAvailable(spacing: spacing) {
+            self
         }
     }
 }
@@ -126,6 +162,15 @@ public extension View {
         } else {
             Image(systemName: "ellipsis")
                 .symbolVariant(.circle.fill)
+        }
+    }
+    
+    @ViewBuilder
+    func applyVariantToFallbacks(_ symbolVariant: SymbolVariants) -> some View {
+        if #available(iOS 26, macOS 26, *) {
+            self.fontWeight(.regular)
+        } else {
+            self.symbolVariant(symbolVariant)
         }
     }
 }
