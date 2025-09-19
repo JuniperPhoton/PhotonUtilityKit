@@ -6,6 +6,17 @@
 //
 import SwiftUI
 
+public extension View {
+    @ViewBuilder
+    func containerCornerOffsetIfAvailable(_ edges: Edge.Set = .leading, sizeToFit: Bool = false) -> some View {
+        if #available(iOS 26.0, *) {
+            self.containerCornerOffset(edges, sizeToFit: sizeToFit)
+        } else {
+            self
+        }
+    }
+}
+
 public var isLiquidGlassAvailable: Bool {
     if #available(iOS 26, macOS 26, *) {
         return true
