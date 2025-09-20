@@ -18,7 +18,8 @@ let package = Package(
             name: "PhotonUtilityKit",
             targets: [
                 "PhotonUtility",
-                "PhotonUtilityView"
+                "PhotonUtilityView",
+                "PhotonLegacyCompat"
             ]
         ),
         .library(
@@ -26,7 +27,8 @@ let package = Package(
             type: .static,
             targets: [
                 "PhotonUtility",
-                "PhotonUtilityView"
+                "PhotonUtilityView",
+                "PhotonLegacyCompat"
             ]
         ),
         .library(
@@ -34,7 +36,8 @@ let package = Package(
             type: .dynamic,
             targets: [
                 "PhotonUtility",
-                "PhotonUtilityView"
+                "PhotonUtilityView",
+                "PhotonLegacyCompat"
             ]
         ),
     ],
@@ -54,7 +57,14 @@ let package = Package(
             ]),
         .target(
             name: "PhotonUtilityView",
-            dependencies: ["PhotonUtility", .product(name: "SwiftUIIntrospect", package: "swiftui-introspect")]
+            dependencies: [
+                "PhotonUtility",
+                "PhotonLegacyCompat",
+                .product(name: "SwiftUIIntrospect", package: "swiftui-introspect")
+            ]
+        ),
+        .target(
+            name: "PhotonLegacyCompat",
         ),
         .testTarget(name: "PhotonUtilityKitTests",
                     dependencies: ["PhotonUtility"])

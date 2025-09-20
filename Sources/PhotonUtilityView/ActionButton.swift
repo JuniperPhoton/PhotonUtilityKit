@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import PhotonUtility
+import PhotonLegacyCompat
 
 fileprivate struct ActionButtonCustomStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
