@@ -9,7 +9,7 @@ import SwiftUI
 public extension View {
     @ViewBuilder
     func containerCornerOffsetIfAvailable(_ edges: Edge.Set = .leading, sizeToFit: Bool = false) -> some View {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             self.containerCornerOffset(edges, sizeToFit: sizeToFit)
         } else {
             self

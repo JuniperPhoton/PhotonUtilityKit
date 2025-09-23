@@ -9,7 +9,7 @@ import SwiftUI
 public extension View {
     @ViewBuilder
     func applyGlassButtonStyleIfAvailable() -> some View {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             self.buttonStyle(.glass)
         } else {
             self
@@ -18,7 +18,7 @@ public extension View {
     
     @ViewBuilder
     func applyGlassProminentButtonStyleIfAvailable() -> some View {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             self.buttonStyle(.glassProminent)
         } else {
             self

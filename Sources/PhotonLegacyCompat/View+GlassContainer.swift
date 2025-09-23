@@ -16,7 +16,7 @@ public struct GlassContainerIfAvailable<ContentView: View>: View {
     }
     
     public var body: some View {
-        if #available(iOS 26, macOS 26, *) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             GlassEffectContainer(spacing: spacing, content: content)
         } else {
             content()

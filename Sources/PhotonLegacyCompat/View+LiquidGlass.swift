@@ -7,7 +7,7 @@
 import SwiftUI
 
 public var isLiquidGlassAvailable: Bool {
-    if #available(iOS 26, macOS 26, *) {
+    if #available(iOS 26.0, macOS 26.0, *) {
         return true
     } else {
         return false
@@ -20,7 +20,7 @@ public extension View {
         @ViewBuilder then: (Self) -> some View,
         @ViewBuilder fallback: (Self) -> some View
     ) -> some View {
-        if #available(iOS 26, macOS 26, *) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             then(self)
         } else {
             fallback(self)
@@ -31,7 +31,7 @@ public extension View {
     func liquidGlassIfAvailable(
         @ViewBuilder then: (Self) -> some View
     ) -> some View {
-        if #available(iOS 26, macOS 26, *) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             then(self)
         } else {
             self
@@ -42,7 +42,7 @@ public extension View {
     func liquidGlassIfUnavailable(
         @ViewBuilder then: (Self) -> some View
     ) -> some View {
-        if #unavailable(iOS 26, macOS 26) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             then(self)
         } else {
             self

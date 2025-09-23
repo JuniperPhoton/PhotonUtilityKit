@@ -12,7 +12,7 @@ public extension View {
         of edge: VerticalEdge,
         @ViewBuilder content: (SafeAreaContentType) -> ContentView
     ) -> some View {
-        if #available(iOS 26, macOS 26, *) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             self.safeAreaBar(edge: edge) {
                 content(.bar)
             }

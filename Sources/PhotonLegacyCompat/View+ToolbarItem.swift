@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-@available(iOS 16, macOS 13, tvOS 16, *)
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
 public extension ToolbarItem {
     @ToolbarContentBuilder
     func sharedBackgroundHiddenIfAvailable() -> some ToolbarContent {
@@ -15,7 +15,7 @@ public extension ToolbarItem {
     
     @ToolbarContentBuilder
     func sharedBackgroundVisibilitySettingIfAvailable(show: Bool) -> some ToolbarContent {
-        if #available(iOS 26, macOS 26, *) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             self.sharedBackgroundVisibility(show ? .visible : .hidden)
         } else {
             self

@@ -9,7 +9,7 @@ import SwiftUI
 public extension View {
     @ViewBuilder
     func moreIconImage(inLiquidGlass: Bool = true) -> some View {
-        if inLiquidGlass, #available(iOS 26, macOS 26, *) {
+        if inLiquidGlass, #available(iOS 26.0, macOS 26.0, *) {
             Image(systemName: "ellipsis")
         } else {
             Image(systemName: "ellipsis")
@@ -19,7 +19,7 @@ public extension View {
     
     @ViewBuilder
     func applyVariantToFallbacks(_ symbolVariant: SymbolVariants) -> some View {
-        if #available(iOS 26, macOS 26, *) {
+        if #available(iOS 26.0, macOS 26.0, *) {
             self.fontWeight(.regular)
         } else {
             self.symbolVariant(symbolVariant)
@@ -35,7 +35,7 @@ public struct MoreIconImage: View {
     }
     
     public var body: some View {
-        if inLiquidGlass, #available(iOS 26, macOS 26, *) {
+        if inLiquidGlass, #available(iOS 26.0, macOS 26.0, *) {
             Image(systemName: "ellipsis")
         } else {
             Image(systemName: "ellipsis")
