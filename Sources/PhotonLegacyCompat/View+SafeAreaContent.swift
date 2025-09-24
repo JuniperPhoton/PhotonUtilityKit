@@ -18,7 +18,7 @@ public extension View {
             }
         } else {
             self.safeAreaInset(edge: edge) {
-                content(.bar)
+                content(.inset)
             }
         }
     }
