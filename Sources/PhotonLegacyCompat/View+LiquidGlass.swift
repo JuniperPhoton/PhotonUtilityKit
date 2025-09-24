@@ -43,9 +43,9 @@ public extension View {
         @ViewBuilder then: (Self) -> some View
     ) -> some View {
         if #available(iOS 26.0, macOS 26.0, *) {
-            then(self)
-        } else {
             self
+        } else {
+            then(self)
         }
     }
 }
