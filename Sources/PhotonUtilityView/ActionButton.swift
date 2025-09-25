@@ -63,7 +63,7 @@ public extension EnvironmentValues {
         radius: actionButtonDefaultRadius
     )
     
-    @Entry var actionButtonUsesLiquidGlass: Bool = false
+    @Entry var actionButtonUsesLiquidGlass: Bool = true
 }
 
 struct ActionButtonStyleModifier: ViewModifier {
