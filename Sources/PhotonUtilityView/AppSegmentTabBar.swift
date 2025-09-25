@@ -7,7 +7,6 @@
 
 import SwiftUI
 import PhotonUtility
-import SwiftUIIntrospect
 
 #if !os(tvOS)
 /// A ``AppSegmentTabBar`` which use ``Text`` as content view and Capsule as shape.
@@ -340,7 +339,6 @@ class AutoScrollState<T>: ObservableObject where T: Equatable & Hashable {
     }
 }
 
-#if canImport(UIKit)
 struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable & Hashable {
     @ObservedObject var state: AutoScrollState<T>
     
@@ -354,25 +352,6 @@ struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable 
         }
     }
 }
-#elseif canImport(AppKit)
-struct ScrollViewViewAutoScrollViewModifier<T>: ViewModifier where T: Equatable & Hashable {
-    @ObservedObject var state: AutoScrollState<T>
-    @State var nsScrollView: NSScrollView? = nil
-    
-    func body(content: Content) -> some View {
-        ScrollViewReader { proxy in
-            content.onChange(of: state.value) { newValue in
-                self.nsScrollView?.scroll(toRect: state.rect)
-            }
-            .introspect(.scrollView, on: .macOS(.v11, .v12, .v13, .v14, .v15)) { nsScrollView in
-                DispatchQueue.main.async {
-                    self.nsScrollView = nsScrollView
-                }
-            }
-        }
-    }
-}
-#endif
 
 private func findAnotherNextItemToScrollTo<T: Equatable>(current: T, next: T, in all: [T]) -> T? {
     guard let currentIndex = all.firstIndex(of: current),
