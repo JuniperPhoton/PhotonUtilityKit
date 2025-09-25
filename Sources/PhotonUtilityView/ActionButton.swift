@@ -189,24 +189,22 @@ public struct ActionButtonLabel<Shape: SwiftUI.Shape>: View {
         .frame(minHeight: 30)
         .matchParent(axis: style.stretchToWidth ? .width : .none, alignment: .center)
         .contentShape(Rectangle())
-        .liquidGlassIfAvailable(
-            then: { v in
-                if #available(iOS 26, macOS 26, tvOS 26, *) {
-                    v.glassEffect(
-                        .regular.interactive().tint(style.backgroundColor),
-                        in: shape
-                    )
-                } else {
-                    v.background {
-                        shape.fill(style.backgroundColor)
-                    }
-                }
-            },
-            fallback: { v in
+        .liquidGlassIfAvailable { v in
+            if #available(iOS 26, macOS 26, tvOS 26, *), useLiquidGlass {
+                v.glassEffect(
+                    .regular.interactive().tint(style.backgroundColor),
+                    in: shape
+                )
+            } else {
                 v.background {
                     shape.fill(style.backgroundColor)
                 }
-            })
+            }
+        } fallback: { v in
+            v.background {
+                shape.fill(style.backgroundColor)
+            }
+        }
         .disabled(isLoading.wrappedValue)
         .opacity(isLoading.wrappedValue ? 0.5 : 1.0)
     }
