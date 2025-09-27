@@ -93,8 +93,10 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
     }
 }
 
-public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewController, UIPageViewControllerDelegate,
-                                                                UIPageViewControllerDataSource {
+public class CustomUIPageViewController<
+    T: Equatable,
+    V: View
+>: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate {
     private(set) var selection: Binding<Int>? = nil
     private(set) var pageObjects: [T]? = nil
     private var pageToView: ((T) -> V)? = nil
@@ -111,6 +113,10 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
         self.dataSource = self
         self.delegate = self
         self.updatePage(animated: false)
+
+        if let panGesture = self.gestureRecognizers.first(where: { type(of: $0) == UIPanGestureRecognizer.self }) {
+            panGesture.delegate = self
+        }
     }
     
     func setup(selection: Binding<Int>, pageObjects: [T], pageToView: @escaping (T) -> V) {
@@ -242,6 +248,12 @@ public class CustomUIPageViewController<T: Equatable, V: View>: UIPageViewContro
         }
         onContentPrepared?(nextPage)
         return PageDetailViewController<T>(page: nextPage, view: AnyView(pageToView(nextPage)))
+    }
+    
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let panGesture = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+        let translation = panGesture.translation(in: self.view)
+        return abs(translation.y) < 2
     }
 }
 
