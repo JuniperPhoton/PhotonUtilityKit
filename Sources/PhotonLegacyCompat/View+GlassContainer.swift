@@ -25,8 +25,21 @@ public struct GlassContainerIfAvailable<ContentView: View>: View {
 }
 
 public extension View {
-    func wrapInGlassContainerIfAvailable(spacing: CGFloat? = nil) -> some View {
-        GlassContainerIfAvailable(spacing: spacing) {
+    @ViewBuilder
+    func wrapInGlassContainerIfAvailable(spacing: CGFloat? = nil, enableForiOS26_0Only: Bool = false) -> some View {
+        if #available(iOS 26.1, *) {
+            if enableForiOS26_0Only {
+                self
+            } else {
+                GlassContainerIfAvailable(spacing: spacing) {
+                    self
+                }
+            }
+        } else if #available(iOS 26.0, *) {
+            GlassContainerIfAvailable(spacing: spacing) {
+                self
+            }
+        } else {
             self
         }
     }
