@@ -39,7 +39,16 @@ public struct GlassMenuButtonStyle<S: Shape>: ButtonStyle {
     }
     
     public init(padding: CGFloat, shape: S, glass: Glass) {
-        self.init(padding: .createUnified(inset: padding), shape: shape, glass: glass)
+        self.init(
+            padding: EdgeInsets(
+                top: padding,
+                leading: padding,
+                bottom: padding,
+                trailing: padding
+            ),
+            shape: shape,
+            glass: glass
+        )
     }
     
     public func makeBody(configuration: Self.Configuration) -> some View {
