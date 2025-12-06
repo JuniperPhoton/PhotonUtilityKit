@@ -259,6 +259,7 @@ fileprivate struct ToastContentViewInternal: View {
             }.addShadow())
             .padding(8)
             .animation(.default, value: style.showIcon)
+            .applyContentTransitionIfAvailable()
             .onAppear {
                 if style.showIcon {
                     showBellAnimation = true
@@ -273,6 +274,17 @@ public extension View {
     /// - Parameter text: a binding to a toast string. Set this to a non empty value to present a toast.
     func toast(text: Binding<String>) -> some View {
         self.modifier(ToastModifier(toast: text))
+    }
+}
+
+fileprivate extension View {
+    @ViewBuilder
+    func applyContentTransitionIfAvailable() -> some View {
+        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
+            self.contentTransition(.numericText(countsDown: true))
+        } else {
+            self
+        }
     }
 }
 
