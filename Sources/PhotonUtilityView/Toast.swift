@@ -90,7 +90,6 @@ public enum ToastShape {
     case roundedRect(CGFloat)
     case capsule
     
-    @available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
     var toShape: AnyShape {
         switch self {
         case .roundedRect(let radius):
@@ -246,16 +245,7 @@ fileprivate struct ToastContentViewInternal: View {
         }.padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             .clipShape(Rectangle())
             .background(Group {
-                if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-                    style.shape.toShape.fill(colors.backgroundColor)
-                } else {
-                    switch style.shape {
-                    case .roundedRect(let radius):
-                        RoundedRectangle(cornerRadius: radius).fill(colors.backgroundColor)
-                    case .capsule:
-                        Capsule().fill(colors.backgroundColor)
-                    }
-                }
+                style.shape.toShape.fill(colors.backgroundColor)
             }.addShadow())
             .padding(8)
             .animation(.default, value: style.showIcon)
@@ -280,11 +270,7 @@ public extension View {
 fileprivate extension View {
     @ViewBuilder
     func applyContentTransitionIfAvailable() -> some View {
-        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-            self.contentTransition(.numericText(countsDown: true))
-        } else {
-            self
-        }
+        self.contentTransition(.numericText(countsDown: true))
     }
 }
 

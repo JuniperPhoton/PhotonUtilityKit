@@ -64,20 +64,12 @@ public class AppOrientationLocker: ObservableObject {
     @Published public var orientationLock = InterfaceOrientationMask.all {
         didSet {
 #if os(iOS)
-            if #available(iOS 16.0, *) {
-                UIApplication.shared.connectedScenes.forEach { scene in
-                    if let windowScene = scene as? UIWindowScene {
-                        windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientationLock.uiKitRepresentation))
-                    }
-                }
-                UIViewController.attemptRotationToDeviceOrientation()
-            } else {
-                if orientationLock == .landscape {
-                    UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-                } else {
-                    UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+            UIApplication.shared.connectedScenes.forEach { scene in
+                if let windowScene = scene as? UIWindowScene {
+                    windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientationLock.uiKitRepresentation))
                 }
             }
+            UIViewController.attemptRotationToDeviceOrientation()
 #endif
         }
     }

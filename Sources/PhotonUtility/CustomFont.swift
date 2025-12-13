@@ -49,11 +49,7 @@ public extension View {
     /// For a condensed font, move the baseline down by 2pt to make it look better.
     @ViewBuilder
     func fixCondensedOffset() -> some View {
-        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
-            self.baselineOffset(-2)
-        } else {
-            self
-        }
+        self.baselineOffset(-2)
     }
 }
 

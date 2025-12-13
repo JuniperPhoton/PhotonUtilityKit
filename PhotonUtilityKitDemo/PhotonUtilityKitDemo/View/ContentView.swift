@@ -14,7 +14,7 @@ struct ContentView: View {
 
     var body: some View {
         Group {
-            if #available(iOS 16.0, macOS 13.0, *), DeviceCompat.isMac() {
+            if DeviceCompat.isMac() {
                 EpicMainContentView()
             } else {
                 DeprecatedMainContentView()
@@ -24,7 +24,6 @@ struct ContentView: View {
     }
 }
 
-@available(iOS 16.0, macOS 13.0, *)
 struct EpicMainContentView: View {
     @StateObject private var viewModel = MainViewModel()
     
