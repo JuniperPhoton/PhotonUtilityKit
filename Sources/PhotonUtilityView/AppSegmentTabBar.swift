@@ -67,6 +67,9 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: Shape
     /// The horizontal inset of this view. Default to 12pt.
     var horizontalInset: CGFloat = 12
     
+    /// Whether the scroll clip should be disabled. Default to true.
+    var scrollClipDisabled: Bool = true
+    
     /// Key path to find the text of a specified item.
     let textKeyPath: KeyPath<T, String>
     
@@ -88,6 +91,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: Shape
         selectedForegroundColor: Color = .white,
         backgroundStyle: BackgroundStyle,
         horizontalInset: CGFloat = 0,
+        scrollClipDisabled: Bool = true,
         textKeyPath: KeyPath<T, String>,
         sourcesBundle: Bundle = Bundle.main,
         shape: S,
@@ -101,6 +105,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: Shape
         self.selectedForegroundColor = selectedForegroundColor
         self.backgroundStyle = backgroundStyle
         self.horizontalInset = horizontalInset
+        self.scrollClipDisabled = scrollClipDisabled
         self.textKeyPath = textKeyPath
         self.sourcesBundle = sourcesBundle
         self.helpTooltips = helpTooltips
@@ -116,6 +121,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: Shape
             foregroundColor: foregroundColor,
             backgroundStyle: backgroundStyle,
             horizontalInset: horizontalInset,
+            scrollClipDisabled: scrollClipDisabled,
             shape: shape,
             keyboardShortcut: keyboardShortcut
         ) { item in
@@ -179,6 +185,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
     var backgroundStyle: BackgroundStyle
     var shape: S
     var horizontalInset: CGFloat = 12
+    var scrollClipDisabled: Bool = true
     var keyboardShortcut: ((T) -> KeyEquivalent)?
     let label: (T) -> V
     
@@ -191,6 +198,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
         foregroundColor: Color,
         backgroundStyle: BackgroundStyle,
         horizontalInset: CGFloat,
+        scrollClipDisabled: Bool,
         shape: S,
         keyboardShortcut: ((T) -> KeyEquivalent)? = nil,
         label: @escaping (T) -> V
@@ -201,6 +209,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
         self.foregroundColor = foregroundColor
         self.backgroundStyle = backgroundStyle
         self.horizontalInset = horizontalInset
+        self.scrollClipDisabled = scrollClipDisabled
         self.keyboardShortcut = keyboardShortcut
         self.shape = shape
         self.label = label
@@ -214,7 +223,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
                     content
                 }
                 .autoScrollOnChanged(state: autoScrollState)
-                .scrollViewClipDisabledIfAvailable()
+                .scrollViewClipDisabledIfAvailable(enabled: scrollClipDisabled)
                 .onChange(of: selection.wrappedValue) { newValue in
                     DispatchQueue.main.async {
                         self.autoScrollState.rect = frameState.selectedCapsuleFrame
@@ -300,8 +309,8 @@ extension ScrollView {
 
 fileprivate extension View {
     @ViewBuilder
-    func scrollViewClipDisabledIfAvailable() -> some View {
-        if #available(iOS 17.0, macOS 14, *) {
+    func scrollViewClipDisabledIfAvailable(enabled: Bool) -> some View {
+        if enabled, #available(iOS 17.0, macOS 14, *) {
             self.scrollClipDisabled()
         } else {
             self
