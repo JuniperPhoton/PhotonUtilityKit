@@ -76,16 +76,21 @@ public struct NSPageView<T: Equatable, V: View>: NSViewControllerRepresentable {
             return
         }
         
-        if controller.pageObjects != pageObjects || controller.selectedIndex != selection.wrappedValue {
-            let selectionAnimation = selection.transaction.animation
-            let contextAnimation = context.transaction.animation
-            let animated = selectionAnimation != nil || contextAnimation != nil
-            logger.log("updateNSViewController new \(selection.wrappedValue), count: \(pageObjects.count), animated: \(animated)")
-            logger.log("updateNSViewController old \(controller.selectedIndex), count: \(controller.pageObjects.count)")
-            
-            controller.pageObjects = pageObjects
-            controller.updateDataSource()
-            controller.updateSelectedIndex(selection.wrappedValue, animated: animated)
+        // Laying out NSView during SwiftUI layout may have issues
+        DispatchQueue.main.async {
+            if controller.pageObjects != pageObjects || controller.selectedIndex != selection.wrappedValue {
+                let selectionAnimation = selection.transaction.animation
+                let contextAnimation = context.transaction.animation
+                let animated = selectionAnimation != nil || contextAnimation != nil
+                logger.log("updateNSViewController new \(selection.wrappedValue), count: \(pageObjects.count), animated: \(animated)")
+                logger.log("updateNSViewController old \(controller.selectedIndex), count: \(controller.pageObjects.count)")
+                
+                let safeIndex = selection.wrappedValue.clamp(to: 0...(pageObjects.count - 1))
+                
+                controller.pageObjects = pageObjects
+                controller.updateDataSource()
+                controller.updateSelectedIndex(safeIndex, animated: animated)
+            }
         }
     }
 }
