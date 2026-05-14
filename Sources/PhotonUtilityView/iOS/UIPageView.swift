@@ -76,20 +76,22 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
             return
         }
         
-        if controller.pageObjects == pageObjects && controller.selection?.wrappedValue == self.selection.wrappedValue {
-            return
+        DispatchQueue.main.async {
+            if controller.pageObjects == pageObjects && controller.selection?.wrappedValue == self.selection.wrappedValue {
+                return
+            }
+            
+            controller.setup(selection: selection, pageObjects: pageObjects, pageToView: contentView)
+            
+            let selectionAnimation = selection.transaction.animation
+            let contextAnimation = context.transaction.animation
+            let animated = selectionAnimation != nil || contextAnimation != nil
+            
+            logger.log("updateUIViewController animated: \(animated), to index \(selection.wrappedValue)")
+            logger.log("updateUIViewController selectionAnimation \(selectionAnimation != nil), contextAnimation: \(contextAnimation != nil)")
+            
+            controller.updatePage(animated: animated)
         }
-        
-        controller.setup(selection: selection, pageObjects: pageObjects, pageToView: contentView)
-        
-        let selectionAnimation = selection.transaction.animation
-        let contextAnimation = context.transaction.animation
-        let animated = selectionAnimation != nil || contextAnimation != nil
-        
-        logger.log("updateUIViewController animated: \(animated), to index \(selection.wrappedValue)")
-        logger.log("updateUIViewController selectionAnimation \(selectionAnimation != nil), contextAnimation: \(contextAnimation != nil)")
-
-        controller.updatePage(animated: animated)
     }
 }
 
