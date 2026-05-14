@@ -76,6 +76,7 @@ public struct SwipeToAction: ViewModifier {
         self.onEnd = onEnd
     }
     
+#if !os(tvOS)
     private var dragGesture: some Gesture {
         DragGesture().updating($dragStateOffsetX) { value, state, transaction in
             // Updating method would always be invoked even is cancelled by system.
@@ -83,6 +84,7 @@ public struct SwipeToAction: ViewModifier {
             state = value.translation.width
         }
     }
+#endif
     
     public func body(content: Content) -> some View {
 #if !os(tvOS)

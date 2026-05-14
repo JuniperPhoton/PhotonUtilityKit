@@ -14,10 +14,14 @@ public extension ToolbarItem {
     
     @ToolbarContentBuilder
     func sharedBackgroundVisibilitySettingIfAvailable(show: Bool) -> some ToolbarContent {
-        if #available(iOS 26.0, macOS 26.0, *) {
+#if !os(tvOS)
+        if #available(iOS 26.0, macOS 26.0, tvOS 26.0, *) {
             self.sharedBackgroundVisibility(show ? .visible : .hidden)
         } else {
             self
         }
+#else
+        self
+#endif
     }
 }

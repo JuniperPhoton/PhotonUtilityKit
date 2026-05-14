@@ -9,7 +9,7 @@ import SwiftUI
 public extension View {
     @ViewBuilder
     func presentationBackgroundCompat<Background: ShapeStyle>(_ background: Background) -> some View {
-        if #available(iOS 16.4, macOS 13.3, *) {
+        if #available(iOS 16.4, macOS 13.3, tvOS 16.4, *) {
             self.presentationBackground(background)
         } else {
             self

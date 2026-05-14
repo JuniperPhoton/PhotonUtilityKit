@@ -9,7 +9,7 @@ import SwiftUI
 public extension View {
     @ViewBuilder
     func applyGlassMenuButtonStyleIfAvailable<S: Shape>(padding: CGFloat, shape: S, tint: Color? = nil) -> some View {
-        if #available(iOS 26.0, macOS 26.0, *) {
+        if #available(iOS 26.0, macOS 26.0, tvOS 26.0, *) {
             self.buttonStyle(GlassMenuButtonStyle(padding: padding, shape: shape, glass: .regular.interactive().tint(tint)))
         } else {
             self
@@ -18,7 +18,7 @@ public extension View {
     
     @ViewBuilder
     func applyGlassMenuButtonStyleIfAvailable<S: Shape>(padding: EdgeInsets, shape: S, tint: Color? = nil) -> some View {
-        if #available(iOS 26.0, macOS 26.0, *) {
+        if #available(iOS 26.0, macOS 26.0, tvOS 26.0, *) {
             self.buttonStyle(GlassMenuButtonStyle(padding: padding, shape: shape, glass: .regular.interactive().tint(tint)))
         } else {
             self
@@ -26,7 +26,7 @@ public extension View {
     }
 }
 
-@available(iOS 26.0, macOS 26.0, *)
+@available(iOS 26.0, macOS 26.0, tvOS 26.0, *)
 public struct GlassMenuButtonStyle<S: Shape>: ButtonStyle {
     var padding: EdgeInsets
     var glass: Glass

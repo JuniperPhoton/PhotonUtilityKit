@@ -9,7 +9,7 @@ import SwiftUI
 public extension View {
     @ViewBuilder
     func allowedDynamicRangeCompat(_ dynamicRange: DynamicRangeCompat) -> some View {
-        if #available(iOS 17.0, macOS 14.0, *) {
+        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, *) {
             self.allowedDynamicRange(dynamicRange.toImageDynamicRange)
         } else {
             self
@@ -22,7 +22,7 @@ public enum DynamicRangeCompat {
     case constrainedHigh
     case high
     
-    @available(iOS 17.0, macOS 14.0, *)
+    @available(iOS 17.0, macOS 14.0, tvOS 17.0, *)
     var toImageDynamicRange: Image.DynamicRange {
         switch self {
         case .standard:

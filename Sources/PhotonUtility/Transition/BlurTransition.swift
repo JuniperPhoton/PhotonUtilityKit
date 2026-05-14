@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-@available(iOS 17.0, macOS 14.0, *)
+@available(iOS 17.0, macOS 14.0, tvOS 17.0, *)
 public struct BlurTransition: Transition {
     var transitionRadius: CGFloat
     
@@ -35,7 +35,7 @@ public extension AnyTransition {
     /// Get the blur transition on iOS 17 and macOS 14 or later, otherwise, return the identity transition.
     /// - parameter radius: The radius of the blur effect.
     static func blurCompat(radius: CGFloat = 12) -> AnyTransition {
-        if #available(iOS 17, macOS 14, *) {
+        if #available(iOS 17, macOS 14, tvOS 17.0, *) {
             AnyTransition(BlurTransition(transitionRadius: radius))
         } else {
             AnyTransition.identity

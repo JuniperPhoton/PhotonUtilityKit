@@ -395,6 +395,7 @@ public extension View {
     }
 }
 
+#if !os(tvOS)
 public extension View {
     func getSizeThatFits(_ containerSize: CGSize) -> CGSize {
 #if os(iOS)
@@ -406,3 +407,4 @@ public extension View {
 #endif
     }
 }
+#endif

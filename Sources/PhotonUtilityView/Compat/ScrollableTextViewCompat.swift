@@ -4,6 +4,7 @@
 //
 //  Created by Photon Juniper on 2023/4/26.
 //
+#if !os(tvOS)
 
 import SwiftUI
 #if os(macOS)
@@ -393,4 +394,5 @@ public struct ScrollableTextViewCompat: UIViewRepresentable {
         textView.attributedText = attributedString
     }
 }
+#endif
 #endif
