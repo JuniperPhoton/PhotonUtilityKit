@@ -77,7 +77,8 @@ public struct UIPageView<T: Equatable, V: View>: UIViewControllerRepresentable {
         }
         
         DispatchQueue.main.async {
-            if controller.pageObjects == pageObjects && controller.selection?.wrappedValue == self.selection.wrappedValue {
+            let targetPage = self.selection.wrappedValue < self.pageObjects.count ? self.pageObjects[self.selection.wrappedValue] : nil
+            if controller.pageObjects == pageObjects && controller.currentPage == targetPage {
                 return
             }
             
@@ -103,7 +104,7 @@ public class CustomUIPageViewController<
     private(set) var pageObjects: [T]? = nil
     private var pageToView: ((T) -> V)? = nil
     
-    private var currentPage: T? = nil
+    private(set) var currentPage: T? = nil
     private var currentViewController: UIViewController? = nil
     
     var onContentPrepared: ((T) -> Void)? = nil
