@@ -64,8 +64,8 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: Shape
     /// The shape of the background. The view will also be clipped to this shape.
     var shape: S
     
-    /// The horizontal inset of this view. Default to 12pt.
-    var horizontalInset: CGFloat = 12
+    /// The horizontal inset of this view.
+    var horizontalInset: CGFloat? = 12
     
     /// Whether the scroll clip should be disabled. Default to true.
     var scrollClipDisabled: Bool = true
@@ -90,7 +90,7 @@ public struct TextAppSegmentTabBar<T: Hashable, S: Shape, BackgroundStyle: Shape
         foregroundColor: Color,
         selectedForegroundColor: Color = .white,
         backgroundStyle: BackgroundStyle,
-        horizontalInset: CGFloat = 0,
+        horizontalInset: CGFloat? = 0,
         scrollClipDisabled: Bool = true,
         textKeyPath: KeyPath<T, String>,
         sourcesBundle: Bundle = Bundle.main,
@@ -184,7 +184,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
     var foregroundColor: Color
     var backgroundStyle: BackgroundStyle
     var shape: S
-    var horizontalInset: CGFloat = 12
+    var horizontalInset: CGFloat? = 12
     var scrollClipDisabled: Bool = true
     var keyboardShortcut: ((T) -> KeyEquivalent)?
     let label: (T) -> V
@@ -197,7 +197,7 @@ public struct AppSegmentTabBar<T: Hashable, V: View, S: Shape, BackgroundStyle: 
         scrollable: Bool,
         foregroundColor: Color,
         backgroundStyle: BackgroundStyle,
-        horizontalInset: CGFloat,
+        horizontalInset: CGFloat?,
         scrollClipDisabled: Bool,
         shape: S,
         keyboardShortcut: ((T) -> KeyEquivalent)? = nil,
