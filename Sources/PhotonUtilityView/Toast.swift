@@ -223,8 +223,7 @@ public struct ToastContentView: View {
 }
 
 fileprivate struct ToastContentViewInternal: View {
-    @Environment(\.toastStyle) private var style
-    @Environment(\.toastUserLiquidGlassStyleIfAvailable) private var toastUserLiquidGlassStyleIfAvailable
+    @Environment(\.toastStyle) private var style: ToastStyle
     
     @State var showBellAnimation = false
     
@@ -241,27 +240,13 @@ fileprivate struct ToastContentViewInternal: View {
                     .animation(.default.repeatForever(), value: showBellAnimation)
             }
             Text(LocalizedStringKey(toast))
+                .foregroundColor(colors.foregroundColor)
                 .multilineTextAlignment(.center)
-                .liquidGlassIfAvailable { v in
-                    if #available(iOS 26.0, *), toastUserLiquidGlassStyleIfAvailable {
-                        v
-                    } else {
-                        v.foregroundColor(colors.foregroundColor)
-                    }
-                } fallback: { v in
-                    v.foregroundColor(colors.foregroundColor)
-                }
         }.padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             .clipShape(Rectangle())
-            .liquidGlassIfAvailable { v in
-                if #available(iOS 26.0, *), toastUserLiquidGlassStyleIfAvailable {
-                    v.glassEffect(.regular.interactive(), in: style.shape.toShape)
-                } else {
-                    v.background(style.shape.toShape.fill(colors.backgroundColor).addShadow())
-                }
-            } fallback: { v in
-                v.background(style.shape.toShape.fill(colors.backgroundColor).addShadow())
-            }
+            .background(Group {
+                style.shape.toShape.fill(colors.backgroundColor)
+            }.addShadow())
             .padding(8)
             .animation(.default, value: style.showIcon)
             .applyContentTransitionIfAvailable()
@@ -280,10 +265,6 @@ public extension View {
     func toast(text: Binding<String>) -> some View {
         self.modifier(ToastModifier(toast: text))
     }
-}
-
-public extension EnvironmentValues {
-    @Entry var toastUserLiquidGlassStyleIfAvailable = true
 }
 
 fileprivate extension View {
