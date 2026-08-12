@@ -75,7 +75,13 @@ class KeyHandlerUIView: UIView {
     
     override var keyCommands: [UIKeyCommand]? {
         supportedKeys.map { key in
-            UIKeyCommand(input: key.uiKeyCommand, modifierFlags: [], action: #selector(handleKeyPressed))
+            let command = UIKeyCommand(
+                input: key.uiKeyCommand,
+                modifierFlags: [],
+                action: #selector(handleKeyPressed)
+            )
+            command.wantsPriorityOverSystemBehavior = true
+            return command
         }
     }
     
