@@ -104,7 +104,7 @@ public extension View {
     /// - Parameter condition: the condition to check
     /// - Parameter block: the block to be executed if the condition is meet. This block capture the current view and should return some View.
     @ViewBuilder
-    func runIf(condition: Bool, block: (Self) -> some View) -> some View {
+    func runIf(condition: Bool, @ViewBuilder block: (Self) -> some View) -> some View {
         if condition {
             block(self)
         } else {
