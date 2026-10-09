@@ -11,6 +11,8 @@ import Foundation
 import UIKit
 #endif
 
+private let duoIdentifier = "iPhone19,4"
+
 public class DeviceCompat {
     private init() {
         // private
@@ -98,12 +100,12 @@ public class DeviceCompat {
     }
     
     public static var isFoldableDevice: Bool = {
-        return modelIdentifier == "iPhone19,6"
+        return modelIdentifier == duoIdentifier
     }()
     
     public static var modelIdentifier: String = {
 #if targetEnvironment(simulator)
-        return "iPhone19,6"
+        return duoIdentifier
 #else
         var systemInfo = utsname()
         uname(&systemInfo)
