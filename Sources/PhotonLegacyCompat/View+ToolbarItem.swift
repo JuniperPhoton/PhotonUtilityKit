@@ -45,3 +45,14 @@ public extension ToolbarItemGroup {
 #endif
     }
 }
+
+public extension ToolbarContent {
+    @ToolbarContentBuilder
+    func preferVerticalBar() -> some ToolbarContent {
+        if #available(anyAppleOS 27.1, *) {
+            self.axisBehavior(.verticalPreferred)
+        } else {
+            self
+        }
+    }
+}
