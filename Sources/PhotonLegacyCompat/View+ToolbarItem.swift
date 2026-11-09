@@ -55,4 +55,24 @@ public extension ToolbarContent {
             self
         }
     }
+    
+    @ToolbarContentBuilder
+    func horizontalOnlyToolbar() -> some ToolbarContent {
+        if #available(anyAppleOS 27.1, *) {
+            self.axisBehavior(.horizontalOnly)
+        } else {
+            self
+        }
+    }
+}
+
+public extension View {
+    @ContentBuilder
+    func toolbarMinimizationBehaviorNever() -> some View {
+        if #available(anyAppleOS 27.0, *) {
+            self.toolbarMinimizationBehavior(.never)
+        } else {
+            self
+        }
+    }
 }
