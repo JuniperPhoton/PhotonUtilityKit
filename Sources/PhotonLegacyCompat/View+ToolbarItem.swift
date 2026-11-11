@@ -47,32 +47,46 @@ public extension ToolbarItemGroup {
 }
 
 public extension ToolbarContent {
+    /// Prefers the vertical bar on iPhone Duo. No-op on other platforms.
     @ToolbarContentBuilder
     func preferVerticalBar() -> some ToolbarContent {
-        if #available(anyAppleOS 27.1, *) {
+#if os(iOS)
+        if #available(iOS 27.1, *) {
             self.axisBehavior(.verticalPreferred)
         } else {
             self
         }
+#else
+        self
+#endif
     }
     
+    /// Keeps the item in the horizontal bar on iPhone Duo. No-op on other platforms.
     @ToolbarContentBuilder
     func horizontalOnlyToolbar() -> some ToolbarContent {
-        if #available(anyAppleOS 27.1, *) {
+#if os(iOS)
+        if #available(iOS 27.1, *) {
             self.axisBehavior(.horizontalOnly)
         } else {
             self
         }
+#else
+        self
+#endif
     }
 }
 
 public extension View {
     @ContentBuilder
     func toolbarMinimizationBehaviorNever() -> some View {
-        if #available(anyAppleOS 27.0, *) {
+#if os(iOS)
+        if #available(iOS 27.0, *) {
             self.toolbarMinimizationBehavior(.never)
         } else {
             self
         }
+#else
+        self
+#endif
     }
 }
